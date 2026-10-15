@@ -1,0 +1,46 @@
+<?php
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Livewire\Volt\Volt;
+
+Route::view('/', 'welcome');
+
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
+
+Route::view('profile', 'profile')
+    ->middleware(['auth'])
+    ->name('profile');
+
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(/* ... */);
+//     Route::middleware('role:therapist,clinic_admin')->prefix('therapist')->name('therapist.')->group(/* ... */);
+//     Route::middleware('role:clinic_admin')->prefix('clinic')->name('clinic.')->group(/* ... */);
+// });
+
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    // Breeze redirects to route('dashboard') after login, so keep the name and redirect by role
+    Route::get('/dashboard', fn() => redirect()->route(Auth::user()->role->home()))
+        ->name('dashboard');
+
+    Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(function () {
+        Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
+        Volt::route('program', 'pages.patient.program')->name('program');
+        Volt::route('history', 'pages.patient.history')->name('history');
+    });
+
+    Route::middleware('role:therapist,clinic_admin')->prefix('therapist')->name('therapist.')->group(function () {
+        Volt::route('dashboard', 'pages.therapist.dashboard')->name('dashboard');
+        Volt::route('patients', 'pages.therapist.patients')->name('patients');
+        Volt::route('patients/{patient}', 'pages.therapist.patient-detail')->name('patients.show');
+    });
+
+    Route::middleware('role:clinic_admin')->prefix('clinic')->name('clinic.')->group(function () {
+        Volt::route('dashboard', 'pages.clinic.dashboard')->name('dashboard');
+        Volt::route('team', 'pages.clinic.team')->name('team');
+    });
+});
+require __DIR__ . '/auth.php';
