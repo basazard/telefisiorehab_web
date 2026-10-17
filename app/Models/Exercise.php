@@ -10,4 +10,6 @@ class Exercise extends Model
 {
     /** @use HasFactory<\Database\Factories\ExerciseFactory> */
     use HasFactory, BelongsToClinic;
+
+    protected $fillable = ['clinic_id', 'name', 'body_area', 'video_url', 'instructions'];
 }

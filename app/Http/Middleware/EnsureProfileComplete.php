@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class EnsureProfileComplete
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  Closure(Request): (Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        $patient = $request->user()->patient;
+        if ($patient && ! $patient->isProfileComplete()) {
+            return redirect()->route('patient.profile.setup');
+        }
+        return $next($request);
+    }
+}

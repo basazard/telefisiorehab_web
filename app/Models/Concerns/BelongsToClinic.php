@@ -20,7 +20,7 @@ trait BelongsToClinic
         static::addGlobalScope('clinic', function (Builder $query) {
             $user = Auth::user();
 
-            if (! $user || $user->role === Role::PlatformAdmin) {
+            if (! $user || in_array($user->role, [Role::PlatformAdmin, Role::Patient], true)) {
                 return;
             }
 

@@ -27,9 +27,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('dashboard');
 
     Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(function () {
-        Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
-        Volt::route('program', 'pages.patient.program')->name('program');
-        Volt::route('history', 'pages.patient.history')->name('history');
+        Volt::route('profile/setup', 'pages.patient.profile-setup')->name('profile.setup');
+
+        Route::middleware('profile.complete')->group(function () {
+            Volt::route('screening', 'pages.patient.screening')->name('screening');   // placeholder for now
+            Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
+            Volt::route('program', 'pages.patient.program')->name('program');
+            Volt::route('history', 'pages.patient.history')->name('history');
+        });
     });
 
     Route::middleware('role:therapist,clinic_admin')->prefix('therapist')->name('therapist.')->group(function () {
