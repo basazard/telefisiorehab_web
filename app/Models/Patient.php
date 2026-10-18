@@ -13,6 +13,8 @@ use App\Models\Concerns\BelongsToClinic;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Patient extends Model
 {
@@ -68,5 +70,24 @@ class Patient extends Model
     protected function module(): Attribute
     {
         return Attribute::get(fn() => $this->age === null ? null : ServiceModule::fromAge($this->age));
+    }
+
+    public function screenings(): HasMany
+    {
+        return $this->hasMany(Screening::class);
+    }
+    public function latestScreening(): HasOne
+    {
+        return $this->hasOne(Screening::class)->latestOfMany();
+    }
+
+    public function redFlagChecks(): HasMany
+    {
+        return $this->hasMany(RedFlagCheck::class);
+    }
+
+    public function isRedFlagLocked(): bool
+    {
+        return $this->redFlagChecks()->whereNotNull('stopped_at')->whereNull('unlocked_at')->exists();
     }
 }

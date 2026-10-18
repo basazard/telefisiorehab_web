@@ -1,61 +1,29 @@
-<?php
-
-use Illuminate\Support\Facades\Password;
-use Livewire\Attributes\Layout;
-use Livewire\Volt\Component;
-
-new #[Layout('layouts.guest')] class extends Component
-{
-    public string $email = '';
-
-    /**
-     * Send a password reset link to the provided email address.
-     */
-    public function sendPasswordResetLink(): void
-    {
-        $this->validate([
-            'email' => ['required', 'string', 'email'],
-        ]);
-
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $this->only('email')
-        );
-
-        if ($status != Password::RESET_LINK_SENT) {
-            $this->addError('email', __($status));
-
-            return;
-        }
-
-        $this->reset('email');
-
-        session()->flash('status', __($status));
-    }
-}; ?>
-
 <div>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+    <div class="mb-8">
+        <h1 class="font-display text-2xl font-bold">Lupa kata sandi?</h1>
+        <p class="mt-1 text-sm text-muted-foreground">Masukkan email akun Anda. Kami akan mengirim tautan untuk membuat kata sandi baru.</p>
     </div>
 
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="sendPasswordResetLink">
+    <form wire:submit="sendPasswordResetLink" class="space-y-5">
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-label for="email" value="Email" />
+            <x-text-input wire:model="email" id="email" class="mt-1.5" type="email" name="email" placeholder="nama@email.com" required autofocus />
+            <x-input-error :messages="$errors->get('email')" class="mt-1.5" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
-        </div>
+        <x-primary-button class="w-full" wire:loading.attr="disabled" wire:target="sendPasswordResetLink">
+            <span wire:loading.remove wire:target="sendPasswordResetLink">Kirim tautan reset</span>
+            <span wire:loading wire:target="sendPasswordResetLink">Mengirim…</span>
+        </x-primary-button>
     </form>
+
+    <p class="mt-6 text-center text-sm text-muted-foreground">
+        <a href="{{ route('login') }}" wire:navigate class="inline-flex items-center gap-1 font-medium text-primary hover:underline">
+            <x-lucide-arrow-left class="size-3.5" /> Kembali ke halaman masuk
+        </a>
+    </p>
 </div>

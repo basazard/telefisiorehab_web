@@ -25,6 +25,11 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+
+    protected $attributes = [
+        'role' => 'patient',
+    ];
+
     protected function casts(): array
     {
         return [

@@ -1,29 +1,25 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+    <div class="mx-auto max-w-3xl space-y-6">
+        <x-page-header title="Profil akun" subtitle="Kelola informasi akun, kata sandi, dan data Anda." />
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow-sm sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.update-profile-information-form />
-                </div>
-            </div>
+        @if (auth()->user()->role === \App\Enums\Role::Patient)
+            <x-panel title="Data kesehatan" sub="Tanggal lahir, tinggi dan berat badan, aktivitas, kondisi khusus, dan tujuan Anda.">
+                <x-ui.button :href="route('patient.profile.setup')" variant="outline">
+                    <x-lucide-pencil class="size-4" /> Perbarui data kesehatan
+                </x-ui.button>
+            </x-panel>
+        @endif
 
-            <div class="p-4 sm:p-8 bg-white shadow-sm sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.update-password-form />
-                </div>
-            </div>
+        <x-panel>
+            <livewire:profile.update-profile-information-form />
+        </x-panel>
 
-            <div class="p-4 sm:p-8 bg-white shadow-sm sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.delete-user-form />
-                </div>
-            </div>
-        </div>
+        <x-panel>
+            <livewire:profile.update-password-form />
+        </x-panel>
+
+        <x-panel>
+            <livewire:profile.delete-user-form />
+        </x-panel>
     </div>
 </x-app-layout>

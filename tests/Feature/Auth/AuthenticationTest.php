@@ -55,6 +55,12 @@ test('navigation menu can be rendered', function () {
         ->assertSeeVolt('layout.navigation');
 });
 
+test('dashboard sends a patient to their own home', function () {
+    $this->actingAs(User::factory()->create());
+
+    $this->get('/dashboard')->assertRedirect(route('patient.dashboard'));
+});
+
 test('users can logout', function () {
     $user = User::factory()->create();
 

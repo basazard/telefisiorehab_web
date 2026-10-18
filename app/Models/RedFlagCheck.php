@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToClinic;
-use App\Support\Onboarding\Assessment;
+use App\Support\Onboarding\RedFlags;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -11,7 +11,10 @@ class RedFlagCheck extends Model
 {
     use BelongsToClinic;
 
-    protected $fillable = ['clinic_id', 'screening_id', 'patient_id', 'answers', 'flagged', 'cleared', 'acknowledged_at'];
+    protected $fillable = [
+        'clinic_id', 'screening_id', 'patient_id', 'answers', 'other_text', 'flagged', 'cleared',
+        'stopped_at', 'unlocked_at', 'unlocked_by', 'unlock_note',
+    ];
 
     protected function casts(): array
     {
@@ -19,7 +22,8 @@ class RedFlagCheck extends Model
             'answers' => 'array',
             'flagged' => 'array',
             'cleared' => 'boolean',
-            'acknowledged_at' => 'datetime',
+            'stopped_at' => 'datetime',
+            'unlocked_at' => 'datetime',
         ];
     }
 
@@ -28,21 +32,25 @@ class RedFlagCheck extends Model
         return $this->belongsTo(Screening::class);
     }
 
-    /** Never trust a "flagged" list from the browser: always derive it from the answers. */
-    public static function attributesFromAnswers(array $answers): array
+    public function patient(): BelongsTo
     {
-        $flagged = Assessment::flaggedRedFlags($answers);
-
-        return ['answers' => $answers, 'flagged' => $flagged, 'cleared' => $flagged === []];
+        return $this->belongsTo(Patient::class);
     }
 
-    public function requiresAcknowledgement(): bool
+    public function unlockedBy(): BelongsTo
     {
-        return ! empty($this->flagged) && $this->acknowledged_at === null;
+        return $this->belongsTo(User::class, 'unlocked_by');
     }
 
-    public function canProceed(): bool
+    /** Hard stop: set when any answer was "yes", cleared only by a clinic therapist. */
+    public function isLocked(): bool
     {
-        return ! $this->requiresAcknowledgement();
+        return $this->stopped_at !== null && $this->unlocked_at === null;
+    }
+
+    /** @return string[] */
+    public function flaggedLabels(): array
+    {
+        return RedFlags::labels($this->flagged ?? []);
     }
 }

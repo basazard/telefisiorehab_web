@@ -16,13 +16,18 @@ class Navigation
                 ['label' => 'History',    'route' => 'patient.history',   'icon' => 'history'],
             ],
             Role::Therapist => [
-                ['label' => 'Overview', 'route' => 'therapist.dashboard', 'icon' => 'layout-dashboard'],
-                ['label' => 'Patients', 'route' => 'therapist.patients',  'icon' => 'users'],
+                ['label' => 'Overview',   'route' => 'therapist.dashboard',  'icon' => 'layout-dashboard'],
+                ['label' => 'Patients',   'route' => 'therapist.patients',   'icon' => 'users'],
+                ['label' => 'Red flags',  'route' => 'staff.red-flags',  'icon' => 'shield-alert'],
+            ],
+            Role::PlatformAdmin => [
+                ['label' => 'Red flags', 'route' => 'staff.red-flags', 'icon' => 'shield-alert'],
             ],
             default => [
-                ['label' => 'Clinic',   'route' => 'clinic.dashboard',    'icon' => 'building-2'],
-                ['label' => 'Patients', 'route' => 'therapist.patients',  'icon' => 'users'],
-                ['label' => 'Team',     'route' => 'clinic.team',         'icon' => 'user-cog'],
+                ['label' => 'Clinic',     'route' => 'clinic.dashboard',     'icon' => 'building-2'],
+                ['label' => 'Patients',   'route' => 'therapist.patients',   'icon' => 'users'],
+                ['label' => 'Red flags',  'route' => 'staff.red-flags',  'icon' => 'shield-alert'],
+                ['label' => 'Team',       'route' => 'clinic.team',          'icon' => 'user-cog'],
             ],
         };
     }

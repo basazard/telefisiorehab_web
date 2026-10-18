@@ -23,6 +23,14 @@ class ProfileForm extends Form
     public function rulesForStep(int $step): array
     {
         return match ($step) {
+            'special_conditions.*' => [
+                'in:' . implode(',', array_column(SpecialCondition::cases(), 'value')),
+                function (string $attribute, mixed $value, \Closure $fail) {
+                    if ($value === 'pregnancy' && $this->gender !== 'female') {
+                        $fail('Kehamilan hanya dapat dipilih untuk jenis kelamin perempuan.');
+                    }
+                },
+            ],
             1 => [
                 'date_of_birth' => [
                     'required',

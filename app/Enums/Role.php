@@ -14,8 +14,8 @@ enum Role: string
         return match ($this) {
             self::Patient       => 'patient.dashboard',
             self::Therapist     => 'therapist.dashboard',
-            self::ClinicAdmin,
-            self::PlatformAdmin => 'clinic.dashboard',
+            self::PlatformAdmin => 'staff.red-flags',
+            self::ClinicAdmin => 'clinic.dashboard',
         };
     }
 }

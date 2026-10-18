@@ -12,13 +12,20 @@ class Screening extends Model
 {
     use BelongsToClinic;
 
-    protected $fillable = ['clinic_id', 'patient_id', 'regions', 'complaints', 'max_pain', 'completed_at'];
+    protected $fillable = [
+        'clinic_id', 'patient_id', 'main_complaints', 'regions', 'non_specific_location', 'pain_levels', 'max_pain',
+        'characteristics', 'special_groups', 'status', 'current_step', 'completed_at',
+    ];
 
     protected function casts(): array
     {
         return [
+            'main_complaints' => 'array',
             'regions' => 'array',
-            'complaints' => 'array',
+            'non_specific_location' => 'boolean',
+            'pain_levels' => 'array',
+            'characteristics' => 'array',
+            'special_groups' => 'array',
             'completed_at' => 'datetime',
         ];
     }
@@ -40,11 +47,16 @@ class Screening extends Model
 
     public function scopeInProgress(Builder $query): Builder
     {
-        return $query->whereNull('completed_at');
+        return $query->where('status', 'in_progress');
     }
 
     public function isCompleted(): bool
     {
-        return $this->completed_at !== null;
+        return $this->status === 'completed';
+    }
+
+    public function isStopped(): bool
+    {
+        return $this->status === 'stopped';
     }
 }

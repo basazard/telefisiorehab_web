@@ -30,7 +30,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Volt::route('profile/setup', 'pages.patient.profile-setup')->name('profile.setup');
 
         Route::middleware('profile.complete')->group(function () {
-            Volt::route('screening', 'pages.patient.screening')->name('screening');   // placeholder for now
+            Volt::route('screening/stopped', 'pages.patient.red-flag-stop')->name('red-flag.stop');   // must stay reachable while locked
+
+            Route::middleware('redflag.clear')->group(function () {                                   // everything else is blocked while locked
+                Volt::route('screening', 'pages.patient.screening')->name('screening');
+                Volt::route('domain', 'pages.patient.domain')->name('domain');
+                Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
+                Volt::route('program', 'pages.patient.program')->name('program');
+                Volt::route('history', 'pages.patient.history')->name('history');
+            });
+
             Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
             Volt::route('program', 'pages.patient.program')->name('program');
             Volt::route('history', 'pages.patient.history')->name('history');
@@ -47,5 +56,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Volt::route('dashboard', 'pages.clinic.dashboard')->name('dashboard');
         Volt::route('team', 'pages.clinic.team')->name('team');
     });
+
+    Route::middleware('role:therapist,clinic_admin,platform_admin')->group(function () {
+        Volt::route('staff/red-flags', 'pages.therapist.red-flag-review')->name('staff.red-flags');
+    });
 });
+
 require __DIR__ . '/auth.php';

@@ -5,7 +5,7 @@
 --}}
 @props(['role', 'userName', 'nav' => []])
 
-<div class="min-h-screen flex w-full bg-background">
+<div x-data="{ menu: false }" class="min-h-screen flex w-full bg-background">
     <aside class="hidden md:flex w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar">
         <div class="px-6 py-6 flex items-center gap-2">
             <div class="size-9 rounded-xl bg-[image:var(--gradient-hero)] grid place-items-center text-primary-foreground">
@@ -35,16 +35,26 @@
             </nav>
         </div>
 
-        <div class="mt-auto p-4">
+        <div class="mt-auto space-y-1 border-t border-sidebar-border p-3">
             <a href="{{ route('profile') }}" wire:navigate
-               class="block rounded-xl bg-[image:var(--gradient-soft)] p-4 border border-sidebar-border text-xs font-semibold text-sidebar-foreground">
-                Account settings
+               @class([
+                   'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
+                   'bg-sidebar-primary text-sidebar-primary-foreground' => request()->routeIs('profile'),
+                   'text-muted-foreground hover:bg-sidebar-accent hover:text-foreground' => ! request()->routeIs('profile'),
+               ])>
+                <x-lucide-user-round class="size-4" /> Profil akun
             </a>
+            <livewire:layout.logout-button />
         </div>
     </aside>
 
     <div class="flex-1 flex flex-col min-w-0">
         <header class="h-16 px-4 md:px-8 border-b border-border bg-card/60 backdrop-blur flex items-center justify-between sticky top-0 z-10">
+            <button type="button" x-on:click="menu = ! menu" aria-label="Menu"
+                    class="mr-3 grid size-10 place-items-center rounded-lg bg-muted hover:bg-secondary md:hidden">
+                <x-lucide-menu x-show="! menu" class="size-5" />
+                <x-lucide-x x-show="menu" x-cloak class="size-5" />
+            </button>
             <div class="flex items-center gap-3 flex-1 max-w-md">
                 <div class="relative flex-1">
                     <x-lucide-search class="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -68,6 +78,24 @@
                 </div>
             </div>
         </header>
+
+        <nav x-show="menu" x-cloak x-transition class="space-y-1 border-b border-border bg-card p-3 md:hidden" aria-label="Menu">
+            @foreach ($nav as $item)
+                <a href="{{ route($item['route']) }}" wire:navigate
+                   @class([
+                       'flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium',
+                       'bg-primary text-primary-foreground' => request()->routeIs($item['route']),
+                       'hover:bg-secondary' => ! request()->routeIs($item['route']),
+                   ])>
+                    <x-dynamic-component :component="'lucide-'.$item['icon']" class="size-4" />
+                    {{ $item['label'] }}
+                </a>
+            @endforeach
+            <a href="{{ route('profile') }}" wire:navigate class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-secondary">
+                <x-lucide-user-round class="size-4" /> Profil akun
+            </a>
+            <livewire:layout.logout-button />
+        </nav>
 
         <main class="flex-1 p-4 md:p-8">{{ $slot }}</main>
     </div>

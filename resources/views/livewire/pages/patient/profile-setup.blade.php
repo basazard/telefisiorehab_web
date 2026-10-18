@@ -58,10 +58,21 @@ new #[Layout('layouts.onboarding')] class extends Component {
             return;
         }
 
+        if ($value === 'pregnancy' && $this->form->gender !== 'female') {
+            return;
+        }
+
         $list = $this->form->special_conditions;
         $this->form->special_conditions = in_array($value, $list, true)
             ? array_values(array_diff($list, [$value]))
             : [...$list, $value];
+    }
+
+    public function updatedFormGender(): void
+    {
+        if ($this->form->gender !== 'female') {
+            $this->form->special_conditions = array_values(array_diff($this->form->special_conditions, ['pregnancy']));
+        }
     }
 
     public function toggleGoal(string $value): void
@@ -360,6 +371,11 @@ $m = $form->module();
 
             {{-- STEP 4: special conditions --}}
             @if ($step === 4)
+            @foreach (\App\Enums\SpecialCondition::cases() as $c)
+            @continue($c->value === 'pregnancy' && $form->gender !== 'female')
+            <x-onboarding.chip :active="in_array($c->value, $form->special_conditions, true)"
+                wire:click="toggleCondition('{{ $c->value }}')">{{ $c->label() }}</x-onboarding.chip>
+            @endforeach
             <div wire:key="step-4" class="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
                 <div>
                     <p class="text-sm font-medium">Apakah Anda memiliki kondisi khusus yang perlu diperhatikan?</p>
