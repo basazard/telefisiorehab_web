@@ -35,6 +35,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::middleware('redflag.clear')->group(function () {                                   // everything else is blocked while locked
                 Volt::route('screening', 'pages.patient.screening')->name('screening');
                 Volt::route('domain', 'pages.patient.domain')->name('domain');
+                Volt::route('assessment', 'pages.patient.assessment')->name('assessment');
+                Volt::route('assessment/result', 'pages.patient.assessment-result')->name('assessment.result');
+                Volt::route('risk-classification', 'pages.patient.risk-classification')->name('risk-classification');
+                Volt::route('intervention', 'pages.patient.intervention')->name('intervention');
                 Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
                 Volt::route('program', 'pages.patient.program')->name('program');
                 Volt::route('history', 'pages.patient.history')->name('history');

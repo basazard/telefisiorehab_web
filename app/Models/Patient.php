@@ -81,6 +81,11 @@ class Patient extends Model
         return $this->hasOne(Screening::class)->latestOfMany();
     }
 
+    public function assessments(): HasMany
+    {
+        return $this->hasMany(AssessmentResult::class);
+    }
+
     public function redFlagChecks(): HasMany
     {
         return $this->hasMany(RedFlagCheck::class);

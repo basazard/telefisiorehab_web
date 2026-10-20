@@ -37,9 +37,9 @@ it('renders the screening page', function () {
         ->assertSee('Apa keluhan utama Anda?');
 });
 
-it('renders the domain placeholder', function () {
+it('renders the domain identification after a completed screening', function () {
     $user = makeUser();
-    makePatient($user);
+    makeScreening(makePatient($user), ['status' => 'completed', 'completed_at' => now()]);
 
     $this->actingAs($user)->get(route('patient.domain'))->assertOk()->assertSee('Identifikasi Domain Fisioterapi');
 });
