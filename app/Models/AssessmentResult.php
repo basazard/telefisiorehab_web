@@ -8,6 +8,7 @@ use App\Models\Concerns\BelongsToClinic;
 use App\Support\Onboarding\RiskStratification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /** Table: assessments. (Named AssessmentResult to avoid clashing with the Support\Onboarding\Assessment scorer.) */
 class AssessmentResult extends Model
@@ -49,6 +50,11 @@ class AssessmentResult extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    public function program(): HasOne
+    {
+        return $this->hasOne(Program::class, 'assessment_id');
+    }
+
     public function isCompleted(): bool
     {
         return $this->status === 'completed';
@@ -78,6 +84,12 @@ class AssessmentResult extends Model
             'risk_details' => $result['items'],
             'stratified_at' => now(),
         ]);
+
+        // A reassessment that ends in Risiko Tinggi stops any self-exercise program still running.
+        if ($result['tier'] === RiskTier::High) {
+            Program::query()->where('patient_id', $this->patient_id)->current()->get()
+                ->each(fn (Program $p) => $p->end('Reassessment: risiko tinggi'));
+        }
 
         if ($result['emergencies'] !== []) {
             $check = RedFlagCheck::firstOrNew(['screening_id' => $this->screening_id]);

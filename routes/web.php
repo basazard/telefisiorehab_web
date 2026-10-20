@@ -39,6 +39,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Volt::route('assessment/result', 'pages.patient.assessment-result')->name('assessment.result');
                 Volt::route('risk-classification', 'pages.patient.risk-classification')->name('risk-classification');
                 Volt::route('intervention', 'pages.patient.intervention')->name('intervention');
+                Volt::route('evaluation', 'pages.patient.evaluation')->name('evaluation');
                 Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
                 Volt::route('program', 'pages.patient.program')->name('program');
                 Volt::route('history', 'pages.patient.history')->name('history');
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('role:therapist,clinic_admin,platform_admin')->group(function () {
         Volt::route('staff/red-flags', 'pages.therapist.red-flag-review')->name('staff.red-flags');
+        Volt::route('staff/consultations', 'pages.therapist.consultation-requests')->name('staff.consultations');
     });
 });
 

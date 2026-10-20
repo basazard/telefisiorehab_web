@@ -34,6 +34,12 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
    Assessment cut-offs, so no limitation = Risiko Rendah. Risiko Tinggi warns and continues (`needsSupervision()`).
    Emergencies (SpO2 < 90 %, wound infection) become a red-flag stop on the screening's `red_flag_checks` row.
    Page: `pages/patient/risk-classification`.
+6. Exercise / Telefisioterapi Recommendation (PRD 6): `pages/patient/intervention` routes by `tier` (Rendah = self management,
+   Sedang = terbimbing + monitored, Tinggi = consultation/referral). `Support\Onboarding\Programs::build()` generates the
+   program from `ExerciseLibrary` (seeded by slug) and REFUSES Risiko Tinggi and pediatric (safety block on the server).
+   `program` = log latihan, `evaluation` = monitoring ("ada perbaikan?": Ya = level + 1, Tidak = `needs_review`, paused),
+   `history`, `dashboard` = in-app reminders. Consultation/referral requests: `consultation_requests`, staff page
+   `staff.consultations`. A Risiko Tinggi reassessment ends the running program. No push/email reminders, no video call yet.
 
 ## Rules
 - Livewire/Volt pages keep their PHP block (layout, logic) at the top and the markup below the closing `?>`.
@@ -46,6 +52,8 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
 - Restyled Breeze pages: `Apply-AuthTemplates.ps1` + `auth-ui-templates/` (markup only). Check `/login`, `/register`, `/profile`.
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
   cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
-  and the risk bands and emergency rules (DRAFT, in `RiskStratification`).
+  and the risk bands and emergency rules (DRAFT, in `RiskStratification`), and the exercise library, doses, education
+  and the improvement rule (DRAFT, in `ExerciseLibrary` and `Intervention`).
 - Licences to check before launch: ODI, SPADI, Borg CR10.
-- Next module: "Rekomendasi Intervensi" (placeholder page, waiting for its PRD); it should read `tier` and `needsSupervision()`.
+- Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
+- Therapist/clinic dashboards (`therapist.dashboard`, `therapist.patients`, `clinic.*`) still have no pages.

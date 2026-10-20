@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ExerciseLog extends Model
 {
@@ -22,4 +23,14 @@ class ExerciseLog extends Model
         'effort',
         'notes',
     ];
+
+    protected function casts(): array
+    {
+        return ['performed_at' => 'datetime'];
+    }
+
+    public function programExercise(): BelongsTo
+    {
+        return $this->belongsTo(ProgramExercise::class);
+    }
 }

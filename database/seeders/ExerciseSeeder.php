@@ -2,16 +2,16 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Support\Onboarding\ExerciseLibrary;
 use Illuminate\Database\Seeder;
 
 class ExerciseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * The built-in exercise library (global, clinic_id null). Safe to run again: it upserts by slug.
      */
     public function run(): void
     {
-        //
+        ExerciseLibrary::sync();
     }
 }

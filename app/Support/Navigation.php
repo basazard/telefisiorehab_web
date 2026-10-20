@@ -19,14 +19,17 @@ class Navigation
                 ['label' => 'Overview',   'route' => 'therapist.dashboard',  'icon' => 'layout-dashboard'],
                 ['label' => 'Patients',   'route' => 'therapist.patients',   'icon' => 'users'],
                 ['label' => 'Red flags',  'route' => 'staff.red-flags',  'icon' => 'shield-alert'],
+                ['label' => 'Konsultasi', 'route' => 'staff.consultations', 'icon' => 'message-square'],
             ],
             Role::PlatformAdmin => [
                 ['label' => 'Red flags', 'route' => 'staff.red-flags', 'icon' => 'shield-alert'],
+                ['label' => 'Konsultasi', 'route' => 'staff.consultations', 'icon' => 'message-square'],
             ],
             default => [
                 ['label' => 'Clinic',     'route' => 'clinic.dashboard',     'icon' => 'building-2'],
                 ['label' => 'Patients',   'route' => 'therapist.patients',   'icon' => 'users'],
                 ['label' => 'Red flags',  'route' => 'staff.red-flags',  'icon' => 'shield-alert'],
+                ['label' => 'Konsultasi', 'route' => 'staff.consultations', 'icon' => 'message-square'],
                 ['label' => 'Team',       'route' => 'clinic.team',          'icon' => 'user-cog'],
             ],
         };

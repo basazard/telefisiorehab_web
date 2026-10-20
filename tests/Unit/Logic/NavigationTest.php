@@ -22,7 +22,7 @@ it('shows patients their own pages only', function () {
 });
 
 it('shows therapists their patients and the red-flag list', function () {
-    expect(routes(Role::Therapist))->toBe(['therapist.dashboard', 'therapist.patients', 'staff.red-flags']);
+    expect(routes(Role::Therapist))->toBe(['therapist.dashboard', 'therapist.patients', 'staff.red-flags', 'staff.consultations']);
 });
 
 it('shows clinic admins the clinic pages and the red-flag list', function () {
@@ -34,9 +34,9 @@ it('shows clinic admins the clinic pages and the red-flag list', function () {
 });
 
 it('shows platform admins the red-flag list', function () {
-    expect(routes(Role::PlatformAdmin))->toBe(['staff.red-flags']);
+    expect(routes(Role::PlatformAdmin))->toBe(['staff.red-flags', 'staff.consultations']);
 });
 
 it('never shows patients a staff page', function () {
-    expect(routes(Role::Patient))->not->toContain('staff.red-flags');
+    expect(routes(Role::Patient))->not->toContain('staff.red-flags')->not->toContain('staff.consultations');
 });

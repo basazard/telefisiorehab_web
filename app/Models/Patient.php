@@ -86,6 +86,32 @@ class Patient extends Model
         return $this->hasMany(AssessmentResult::class);
     }
 
+    public function programs(): HasMany
+    {
+        return $this->hasMany(Program::class);
+    }
+
+    /** Active, or paused for reassessment. */
+    public function currentProgram(): ?Program
+    {
+        return $this->programs()->current()->latest('id')->first();
+    }
+
+    public function exerciseLogs(): HasMany
+    {
+        return $this->hasMany(ExerciseLog::class);
+    }
+
+    public function evaluations(): HasMany
+    {
+        return $this->hasMany(ProgramEvaluation::class);
+    }
+
+    public function consultationRequests(): HasMany
+    {
+        return $this->hasMany(ConsultationRequest::class);
+    }
+
     public function redFlagChecks(): HasMany
     {
         return $this->hasMany(RedFlagCheck::class);
