@@ -121,7 +121,10 @@ new #[Layout('layouts.onboarding')] class extends Component {
             'completed_at' => now(),
         ]);
 
-        $this->redirectRoute('patient.assessment.result', navigate: true);
+        // Scoring & Risk Stratification runs right away; an emergency stops the program like a red flag.
+        $assessment->refresh()->stratify();
+
+        $this->redirectRoute(auth()->user()->patient->isRedFlagLocked() ? 'patient.red-flag.stop' : 'patient.assessment.result', navigate: true);
     }
 
     private function messages(): array

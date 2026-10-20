@@ -26,7 +26,10 @@ new #[Layout('layouts.onboarding')] class extends Component {
     @if ($a = $this->assessment)
     <div class="flex flex-wrap items-end justify-between gap-3">
         <x-page-header title="Hasil Clinical Assessment" :subtitle="'Domain '.$a->domain->label().' · '.$a->completed_at->translatedFormat('d M Y')" />
-        <x-ui.badge variant="secondary"><x-lucide-circle-check class="mr-1 size-3.5" /> Selesai</x-ui.badge>
+        <div class="flex gap-2">
+            @if ($a->tier) <x-ui.badge :variant="$a->tier->badge()">{{ $a->tier->label() }}</x-ui.badge> @endif
+            <x-ui.badge variant="secondary"><x-lucide-circle-check class="mr-1 size-3.5" /> Selesai</x-ui.badge>
+        </div>
     </div>
 
     @foreach ($a->warnings ?? [] as $warning)

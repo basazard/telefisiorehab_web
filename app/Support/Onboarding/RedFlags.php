@@ -34,6 +34,9 @@ final class RedFlags
     /** Flags raised by the system, not asked as questions. */
     public const AUTO = [
         'pain_score_high' => 'Skor nyeri sangat tinggi (' . self::PAIN_STOP_THRESHOLD . '–10 dari 10)',
+        // raised by Risk Stratification from the Clinical Assessment answers ("Eskalasi Gawat Darurat")
+        'spo2_critical' => 'Saturasi oksigen (SpO2) di bawah 90%',
+        'wound_infection' => 'Tanda infeksi pada luka operasi / cedera',
     ];
 
     /** Items that are in the PRD; everything else was carried over from the legacy app. */

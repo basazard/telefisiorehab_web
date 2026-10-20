@@ -1,12 +1,14 @@
 <?php
 
 use App\Enums\Role;
+use App\Models\AssessmentResult;
 use App\Models\Clinic;
 use App\Models\Patient;
 use App\Models\RedFlagCheck;
 use App\Models\Screening;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Livewire\Volt\Volt;
 
 /*
  | Shared factories for the flow tests. Records are created with forceCreate so the tests do not depend on
@@ -86,5 +88,30 @@ if (! function_exists('lockPatient')) {
             'cleared' => false,
             'stopped_at' => now(),
         ]);
+    }
+}
+
+if (! function_exists('completedScreening')) {
+    /** A finished screening (no red flag), ready for the Clinical Assessment. */
+    function completedScreening(Patient $patient, array $complaints = ['pain'], array $regions = ['Left Knee'], int $maxPain = 2): Screening
+    {
+        return makeScreening($patient, [
+            'main_complaints' => ['keys' => $complaints, 'other' => null],
+            'regions' => $regions,
+            'pain_levels' => $regions ? array_fill_keys($regions, $maxPain) : ['overall' => $maxPain],
+            'max_pain' => $maxPain,
+            'status' => 'completed',
+            'completed_at' => now(),
+        ]);
+    }
+}
+
+if (! function_exists('startAssessment')) {
+    /** Starts the Clinical Assessment from the domain page, as the signed-in patient. */
+    function startAssessment(): AssessmentResult
+    {
+        Volt::test('pages.patient.domain')->call('start')->assertRedirect(route('patient.assessment'));
+
+        return AssessmentResult::query()->latest('id')->firstOrFail();
     }
 }

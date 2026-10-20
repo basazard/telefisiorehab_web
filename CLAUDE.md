@@ -29,6 +29,11 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
    the self-report instruments (`Support\Onboarding\Instruments`), `assessment-result` shows the Ya/Tidak branch.
    Clinician-only tests (BBS, MMT, MAS, 6MWT, GMFM, Denver II/KPSP, MMSE, FMS) are listed, not filled yet.
    The legacy `Assessment::pickDomain/score` and `Questionnaires::TIERS/LEFS_*` are unused.
+5. Scoring & Risk Stratification (PRD 5): runs on the server when the assessment is finished (`AssessmentResult::stratify()`,
+   bands in `Support\Onboarding\RiskStratification`). Overall `tier` = highest band; "Sedang" starts at the Clinical
+   Assessment cut-offs, so no limitation = Risiko Rendah. Risiko Tinggi warns and continues (`needsSupervision()`).
+   Emergencies (SpO2 < 90 %, wound infection) become a red-flag stop on the screening's `red_flag_checks` row.
+   Page: `pages/patient/risk-classification`.
 
 ## Rules
 - Livewire/Volt pages keep their PHP block (layout, logic) at the top and the markup below the closing `?>`.
@@ -40,6 +45,7 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
 ## Open items
 - Restyled Breeze pages: `Apply-AuthTemplates.ps1` + `auth-ui-templates/` (markup only). Check `/login`, `/register`, `/profile`.
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
-  cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`).
+  cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
+  and the risk bands and emergency rules (DRAFT, in `RiskStratification`).
 - Licences to check before launch: ODI, SPADI, Borg CR10.
-- Next modules: "Klasifikasi Risiko" and "Rekomendasi Intervensi" (placeholder pages, waiting for their PRDs).
+- Next module: "Rekomendasi Intervensi" (placeholder page, waiting for its PRD); it should read `tier` and `needsSupervision()`.

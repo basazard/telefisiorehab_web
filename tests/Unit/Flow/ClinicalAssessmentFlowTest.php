@@ -19,25 +19,6 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-function completedScreening($patient, array $complaints = ['pain'], array $regions = ['Left Knee'], int $maxPain = 2)
-{
-    return makeScreening($patient, [
-        'main_complaints' => ['keys' => $complaints, 'other' => null],
-        'regions' => $regions,
-        'pain_levels' => $regions ? array_fill_keys($regions, $maxPain) : ['overall' => $maxPain],
-        'max_pain' => $maxPain,
-        'status' => 'completed',
-        'completed_at' => now(),
-    ]);
-}
-
-function startAssessment(): AssessmentResult
-{
-    Volt::test('pages.patient.domain')->call('start')->assertRedirect(route('patient.assessment'));
-
-    return AssessmentResult::query()->latest('id')->firstOrFail();
-}
-
 // ---------------------------------------------------------------- domain identification
 
 it('sends the patient back to the screening when none is completed', function () {
