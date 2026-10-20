@@ -71,17 +71,9 @@ new class extends Component {
     {
         $program = $this->program;
         abort_unless($program, 404);
-        $patient = auth()->user()->patient;
 
-        if (! $patient->consultationRequests()->where('type', 'teleconsultation')->where('status', 'open')->exists()) {
-            $patient->consultationRequests()->create([
-                'clinic_id' => $patient->clinic_id,
-                'assessment_id' => $program->assessment_id,
-                'type' => 'teleconsultation',
-                'reason' => 'Konsultasi ulang: evaluasi program menunjukkan tidak ada perbaikan.',
-                'status' => 'open',
-            ]);
-        }
+        auth()->user()->patient->requestConsultation('teleconsultation', $program->assessment_id,
+            'Konsultasi ulang: monitoring menunjukkan belum ada perbaikan.');
 
         $this->dispatch('toast', message: 'Permintaan konsultasi ulang terkirim.', type: 'success');
     }
@@ -120,8 +112,8 @@ new class extends Component {
 
         @if (! $program->isActive())
             <div role="alert" class="rounded-2xl border-2 border-warning/60 bg-warning/10 p-5 sm:p-6">
-                <p class="flex items-center gap-2 font-semibold"><x-lucide-refresh-cw class="size-5" /> Evaluasi: belum ada perbaikan</p>
-                <p class="mt-1 text-sm">Program dijeda. Lakukan evaluasi ulang kondisi agar program bisa dimodifikasi, dan pertimbangkan konsultasi atau rujukan medis.</p>
+                <p class="flex items-center gap-2 font-semibold"><x-lucide-refresh-cw class="size-5" /> Monitoring: belum ada perbaikan</p>
+                <p class="mt-1 text-sm">Program dijeda. Lakukan reassessment agar program bisa dimodifikasi, dan pertimbangkan konsultasi atau rujukan medis.</p>
                 <div class="mt-4 flex flex-wrap gap-3">
                     <a href="{{ route('patient.screening') }}" wire:navigate class="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground">Mulai reassessment</a>
                     <button type="button" wire:click="requestReconsultation" class="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-2.5 text-sm font-medium hover:bg-secondary">
@@ -132,14 +124,14 @@ new class extends Component {
         @else
             <div class="grid gap-4 sm:grid-cols-3">
                 <x-stat label="Latihan hari ini" :value="$done.'/'.$total" :sub="$done === $total ? 'Semua selesai' : 'Ayo lanjutkan'" />
-                <x-stat label="Evaluasi berikutnya" :value="$program->next_evaluation_on?->translatedFormat('d M')" :sub="'setiap '.$program->evaluation_interval_weeks.' minggu'" />
-                <x-stat label="Jalur" :value="\App\Support\Onboarding\Intervention::pathway($program->assessment->tier)['label']" sub="dari klasifikasi risiko" />
+                <x-stat label="Monitoring berikutnya" :value="$program->next_evaluation_on?->translatedFormat('d M')" :sub="'setiap '.$program->evaluation_interval_weeks.' minggu'" />
+                <x-stat label="Jalur" :value="\App\Support\Onboarding\Intervention::pathwayLabel($program->pathway)" :sub="$program->isMaintenance() ? 'tujuan fisioterapi tercapai' : 'dari klasifikasi risiko'" />
             </div>
 
             @if ($program->isEvaluationDue())
                 <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-primary/40 bg-primary/5 p-4">
-                    <p class="flex items-center gap-2 text-sm font-medium"><x-lucide-calendar-check class="size-5 text-primary" /> Saatnya evaluasi program Anda.</p>
-                    <a href="{{ route('patient.evaluation') }}" wire:navigate class="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground">Isi evaluasi</a>
+                    <p class="flex items-center gap-2 text-sm font-medium"><x-lucide-calendar-check class="size-5 text-primary" /> Saatnya monitoring perkembangan Anda.</p>
+                    <a href="{{ route('patient.evaluation') }}" wire:navigate class="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground">Isi monitoring</a>
                 </div>
             @endif
 
@@ -187,7 +179,7 @@ new class extends Component {
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border bg-muted/40 p-4 text-sm">
                 <span>Ada keluhan baru atau kondisi memburuk?</span>
                 <div class="flex gap-3">
-                    <a href="{{ route('patient.evaluation') }}" wire:navigate class="font-medium text-primary underline">Evaluasi sekarang</a>
+                    <a href="{{ route('patient.evaluation') }}" wire:navigate class="font-medium text-primary underline">Monitoring sekarang</a>
                     <a href="{{ route('patient.screening') }}" wire:navigate class="font-medium text-primary underline">Reassessment</a>
                 </div>
             </div>

@@ -50,14 +50,14 @@ new class extends Component {
 
         @if ($program->isEvaluationDue())
             <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border-2 border-primary/40 bg-primary/5 p-4">
-                <p class="flex items-center gap-2 text-sm font-medium"><x-lucide-calendar-check class="size-5 text-primary" /> Pengingat: saatnya evaluasi program Anda.</p>
-                <a href="{{ route('patient.evaluation') }}" wire:navigate class="{{ $link }}">Isi evaluasi</a>
+                <p class="flex items-center gap-2 text-sm font-medium"><x-lucide-calendar-check class="size-5 text-primary" /> Pengingat: saatnya monitoring perkembangan Anda.</p>
+                <a href="{{ route('patient.evaluation') }}" wire:navigate class="{{ $link }}">Isi monitoring</a>
             </div>
         @endif
 
         <div class="grid gap-4 sm:grid-cols-3">
             <x-stat label="Latihan hari ini" :value="$this->doneToday.'/'.$total" :sub="$this->doneToday >= $total ? 'Semua selesai, bagus!' : 'Belum selesai'" />
-            <x-stat label="Evaluasi berikutnya" :value="$program->next_evaluation_on?->translatedFormat('d M')" sub="monitoring berkala" />
+            <x-stat label="Monitoring berikutnya" :value="$program->next_evaluation_on?->translatedFormat('d M')" sub="monitoring berkala" />
             <x-stat label="Kategori risiko" :value="str_replace('Risiko ', '', $program->assessment?->tier?->label() ?? '-')" sub="dari assessment terakhir" />
         </div>
 

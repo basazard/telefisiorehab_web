@@ -55,21 +55,11 @@ new #[Layout('layouts.onboarding')] class extends Component {
         ]);
         validator(['type' => $type], ['type' => ['required', Rule::in(array_keys(ConsultationRequest::TYPES))]])->validate();
 
-        $patient = auth()->user()->patient;
-
-        if ($patient->consultationRequests()->where('type', $type)->where('status', 'open')->exists()) {
+        if (! auth()->user()->patient->requestConsultation($type, $this->assessment?->id, $this->reason)) {
             $this->dispatch('toast', message: 'Permintaan Anda masih diproses.');
 
             return;
         }
-
-        $patient->consultationRequests()->create([
-            'clinic_id' => $patient->clinic_id,
-            'assessment_id' => $this->assessment?->id,
-            'type' => $type,
-            'reason' => $this->reason !== '' ? $this->reason : null,
-            'status' => 'open',
-        ]);
 
         $this->reason = '';
         unset($this->requests);

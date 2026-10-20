@@ -37,9 +37,14 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
 6. Exercise / Telefisioterapi Recommendation (PRD 6): `pages/patient/intervention` routes by `tier` (Rendah = self management,
    Sedang = terbimbing + monitored, Tinggi = consultation/referral). `Support\Onboarding\Programs::build()` generates the
    program from `ExerciseLibrary` (seeded by slug) and REFUSES Risiko Tinggi and pediatric (safety block on the server).
-   `program` = log latihan, `evaluation` = monitoring ("ada perbaikan?": Ya = level + 1, Tidak = `needs_review`, paused),
-   `history`, `dashboard` = in-app reminders. Consultation/referral requests: `consultation_requests`, staff page
+   `program` = log latihan, `history`, `dashboard` = in-app reminders. Consultation/referral requests: `consultation_requests`, staff page
    `staff.consultations`. A Risiko Tinggi reassessment ends the running program. No push/email reminders, no video call yet.
+7. Monitoring & Reassessment (PRD 7): `pages/patient/evaluation` (route `patient.evaluation`) re-runs the baseline
+   assessment's instruments (shared `x-instrument-fields`) + NRS, global change, new complaint, side effects, barriers.
+   `Support\Onboarding\Monitoring` compares with the baseline (MCID per instrument) and decides: progress (level + 1 and
+   a variation), modify (adherence first, else lighter dose), reassess (worse, or 4+ weeks without improvement: paused),
+   referral (drastic, emergencies escalate to a red-flag stop), maintenance (goal: Risiko Rendah, NRS <= 2, nothing worse:
+   program ends, `Programs::buildMaintenance()`). Photo/video uploads are skipped for now.
 
 ## Rules
 - Livewire/Volt pages keep their PHP block (layout, logic) at the top and the markup below the closing `?>`.
@@ -53,7 +58,7 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
   cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
   and the risk bands and emergency rules (DRAFT, in `RiskStratification`), and the exercise library, doses, education
-  and the improvement rule (DRAFT, in `ExerciseLibrary` and `Intervention`).
+  (DRAFT, in `ExerciseLibrary` and `Intervention`), and the MCIDs, reassessment period and goal rule (DRAFT, in `Monitoring`).
 - Licences to check before launch: ODI, SPADI, Borg CR10.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Therapist/clinic dashboards (`therapist.dashboard`, `therapist.patients`, `clinic.*`) still have no pages.

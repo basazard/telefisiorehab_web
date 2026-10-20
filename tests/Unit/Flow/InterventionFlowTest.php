@@ -24,23 +24,6 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-/** A completed, stratified assessment with the given category. */
-function stratified(RiskTier $tier, string $domain = 'musculoskeletal', array $regions = ['Left Knee'], int $pain = 2): AssessmentResult
-{
-    $screening = completedScreening(test()->patient, regions: $regions, maxPain: $pain);
-
-    return AssessmentResult::forceCreate([
-        'clinic_id' => test()->patient->clinic_id, 'screening_id' => $screening->id, 'patient_id' => test()->patient->id,
-        'answers' => [], 'pain' => $pain, 'domain' => $domain, 'instruments' => [], 'status' => 'completed',
-        'completed_at' => now(), 'tier' => $tier->value, 'risk_details' => [], 'stratified_at' => now(),
-    ]);
-}
-
-function evaluationAnswers(array $o = []): array
-{
-    return $o + ['pain' => 2, 'function' => 7, 'mobility' => 7, 'global_change' => 'better', 'new_complaint' => false];
-}
-
 // ---------------------------------------------------------------- accurate path routing
 
 it('gives Risiko Rendah a self-management program', function () {
@@ -151,65 +134,6 @@ it('does not log exercises of a paused program', function () {
         ->assertForbidden();
 });
 
-// ---------------------------------------------------------------- monitoring & evaluation
-
-it('reminds the patient when an evaluation is due', function () {
-    $program = Programs::build(stratified(RiskTier::Low));
-    $this->get(route('patient.dashboard'))->assertOk()->assertDontSee('saatnya evaluasi');
-
-    $program->update(['next_evaluation_on' => today()]);
-    $this->get(route('patient.dashboard'))->assertSee('saatnya evaluasi program Anda');
-});
-
-it('continues and raises the intensity when there is improvement', function () {
-    $program = Programs::build(stratified(RiskTier::Low, pain: 5));
-    $item = $program->items->first(fn ($i) => $i->hold_seconds === null && $i->minutes === null);   // a repetition exercise
-    $reps = $item->reps;
-
-    Volt::test('pages.patient.evaluation')
-        ->call('choose', 'pain', 2)->call('choose', 'function', 7)->call('choose', 'mobility', 8)
-        ->call('choose', 'globalChange', 'better')->call('choose', 'newComplaint', 'no')
-        ->call('submit')
-        ->assertHasNoErrors()
-        ->assertSee('Ya, ada perbaikan');
-
-    $program->refresh();
-    expect($program->status)->toBe(ProgramStatus::Active)
-        ->and($program->intensity_level)->toBe(2)
-        ->and($item->refresh()->reps)->toBe($reps + 2)
-        ->and($program->evaluations()->sole()->improved)->toBeTrue();
-});
-
-it('pauses the program and offers reassessment when there is no improvement', function () {
-    $program = Programs::build(stratified(RiskTier::Low, pain: 3));
-
-    Programs::evaluate($program, evaluationAnswers(['global_change' => 'worse']));
-
-    expect($program->refresh()->status)->toBe(ProgramStatus::NeedsReview);
-    Volt::test('pages.patient.program')
-        ->assertSee('Mulai reassessment')
-        ->call('requestReconsultation');
-    expect(ConsultationRequest::sole()->type)->toBe('teleconsultation');
-    $this->get(route('patient.evaluation'))->assertRedirect(route('patient.program'));
-});
-
-it('validates the evaluation questionnaire', function () {
-    Programs::build(stratified(RiskTier::Low));
-
-    Volt::test('pages.patient.evaluation')->call('submit')->assertHasErrors(['pain', 'function', 'mobility', 'globalChange', 'newComplaint']);
-});
-
-it('stores adherence from the exercise log', function () {
-    $program = Programs::build(stratified(RiskTier::Low));
-    $program->update(['starts_on' => today()->subDays(3)]);
-    $item = $program->items->first();
-    foreach ([0, 2] as $daysAgo) {
-        ExerciseLog::forceCreate(['patient_id' => $this->patient->id, 'program_exercise_id' => $item->id, 'performed_at' => now()->subDays($daysAgo)]);
-    }
-
-    expect(Programs::evaluate($program->refresh(), evaluationAnswers())->adherence)->toBe(50);   // 2 of 4 days
-});
-
 it('replaces the program after a new assessment, and stops it on Risiko Tinggi', function () {
     $first = Programs::build(stratified(RiskTier::Low));
     $second = Programs::build(stratified(RiskTier::Moderate));
@@ -264,7 +188,7 @@ it('blocks the new patient pages while a red-flag stop is active', function () {
 
 it('renders the history of logs, evaluations and assessments', function () {
     $program = Programs::build(stratified(RiskTier::Low));
-    Programs::evaluate($program, evaluationAnswers());
+    Programs::monitor($program, monitoringGeneral(), []);
 
-    $this->get(route('patient.history'))->assertOk()->assertSee('Ada perbaikan')->assertSee('Risiko Rendah');
+    $this->get(route('patient.history'))->assertOk()->assertSee('Risiko Rendah')->assertSee('Monitoring');
 });

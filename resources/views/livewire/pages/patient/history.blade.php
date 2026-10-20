@@ -25,16 +25,16 @@ new class extends Component {
 }; ?>
 
 <div class="space-y-6">
-    <x-page-header title="Riwayat" subtitle="Assessment, evaluasi, dan log latihan Anda." />
+    <x-page-header title="Riwayat" subtitle="Assessment, monitoring, dan log latihan Anda." />
 
-    <x-panel title="Evaluasi program">
+    <x-panel title="Monitoring">
         @forelse ($this->evaluations as $e)
             <div class="flex flex-wrap items-center justify-between gap-3 border-b border-border py-3 text-sm last:border-0">
-                <span>{{ $e->created_at->translatedFormat('d M Y') }} · nyeri {{ $e->pain }}/10 · fungsi {{ $e->function }}/10 · kepatuhan {{ $e->adherence }}%</span>
-                <x-ui.badge :variant="$e->improved ? 'secondary' : 'outline'">{{ $e->improved ? 'Ada perbaikan' : 'Belum ada perbaikan' }}</x-ui.badge>
+                <span>{{ $e->created_at->translatedFormat('d M Y') }} · nyeri {{ $e->pain }}/10 · kepatuhan {{ $e->adherence }}%@if ($e->goal_achieved) · tujuan tercapai @endif</span>
+                <x-ui.badge :variant="$e->improved ? 'secondary' : 'outline'">{{ $e->outcomeLabel() }}</x-ui.badge>
             </div>
         @empty
-            <p class="text-sm text-muted-foreground">Belum ada evaluasi.</p>
+            <p class="text-sm text-muted-foreground">Belum ada monitoring.</p>
         @endforelse
     </x-panel>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\RiskTier;
 use App\Enums\Role;
 use App\Models\AssessmentResult;
 use App\Models\Clinic;
@@ -113,5 +114,31 @@ if (! function_exists('startAssessment')) {
         Volt::test('pages.patient.domain')->call('start')->assertRedirect(route('patient.assessment'));
 
         return AssessmentResult::query()->latest('id')->firstOrFail();
+    }
+}
+
+if (! function_exists('stratified')) {
+    /**
+     * A completed, stratified assessment of the current test's patient (test()->patient).
+     * $answers are the baseline answers of $instruments (used by Monitoring).
+     */
+    function stratified(RiskTier $tier, string $domain = 'musculoskeletal', array $regions = ['Left Knee'], int $pain = 2,
+        array $instruments = [], array $answers = []): AssessmentResult
+    {
+        $screening = completedScreening(test()->patient, regions: $regions, maxPain: $pain);
+
+        return AssessmentResult::forceCreate([
+            'clinic_id' => test()->patient->clinic_id, 'screening_id' => $screening->id, 'patient_id' => test()->patient->id,
+            'answers' => $answers, 'pain' => $pain, 'domain' => $domain, 'instruments' => $instruments, 'status' => 'completed',
+            'completed_at' => now(), 'tier' => $tier->value, 'risk_details' => [], 'stratified_at' => now(),
+        ]);
+    }
+}
+
+if (! function_exists('monitoringGeneral')) {
+    /** The general part of a monitoring entry (Programs::monitor). */
+    function monitoringGeneral(array $o = []): array
+    {
+        return $o + ['pain' => 2, 'global_change' => 'better', 'new_complaint' => false, 'side_effects' => null, 'barriers' => []];
     }
 }

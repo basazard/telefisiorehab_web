@@ -50,9 +50,10 @@ class AssessmentResult extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    /** The program recommended from this assessment (not the maintenance program that may follow it). */
     public function program(): HasOne
     {
-        return $this->hasOne(Program::class, 'assessment_id');
+        return $this->hasOne(Program::class, 'assessment_id')->where('pathway', '!=', Program::MAINTENANCE);
     }
 
     public function isCompleted(): bool
@@ -92,18 +93,29 @@ class AssessmentResult extends Model
         }
 
         if ($result['emergencies'] !== []) {
-            $check = RedFlagCheck::firstOrNew(['screening_id' => $this->screening_id]);
-            $check->fill([
-                'clinic_id' => $this->clinic_id,
-                'patient_id' => $this->patient_id,
-                'answers' => $check->answers ?? [],
-                'flagged' => array_values(array_unique([...($check->flagged ?? []), ...$result['emergencies']])),
-                'cleared' => false,
-                'stopped_at' => now(),
-                'unlocked_at' => null,
-                'unlocked_by' => null,
-                'unlock_note' => null,
-            ])->save();
+            $this->escalate($result['emergencies']);
         }
+    }
+
+    /**
+     * "Eskalasi Gawat Darurat": records the emergency on the screening's red-flag check as a stop.
+     * Used by Risk Stratification and by Monitoring.
+     *
+     * @param string[] $emergencies RedFlags::AUTO keys
+     */
+    public function escalate(array $emergencies): void
+    {
+        $check = RedFlagCheck::firstOrNew(['screening_id' => $this->screening_id]);
+        $check->fill([
+            'clinic_id' => $this->clinic_id,
+            'patient_id' => $this->patient_id,
+            'answers' => $check->answers ?? [],
+            'flagged' => array_values(array_unique([...($check->flagged ?? []), ...$emergencies])),
+            'cleared' => false,
+            'stopped_at' => now(),
+            'unlocked_at' => null,
+            'unlocked_by' => null,
+            'unlock_note' => null,
+        ])->save();
     }
 }

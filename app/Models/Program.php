@@ -16,6 +16,9 @@ class Program extends Model
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
     use HasFactory, BelongsToClinic;
 
+    /** pathway of the program that follows once the physiotherapy goal is achieved */
+    public const MAINTENANCE = 'maintenance';
+
     protected $fillable = [
         'clinic_id', 'patient_id', 'created_by', 'title', 'status', 'starts_on', 'ends_on',
         'assessment_id', 'pathway', 'needs_monitoring', 'intensity_level', 'evaluation_interval_weeks',
@@ -68,6 +71,11 @@ class Program extends Model
     public function isActive(): bool
     {
         return $this->status === ProgramStatus::Active;
+    }
+
+    public function isMaintenance(): bool
+    {
+        return $this->pathway === self::MAINTENANCE;
     }
 
     public function isEvaluationDue(): bool

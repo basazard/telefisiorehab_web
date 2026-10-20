@@ -76,9 +76,35 @@ final class Intervention
         ],
     ];
 
+    /** Maintenance Program (Monitoring & Reassessment PRD): general fitness once the physiotherapy goal is achieved. */
+    public const MAINTENANCE = [
+        'key' => 'maintenance',
+        'label' => 'Maintenance Program',
+        'approach' => 'Program pemeliharaan kondisi dan kebugaran secara mandiri.',
+        'weeks' => 4,
+        'level' => 2,
+    ];
+
     public static function pathway(RiskTier $tier): array
     {
         return self::PATHWAYS[$tier->value];
+    }
+
+    public static function pathwayLabel(?string $key): string
+    {
+        foreach ([...array_values(self::PATHWAYS), self::MAINTENANCE] as $p) {
+            if ($p['key'] === $key) {
+                return $p['label'];
+            }
+        }
+
+        return '-';
+    }
+
+    /** The dose table a program uses: guided programs dose as Risiko Sedang, all others as Risiko Rendah. */
+    public static function doseTier(?string $pathway): RiskTier
+    {
+        return $pathway === 'guided' ? RiskTier::Moderate : RiskTier::Low;
     }
 
     /**

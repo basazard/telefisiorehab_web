@@ -112,6 +112,24 @@ class Patient extends Model
         return $this->hasMany(ConsultationRequest::class);
     }
 
+    /** Records a telekonsultasi / rujukan request unless one of that type is still open. Returns false when one was open. */
+    public function requestConsultation(string $type, ?int $assessmentId, ?string $reason = null): bool
+    {
+        if ($this->consultationRequests()->where('type', $type)->where('status', 'open')->exists()) {
+            return false;
+        }
+
+        $this->consultationRequests()->create([
+            'clinic_id' => $this->clinic_id,
+            'assessment_id' => $assessmentId,
+            'type' => $type,
+            'reason' => filled($reason) ? $reason : null,
+            'status' => 'open',
+        ]);
+
+        return true;
+    }
+
     public function redFlagChecks(): HasMany
     {
         return $this->hasMany(RedFlagCheck::class);
