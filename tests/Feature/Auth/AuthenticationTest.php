@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\Role;
 use App\Models\User;
 use Livewire\Volt\Volt;
+
+require_once __DIR__.'/../../Helpers.php';
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
@@ -44,15 +47,16 @@ test('users can not authenticate with invalid password', function () {
 });
 
 test('navigation menu can be rendered', function () {
-    $user = User::factory()->create();
+    // /dashboard redirects by role; a patient with a complete profile lands in the dashboard shell
+    $user = makeUser(Role::Patient, makeClinic());
+    makePatient($user);
 
     $this->actingAs($user);
 
-    $response = $this->get('/dashboard');
-
-    $response
+    $this->followingRedirects()
+        ->get('/dashboard')
         ->assertOk()
-        ->assertSeeVolt('layout.navigation');
+        ->assertSeeVolt('layout.logout-button');
 });
 
 test('dashboard sends a patient to their own home', function () {

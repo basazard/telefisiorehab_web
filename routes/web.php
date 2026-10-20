@@ -39,10 +39,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
                 Volt::route('program', 'pages.patient.program')->name('program');
                 Volt::route('history', 'pages.patient.history')->name('history');
             });
-
-            Volt::route('dashboard', 'pages.patient.dashboard')->name('dashboard');
-            Volt::route('program', 'pages.patient.program')->name('program');
-            Volt::route('history', 'pages.patient.history')->name('history');
         });
     });
 
