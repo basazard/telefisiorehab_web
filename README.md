@@ -39,7 +39,6 @@ npm run dev                     # Vite (CSS/JS with hot reload)
 ```
 
 Open http://localhost:8000/register and create an account. New accounts are patients and start with the profile wizard.
-(The seeder also creates `test@example.com`, but without a patient record; use a registered account instead.)
 
 Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_URL`.
 

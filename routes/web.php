@@ -6,19 +6,9 @@ use Livewire\Volt\Volt;
 
 Route::view('/', 'welcome');
 
-// Route::view('dashboard', 'dashboard')
-//     ->middleware(['auth', 'verified'])
-//     ->name('dashboard');
-
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
-
-// Route::middleware(['auth', 'verified'])->group(function () {
-//     Route::middleware('role:patient')->prefix('patient')->name('patient.')->group(/* ... */);
-//     Route::middleware('role:therapist,clinic_admin')->prefix('therapist')->name('therapist.')->group(/* ... */);
-//     Route::middleware('role:clinic_admin')->prefix('clinic')->name('clinic.')->group(/* ... */);
-// });
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
