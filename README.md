@@ -42,6 +42,21 @@ Open http://localhost:8000/register and create an account. New accounts are pati
 
 Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_URL`.
 
+## Email setup
+
+The app sends email for password reset ("Lupa kata sandi"). `.env.example` only has empty SMTP placeholders.
+
+1. Pick a provider: a transactional email service (for example Mailgun, Postmark, Brevo or Amazon SES) or the SMTP server
+   of your mail host. Get the SMTP host, port, username and password, and a sender address the provider allows.
+2. Fill `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` and `MAIL_FROM_ADDRESS` in your local `.env` only.
+   Never commit `.env` or put credentials in `.env.example`.
+3. Run `php artisan config:clear`.
+4. Test it: register an account with an inbox you can read, log out, open `/forgot-password`, enter that email and check
+   that the reset email arrives (also look in the spam folder).
+
+While developing without a provider, set `MAIL_MAILER=log`: emails are written to `storage/logs/laravel.log` instead of
+being sent. Tests always use `MAIL_MAILER=array` (see `phpunit.xml`), so they never send real email.
+
 ## Tests
 
 ```powershell
