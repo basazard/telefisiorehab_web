@@ -46,4 +46,16 @@ jobs:
 
       # Tests use SQLite in memory (phpunit.xml).
       - name: Run tests
-        run: php artisan test --compact
+        run: php artisan test --compact --log-junit junit.xml
+
+      # Lists each failing test as an annotation on the run page.
+      - name: Report failing tests
+        if: failure()
+        run: |
+          php -r '
+            $xml = @simplexml_load_file("junit.xml");
+            if (! $xml) { exit; }
+            foreach ($xml->xpath("//testcase[failure or error]") as $case) {
+                $why = (string) ($case->failure ?: $case->error);
+                echo "::error title=", $case["class"], "::", $case["name"], ": ", str_replace(["\r", "\n"], " ", substr($why, 0, 300)), PHP_EOL;
+            }'
