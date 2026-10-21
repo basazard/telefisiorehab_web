@@ -1,58 +1,72 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TeleFisioRehab
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Home-based physiotherapy web app. **Patients** complete a health profile and screening, get a physiotherapy domain and a
+risk category, and follow a personalised exercise program with regular monitoring. **Therapists** handle red-flag stops and
+consultation requests. **Clinics** are B2B partners whose staff only see their own patients.
 
-## About Laravel
+The UI is in Indonesian. Product requirements, as built, are in [prd/](prd/README.md).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- PHP **8.3** (do not use 8.4+ syntax) with the `mbstring`, `pdo_mysql`, `pdo_sqlite`, `sqlite3` and `fileinfo` extensions
+- Composer 2
+- Node.js 24 and npm
+- MySQL 8 (or MariaDB) for local development; tests use SQLite in memory
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Setup (Windows, PowerShell)
 
-## Learning Laravel
+```powershell
+git clone https://github.com/basazard/telefisiorehab_web.git
+cd telefisiorehab_web
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+Copy-Item .env.example .env
+php artisan key:generate
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Create an empty MySQL database (default name `telefisiorehab`), then set `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` in `.env`.
 
-## Contributing
+```powershell
+php artisan migrate --seed      # tables + the built-in exercise library
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Run the app in two terminals:
 
-## Code of Conduct
+```powershell
+php artisan serve               # http://localhost:8000
+npm run dev                     # Vite (CSS/JS with hot reload)
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Open http://localhost:8000/register and create an account. New accounts are patients and start with the profile wizard.
+(The seeder also creates `test@example.com`, but without a patient record; use a registered account instead.)
 
-## Security Vulnerabilities
+Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_URL`.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Tests
 
-## License
+```powershell
+php artisan test --compact
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Tests use SQLite in memory (see `phpunit.xml`), so they never touch your MySQL database. After changing Blade files, run
+`php artisan view:clear`.
+
+## Folder map
+
+| Path | What is there |
+| :-- | :-- |
+| `app/Support/Onboarding` | Clinical rules: screening, red flags, domain picking, instruments, risk bands, exercise library, monitoring |
+| `app/Models`, `app/Enums`, `app/Policies` | Data model, enums (roles, domains, risk tiers), access rules |
+| `resources/views/livewire/pages` | Pages (Livewire Volt): `patient/*`, `therapist/*`, `auth/*` |
+| `resources/views/components` | Shared Blade components (`x-ui.*`, `x-panel`, `x-instrument-fields`, …) |
+| `routes/web.php` | Routes and middleware (`role`, `profile.complete`, `redflag.clear`) |
+| `tests/Unit` | Pest tests: `Logic` (pure rules) and `Flow` (pages and access); helpers in `tests/Helpers.php` |
+| `prd/` | Product requirements per module |
+
+## Documents
+
+- [prd/README.md](prd/README.md): index of the patient-flow PRDs (profile to monitoring and maintenance), with the rules that
+  still need clinical sign-off
+- [prd/08-hardening.md](prd/08-hardening.md): foundation fixes in progress
+- [CLAUDE.md](CLAUDE.md) and [AGENTS.md](AGENTS.md): notes for coding agents

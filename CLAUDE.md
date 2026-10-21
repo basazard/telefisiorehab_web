@@ -18,7 +18,7 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   (`$patient->screenings()`), never `Screening::all()`.
 - Route names: `patient.*`, `therapist.*`, `clinic.*`, `staff.red-flags` (staff + platform admin).
 
-## Product flows (follow the PRDs in the project folder)
+## Product flows (PRDs as built: `prd/`; original PRDs: `../../Flow Sriyani/md/`)
 1. Profile wizard (`livewire/pages/patient/profile-setup`): date of birth (age is calculated), gender male/female, height/weight/BMI,
    occupation, activity hours, special conditions (pregnancy only for female), up to 3 goals.
 2. Initial Screening (`livewire/pages/patient/screening`): complaints, body map (35 regions), characteristics, red flags, special groups.
@@ -54,7 +54,11 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
 - This is health data: keep access checks (policies, clinic scope) and tests when changing related code.
 
 ## Open items
-- Restyled Breeze pages: `Apply-AuthTemplates.ps1` + `auth-ui-templates/` (markup only). Check `/login`, `/register`, `/profile`.
+- Hardening (`prd/08-hardening.md`): H1–H3 done (app timezone is now `Asia/Jakarta` via `APP_TIMEZONE`). Remaining: H4 leftovers,
+  H5 CI, H6 email setup; H7 email verification is blocked until the owner confirms a real email arrives; H8 is a report only.
+- Red-flag gaps vs PRD 3 (`prd/03-red-flag-screening.md`): "gangguan penglihatan mendadak" is missing, sudden numbness only
+  covers the saddle area, the PRD 3 disclaimer lines are not shown. Pregnancy has no screening or domain of its own.
+- `DatabaseSeeder` creates `test@example.com` without a patient record; patient pages need one.
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
   cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
   and the risk bands and emergency rules (DRAFT, in `RiskStratification`), and the exercise library, doses, education
