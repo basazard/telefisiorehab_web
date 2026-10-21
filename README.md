@@ -49,7 +49,8 @@ The app sends email for password reset ("Lupa kata sandi"). `.env.example` only 
 1. Pick a provider: a transactional email service (for example Mailgun, Postmark, Brevo or Amazon SES) or the SMTP server
    of your mail host. Get the SMTP host, port, username and password, and a sender address the provider allows.
 2. Fill `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` and `MAIL_FROM_ADDRESS` in your local `.env` only.
-   Never commit `.env` or put credentials in `.env.example`.
+   Never commit `.env` or put credentials in `.env.example`. For port 465 (SSL) set `MAIL_SCHEME=smtps`; for 587 leave
+   `MAIL_SCHEME=null` (STARTTLS is used automatically). This Laravel version ignores `MAIL_ENCRYPTION`.
 3. Run `php artisan config:clear`.
 4. Test it: register an account with an inbox you can read, log out, open `/forgot-password`, enter that email and check
    that the reset email arrives (also look in the spam folder).
