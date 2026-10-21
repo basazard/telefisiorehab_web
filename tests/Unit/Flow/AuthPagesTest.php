@@ -2,7 +2,9 @@
 
 use App\Enums\Role;
 use App\Models\User;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
@@ -97,6 +99,29 @@ it('still registers a new account as a patient', function () {
 
     expect($user)->not->toBeNull()->and($user->role)->toBe(Role::Patient);
     $this->assertAuthenticated();
+});
+
+it('sends a verification email when a new account registers', function () {
+    Notification::fake();
+
+    Volt::test('pages.auth.register')
+        ->set('name', 'Budi Santoso')
+        ->set('email', 'budi@example.com')
+        ->set('password', 'password')
+        ->set('password_confirmation', 'password')
+        ->call('register');
+
+    $user = User::where('email', 'budi@example.com')->first();
+
+    expect($user->hasVerifiedEmail())->toBeFalse();
+    Notification::assertSentTo($user, VerifyEmail::class);
+});
+
+it('sends an unverified patient to the verify-email page instead of the patient pages', function () {
+    $user = makeUser(attributes: ['email_verified_at' => null]);
+
+    $this->actingAs($user)->get(route('dashboard'))->assertRedirect(route('verification.notice'));
+    $this->actingAs($user)->get(route('patient.profile.setup'))->assertRedirect(route('verification.notice'));
 });
 
 it('validates the register form', function () {

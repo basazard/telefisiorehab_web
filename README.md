@@ -38,7 +38,8 @@ php artisan serve               # http://localhost:8000
 npm run dev                     # Vite (CSS/JS with hot reload)
 ```
 
-Open http://localhost:8000/register and create an account. New accounts are patients and start with the profile wizard.
+Open http://localhost:8000/register and create an account. New accounts are patients: they first confirm their email
+through the link that is sent to them (see [Email setup](#email-setup)), then start with the profile wizard.
 
 Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_URL`.
 
