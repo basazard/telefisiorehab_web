@@ -41,6 +41,29 @@ npm run dev                     # Vite (CSS/JS with hot reload)
 Open http://localhost:8000/register and create an account. New accounts are patients: they first confirm their email
 through the link that is sent to them (see [Email setup](#email-setup)), then start with the profile wizard.
 
+## Demo accounts
+
+For trying the staff side, load the demo data (never in production, the seeder refuses):
+
+```powershell
+php artisan db:seed --class=DemoSeeder
+```
+
+It can run again without making duplicates. Every demo account uses the password `password`.
+
+| Account | Role |
+| :-- | :-- |
+| `admin@demo.test` | Platform admin |
+| `admin.a@demo.test` | Clinic admin, Klinik Sehat Jakarta |
+| `ani.a@demo.test`, `budi.a@demo.test` | Therapists, Klinik Sehat Jakarta |
+| `admin.b@demo.test` | Clinic admin, Klinik Bugar Bandung |
+| `citra.b@demo.test` | Therapist, Klinik Bugar Bandung |
+| `pasien01.a@demo.test` … `pasien14.a@demo.test` | Patients of Klinik Sehat Jakarta, one per state of the patient journey (see `database/seeders/PatientSeeder.php`) |
+| `pasien01.b@demo.test` … `pasien03.b@demo.test` | Patients of Klinik Bugar Bandung |
+| `mandiri01@demo.test`, `mandiri02@demo.test` | Patients without a clinic |
+
+Dates are relative to the day of the first run.
+
 Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_URL`.
 
 ## Email setup

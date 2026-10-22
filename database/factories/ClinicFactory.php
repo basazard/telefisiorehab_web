@@ -18,7 +18,9 @@ class ClinicFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $name = 'Klinik '.fake()->unique()->city(),
+            'slug' => \Illuminate\Support\Str::slug($name),
+            'status' => 'active',
         ];
     }
 }

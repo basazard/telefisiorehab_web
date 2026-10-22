@@ -67,4 +67,7 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   (DRAFT, in `ExerciseLibrary` and `Intervention`), and the MCIDs, reassessment period and goal rule (DRAFT, in `Monitoring`).
 - Licences to check before launch: ODI, SPADI, Borg CR10.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
-- Therapist/clinic dashboards (`therapist.dashboard`, `therapist.patients`, `clinic.*`) still have no pages.
+- Staff side (`prd/09-therapist-clinic-side.md`): S1 done. `therapist.dashboard` and `therapist.patients` exist (rules in
+  `App\Support\Staff\Attention`, rows in `PatientOverview`, access in `PatientPolicy`; demo data: `DemoSeeder`).
+  Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `therapist.patients.show` (S2),
+  `clinic.dashboard` and `clinic.team` (S4) still have no pages. `Attention::NO_ACTIVITY_DAYS` (5) is DRAFT.

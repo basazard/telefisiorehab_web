@@ -5,13 +5,14 @@ namespace App\Models;
 use App\Enums\RiskTier;
 use App\Models\Concerns\BelongsToClinic;
 use App\Support\Onboarding\Monitoring;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /** One "Monitoring & Reassessment" entry of a program. `improved` = significant improvement vs the baseline. */
 class ProgramEvaluation extends Model
 {
-    use BelongsToClinic;
+    use HasFactory, BelongsToClinic;
 
     public const GLOBAL_CHANGE = ['better' => 'Lebih baik', 'same' => 'Sama saja', 'worse' => 'Lebih buruk'];
 

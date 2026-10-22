@@ -57,6 +57,12 @@ class Patient extends Model
     {
         return $this->belongsTo(User::class);
     }
+    /** The physiotherapist the patient is assigned to (null = unassigned). */
+    public function therapist(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'therapist_id');
+    }
+
     public function isProfileComplete(): bool
     {
         return $this->profile_completed_at !== null;
@@ -86,6 +92,12 @@ class Patient extends Model
         return $this->hasMany(AssessmentResult::class);
     }
 
+    /** The latest assessment with a risk category: the patient's current tier. */
+    public function latestRiskAssessment(): HasOne
+    {
+        return $this->hasOne(AssessmentResult::class)->ofMany(['id' => 'max'], fn ($query) => $query->whereNotNull('stratified_at'));
+    }
+
     public function programs(): HasMany
     {
         return $this->hasMany(Program::class);
@@ -105,6 +117,11 @@ class Patient extends Model
     public function evaluations(): HasMany
     {
         return $this->hasMany(ProgramEvaluation::class);
+    }
+
+    public function latestEvaluation(): HasOne
+    {
+        return $this->hasOne(ProgramEvaluation::class)->latestOfMany();
     }
 
     public function consultationRequests(): HasMany

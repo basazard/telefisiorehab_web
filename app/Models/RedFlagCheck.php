@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToClinic;
 use App\Support\Onboarding\RedFlags;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RedFlagCheck extends Model
 {
-    use BelongsToClinic;
+    use HasFactory, BelongsToClinic;
 
     protected $fillable = [
         'clinic_id', 'screening_id', 'patient_id', 'answers', 'other_text', 'flagged', 'cleared',

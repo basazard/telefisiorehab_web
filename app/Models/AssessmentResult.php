@@ -6,6 +6,7 @@ use App\Enums\PhysioDomain;
 use App\Enums\RiskTier;
 use App\Models\Concerns\BelongsToClinic;
 use App\Support\Onboarding\RiskStratification;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /** Table: assessments. (Named AssessmentResult to avoid clashing with the Support\Onboarding\Assessment scorer.) */
 class AssessmentResult extends Model
 {
-    use BelongsToClinic;
+    use HasFactory, BelongsToClinic;
 
     protected $table = 'assessments';
 

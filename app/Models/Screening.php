@@ -4,13 +4,14 @@ namespace App\Models;
 
 use App\Models\Concerns\BelongsToClinic;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Screening extends Model
 {
-    use BelongsToClinic;
+    use HasFactory, BelongsToClinic;
 
     protected $fillable = [
         'clinic_id', 'patient_id', 'main_complaints', 'regions', 'non_specific_location', 'pain_levels', 'max_pain',

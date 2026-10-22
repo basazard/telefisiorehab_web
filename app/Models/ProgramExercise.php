@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ProgramExercise extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['program_id', 'exercise_id', 'sets', 'reps', 'hold_seconds', 'minutes', 'sort_order'];
 
     public function program(): BelongsTo

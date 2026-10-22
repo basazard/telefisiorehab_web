@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToClinic;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /** Telekonsultasi / rujukan request from the Exercise Recommendation module, handled by clinic staff. */
 class ConsultationRequest extends Model
 {
-    use BelongsToClinic;
+    use HasFactory, BelongsToClinic;
 
     public const TYPES = [
         'teleconsultation' => 'Telekonsultasi dengan fisioterapis',

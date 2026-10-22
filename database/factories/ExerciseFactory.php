@@ -18,7 +18,12 @@ class ExerciseFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'clinic_id' => null,
+            'name' => fake()->unique()->words(3, true),
+            'body_area' => 'knee',
+            'type' => 'strengthening',
+            'dose_unit' => 'reps',
+            'instructions' => 'Lakukan perlahan dan terkontrol.',
         ];
     }
 }
