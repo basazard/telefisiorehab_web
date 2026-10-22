@@ -73,7 +73,7 @@ new class extends Component {
         @forelse ($this->attention->take(10) as $row)
             <div wire:key="att-{{ $row['id'] }}" class="flex flex-wrap items-start justify-between gap-3 border-b border-border py-3 last:border-0">
                 <div>
-                    <p class="font-medium">{{ $row['name'] }}</p>
+                    <a href="{{ route('therapist.patients.show', $row['id']) }}" wire:navigate class="font-medium hover:underline">{{ $row['name'] }}</a>
                     <p class="text-xs text-muted-foreground">
                         {{ $row['age'] !== null ? $row['age'].' th' : 'Usia -' }}
                         @if ($row['tier']) · {{ $row['tier']->label() }} @endif

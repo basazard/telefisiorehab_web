@@ -4,7 +4,10 @@ use App\Enums\RiskTier;
 use App\Enums\Role;
 use App\Models\AssessmentResult;
 use App\Models\Clinic;
+use App\Models\ExerciseLog;
 use App\Models\Patient;
+use App\Models\Program;
+use App\Models\ProgramExercise;
 use App\Models\RedFlagCheck;
 use App\Models\Screening;
 use App\Models\User;
@@ -140,5 +143,37 @@ if (! function_exists('monitoringGeneral')) {
     function monitoringGeneral(array $o = []): array
     {
         return $o + ['pain' => 2, 'global_change' => 'better', 'new_complaint' => false, 'side_effects' => null, 'barriers' => []];
+    }
+}
+
+if (! function_exists('staffPatient')) {
+    /** A patient of $clinic named $name, optionally assigned, with a stratified tier. */
+    function staffPatient(string $name, $clinic, $therapist = null, ?string $tier = null): Patient
+    {
+        $patient = makePatient(makeUser(clinic: $clinic, attributes: ['name' => $name]), ['therapist_id' => $therapist?->id]);
+
+        if ($tier) {
+            AssessmentResult::factory()->{$tier}()->create(['screening_id' => Screening::factory()->completed()->create(['patient_id' => $patient->id])]);
+        }
+
+        return $patient;
+    }
+}
+
+if (! function_exists('programWithLogs')) {
+    /** An active program with one exercise, logged on each of the given days before today. */
+    function programWithLogs(Patient $patient, string $pathway, int $startedDaysAgo, array $loggedDaysAgo): Program
+    {
+        $program = Program::factory()->create([
+            'patient_id' => $patient->id, 'pathway' => $pathway, 'starts_on' => today()->subDays($startedDaysAgo),
+            'next_evaluation_on' => today()->addDays(10),
+        ]);
+        $item = ProgramExercise::factory()->create(['program_id' => $program->id]);
+
+        foreach ($loggedDaysAgo as $days) {
+            ExerciseLog::factory()->create(['program_exercise_id' => $item->id, 'performed_at' => today()->subDays($days)->setTime(8, 0)]);
+        }
+
+        return $program;
     }
 }

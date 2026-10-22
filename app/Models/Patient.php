@@ -124,6 +124,12 @@ class Patient extends Model
         return $this->hasOne(ProgramEvaluation::class)->latestOfMany();
     }
 
+    /** Staff notes. Never load these on a patient page. */
+    public function staffNotes(): HasMany
+    {
+        return $this->hasMany(PatientNote::class);
+    }
+
     public function consultationRequests(): HasMany
     {
         return $this->hasMany(ConsultationRequest::class);

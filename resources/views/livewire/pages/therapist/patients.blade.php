@@ -6,6 +6,7 @@ use App\Models\Patient;
 use App\Models\User;
 use App\Support\Onboarding\Intervention;
 use App\Support\Staff\Attention;
+use App\Support\Staff\Audit;
 use App\Support\Staff\PatientOverview;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
@@ -118,6 +119,10 @@ new class extends Component {
         // atomic: only succeeds while nobody else has claimed the patient
         $claimed = Patient::query()->whereKey($patient->id)->whereNull('therapist_id')->update(['therapist_id' => auth()->id()]);
 
+        if ($claimed) {
+            Audit::record(auth()->user(), $patient, Audit::ASSIGNED);
+        }
+
         $this->refresh();
         $this->dispatch('toast', message: $claimed ? 'Pasien sekarang ditangani oleh Anda' : 'Pasien sudah diambil fisioterapis lain',
             type: $claimed ? 'success' : 'error');
@@ -137,6 +142,7 @@ new class extends Component {
         Gate::authorize('assign', [$patient, $therapist]);
 
         $patient->update(['therapist_id' => $therapist->id]);
+        Audit::record(auth()->user(), $patient, Audit::ASSIGNED);
 
         unset($this->assignTo[$patientId]);
         $this->refresh();
@@ -208,7 +214,13 @@ new class extends Component {
             <x-ui.table.body>
                 @forelse ($this->pageRows as $row)
                     <x-ui.table.row wire:key="p-{{ $row['id'] }}">
-                        <x-ui.table.cell class="font-medium">{{ $row['name'] }}</x-ui.table.cell>
+                        <x-ui.table.cell class="font-medium">
+                            @if ($row['limited'])
+                                {{ $row['name'] }}
+                            @else
+                                <a href="{{ route('therapist.patients.show', $row['id']) }}" wire:navigate class="hover:underline">{{ $row['name'] }}</a>
+                            @endif
+                        </x-ui.table.cell>
                         <x-ui.table.cell>{{ $row['age'] !== null ? $row['age'].' th' : '-' }}@if ($row['module']) · {{ $row['module'] }}@endif</x-ui.table.cell>
                         <x-ui.table.cell>
                             @if ($row['tier'])

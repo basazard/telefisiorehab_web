@@ -1,14 +1,11 @@
 <?php
 
 use App\Enums\Role;
-use App\Models\AssessmentResult;
-use App\Models\ExerciseLog;
-use App\Models\Patient;
-use App\Models\Program;
-use App\Models\ProgramExercise;
-use App\Models\Screening;
+use App\Models\PatientAccessLog;
 use App\Support\Staff\Attention;
+use App\Support\Staff\Audit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Livewire\Volt\Volt;
 use Tests\TestCase;
 
@@ -17,34 +14,6 @@ require_once __DIR__.'/../../Helpers.php';
 uses(TestCase::class, RefreshDatabase::class);
 
 // PRD 09 S1: the staff dashboard and patient list, claim and assign.
-
-/** A patient of $clinic named $name, optionally assigned, with a stratified tier. */
-function staffPatient(string $name, $clinic, $therapist = null, ?string $tier = null): Patient
-{
-    $patient = makePatient(makeUser(clinic: $clinic, attributes: ['name' => $name]), ['therapist_id' => $therapist?->id]);
-
-    if ($tier) {
-        AssessmentResult::factory()->{$tier}()->create(['screening_id' => Screening::factory()->completed()->create(['patient_id' => $patient->id])]);
-    }
-
-    return $patient;
-}
-
-/** An active program with one exercise, logged on each of the given days before today. */
-function programWithLogs(Patient $patient, string $pathway, int $startedDaysAgo, array $loggedDaysAgo): Program
-{
-    $program = Program::factory()->create([
-        'patient_id' => $patient->id, 'pathway' => $pathway, 'starts_on' => today()->subDays($startedDaysAgo),
-        'next_evaluation_on' => today()->addDays(10),
-    ]);
-    $item = ProgramExercise::factory()->create(['program_id' => $program->id]);
-
-    foreach ($loggedDaysAgo as $days) {
-        ExerciseLog::factory()->create(['program_exercise_id' => $item->id, 'performed_at' => today()->subDays($days)->setTime(8, 0)]);
-    }
-
-    return $program;
-}
 
 beforeEach(function () {
     $this->clinicA = makeClinic('Klinik A');
@@ -221,7 +190,8 @@ it('lets a therapist claim an unassigned patient of the clinic', function () {
 
     Volt::test('pages.therapist.patients')->call('claim', $this->unassigned->id)->assertOk();
 
-    expect($this->unassigned->fresh()->therapist_id)->toBe($this->ani->id);
+    expect($this->unassigned->fresh()->therapist_id)->toBe($this->ani->id)
+        ->and(PatientAccessLog::where(['patient_id' => $this->unassigned->id, 'user_id' => $this->ani->id, 'action' => Audit::ASSIGNED])->count())->toBe(1);
 });
 
 it('refuses to claim an assigned patient or one of another clinic', function () {
@@ -242,7 +212,16 @@ it('lets a clinic admin assign and reassign to a therapist of the clinic', funct
     Volt::test('pages.therapist.patients')->set("assignTo.{$this->budis->id}", (string) $this->ani->id)->call('assign', $this->budis->id);
 
     expect($this->unassigned->fresh()->therapist_id)->toBe($this->budi->id)
-        ->and($this->budis->fresh()->therapist_id)->toBe($this->ani->id);
+        ->and($this->budis->fresh()->therapist_id)->toBe($this->ani->id)
+        ->and(PatientAccessLog::where(['user_id' => $this->adminA->id, 'action' => Audit::ASSIGNED])->count())->toBe(2);
+});
+
+it('writes no audit row when an assignment is refused', function () {
+    $this->actingAs($this->adminA);
+
+    Volt::test('pages.therapist.patients')->set("assignTo.{$this->unassigned->id}", (string) $this->citra->id)->call('assign', $this->unassigned->id);
+
+    expect(PatientAccessLog::count())->toBe(0);
 });
 
 it('refuses to assign to a therapist of another clinic or to a non-therapist', function () {

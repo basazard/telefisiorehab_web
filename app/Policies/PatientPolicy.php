@@ -29,6 +29,12 @@ class PatientPolicy
         };
     }
 
+    /** Staff notes: whoever may open the detail. */
+    public function addNote(User $user, Patient $patient): bool
+    {
+        return $this->view($user, $patient);
+    }
+
     /** A therapist takes an unassigned patient of their own clinic. */
     public function claim(User $user, Patient $patient): bool
     {

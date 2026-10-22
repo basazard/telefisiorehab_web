@@ -67,7 +67,10 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   (DRAFT, in `ExerciseLibrary` and `Intervention`), and the MCIDs, reassessment period and goal rule (DRAFT, in `Monitoring`).
 - Licences to check before launch: ODI, SPADI, Borg CR10.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
-- Staff side (`prd/09-therapist-clinic-side.md`): S1 done. `therapist.dashboard` and `therapist.patients` exist (rules in
-  `App\Support\Staff\Attention`, rows in `PatientOverview`, access in `PatientPolicy`; demo data: `DemoSeeder`).
-  Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `therapist.patients.show` (S2),
-  `clinic.dashboard` and `clinic.team` (S4) still have no pages. `Attention::NO_ACTIVITY_DAYS` (5) is DRAFT.
+- Staff side (`prd/09-therapist-clinic-side.md`): S1 and S2 done. `therapist.dashboard`, `therapist.patients` and
+  `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,
+  access in `PatientPolicy`; demo data: `DemoSeeder`). Staff access is audited with `Audit::record()` (append-only
+  `patient_access_logs`); staff notes are `Patient::staffNotes()` (`patients.notes` is an old, unused column with the
+  same name, do not confuse them). Charts: Alpine `chart` component in `resources/js/app.js`.
+  Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `clinic.dashboard` and
+  `clinic.team` (S4) still have no pages. `Attention::NO_ACTIVITY_DAYS` (5) is DRAFT.
