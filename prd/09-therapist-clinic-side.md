@@ -2,7 +2,7 @@
 
 > **Status:** to build, in 4 slices · **Branches:** `feat/staff-s1` to `feat/staff-s4`, one pull request per slice
 > **Repository:** `basazard/telefisiorehab_web` · **Stack:** PHP 8.3.4 (no PHP 8.4+ syntax), Laravel 13.17, Livewire 3.6 + Volt, Pest 4, Chart.js 4 (already installed), Windows + PowerShell
-> **Read first:** `CLAUDE.md`, `docs/prd/03` (red flags), `05` (risk), `06` (program), `07` (monitoring). Do not change their clinical rules.
+> **Read first:** `CLAUDE.md`, `prd/03` (red flags), `05` (risk), `06` (program), `07` (monitoring). Do not change their clinical rules.
 
 ---
 

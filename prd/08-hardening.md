@@ -51,8 +51,8 @@ Run `php artisan test --compact` and report the counts. No code change.
 - Replace `README.md` (still Laravel's default) with: what TeleFisioRehab is (home physiotherapy, patients, therapists, clinics),
   requirements (PHP 8.3, Composer, Node, MySQL), Windows setup steps (`composer install`, `.env`, `key:generate`, `migrate --seed`,
   `npm install`, `npm run dev`), how to run tests, a short folder map (`app/Support/Onboarding`, `resources/views/livewire/pages`, `tests/Unit`),
-  and a link to `docs/prd`.
-- The owner puts the seven PRD files from `README.zip` into `docs/prd/`. Add this file as `docs/prd/08-hardening.md` and link both from the README.
+  and a link to `prd/`.
+- The owner puts the seven PRD files from `README.zip` into `prd/`. Add this file as `prd/08-hardening.md` and link both from the README.
 - Update the "Open items" section of `CLAUDE.md` to match the current state (remove what this PRD finishes).
 
 **Done when:** an engineer can set up the project from the README alone.
