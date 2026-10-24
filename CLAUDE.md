@@ -61,6 +61,12 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   text). It is skipped on CI (`CI` env set) and still fails locally until fixed.
 - Red-flag gaps vs PRD 3 (`prd/03-red-flag-screening.md`): "gangguan penglihatan mendadak" is missing, sudden numbness only
   covers the saddle area, the PRD 3 disclaimer lines are not shown. Pregnancy has no screening or domain of its own.
+- Clinical review (`prd/10-clinical-review-and-licences.md`): W1, W2 and the W6 licence register are done (tag
+  `clinical-w1-done`). Every clinical value, rule and safety text is in `prd/clinical/parameters.json` with an
+  `@clinical P-XXX` tag in the code; adding, moving or changing one means updating the register (tests check both ways).
+  Never change a clinical value or text except as a signed decision (W4). After a change, re-run
+  `php artisan clinical:review-sheet` and `clinical:vignettes` (a test fails if the files are out of date).
+  `php artisan clinical:status [--strict]` shows what is unreviewed. Licences: `prd/legal/instrument-licences.md`.
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
   cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
   and the risk bands and emergency rules (DRAFT, in `RiskStratification`), and the exercise library, doses, education
