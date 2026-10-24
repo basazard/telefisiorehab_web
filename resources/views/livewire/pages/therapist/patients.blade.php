@@ -149,10 +149,10 @@ new class extends Component {
         $this->dispatch('toast', message: 'Pasien ditugaskan ke '.$therapist->name, type: 'success');
     }
 
-    /** The id comes from the browser: load without the clinic scope so the policy answers (403, not 404). */
+    /** The id comes from the browser: another clinic's patient is a 404, the policy decides the rest (403). */
     private function findPatient(int $id): Patient
     {
-        return Patient::query()->withoutGlobalScope('clinic')->findOrFail($id);
+        return PatientOverview::inClinicOf(auth()->user())->findOrFail($id);
     }
 
     private function refresh(): void

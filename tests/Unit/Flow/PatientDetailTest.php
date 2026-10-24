@@ -50,11 +50,11 @@ it('refuses another therapist of the same clinic', function () {
     $this->actingAs($this->budi)->get(detailUrl($this->patient))->assertForbidden();
 });
 
-it('refuses staff of another clinic with a 403', function () {
+it('hides a patient of another clinic with a 404', function () {
     $clinicB = makeClinic('Klinik B');
 
-    $this->actingAs(makeUser(Role::Therapist, $clinicB))->get(detailUrl($this->patient))->assertForbidden();
-    $this->actingAs(makeUser(Role::ClinicAdmin, $clinicB))->get(detailUrl($this->patient))->assertForbidden();
+    $this->actingAs(makeUser(Role::Therapist, $clinicB))->get(detailUrl($this->patient))->assertNotFound();
+    $this->actingAs(makeUser(Role::ClinicAdmin, $clinicB))->get(detailUrl($this->patient))->assertNotFound();
 });
 
 it('refuses patients, also the patient themselves', function () {

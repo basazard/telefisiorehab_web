@@ -4,6 +4,7 @@ use App\Enums\Role;
 use App\Models\PatientAccessLog;
 use App\Support\Staff\Attention;
 use App\Support\Staff\Audit;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Livewire\Volt\Volt;
@@ -198,8 +199,8 @@ it('refuses to claim an assigned patient or one of another clinic', function () 
     $this->actingAs($this->ani);
     Volt::test('pages.therapist.patients')->call('claim', $this->budis->id)->assertForbidden();
 
-    $this->actingAs($this->citra);
-    Volt::test('pages.therapist.patients')->call('claim', $this->unassigned->id)->assertForbidden();
+    $this->actingAs($this->citra);                                  // another clinic: hidden (a 404 over HTTP)
+    expect(fn () => Volt::test('pages.therapist.patients')->call('claim', $this->unassigned->id))->toThrow(ModelNotFoundException::class);
 
     expect($this->budis->fresh()->therapist_id)->toBe($this->budi->id)
         ->and($this->unassigned->fresh()->therapist_id)->toBeNull();
@@ -241,8 +242,8 @@ it('refuses assignment by a therapist and by the admin of another clinic', funct
         ->call('assign', $this->unassigned->id)->assertForbidden();
 
     $this->actingAs(makeUser(Role::ClinicAdmin, $this->clinicB));
-    Volt::test('pages.therapist.patients')->set("assignTo.{$this->unassigned->id}", (string) $this->budi->id)
-        ->call('assign', $this->unassigned->id)->assertForbidden();
+    expect(fn () => Volt::test('pages.therapist.patients')->set("assignTo.{$this->unassigned->id}", (string) $this->budi->id)
+        ->call('assign', $this->unassigned->id))->toThrow(ModelNotFoundException::class);   // another clinic: hidden (a 404 over HTTP)
 
     expect($this->unassigned->fresh()->therapist_id)->toBeNull();
 });
