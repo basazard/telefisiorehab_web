@@ -11,7 +11,17 @@ class ProgramExercise extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['program_id', 'exercise_id', 'sets', 'reps', 'hold_seconds', 'minutes', 'sort_order'];
+    protected $fillable = ['program_id', 'exercise_id', 'sets', 'reps', 'hold_seconds', 'minutes', 'sort_order', 'removed_at'];
+
+    protected function casts(): array
+    {
+        return ['removed_at' => 'datetime'];
+    }
+
+    public function isRemoved(): bool
+    {
+        return $this->removed_at !== null;
+    }
 
     public function program(): BelongsTo
     {

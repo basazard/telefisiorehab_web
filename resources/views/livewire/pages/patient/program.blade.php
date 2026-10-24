@@ -107,8 +107,20 @@ new class extends Component {
             <div class="flex flex-wrap gap-2">
                 <x-ui.badge variant="secondary">{{ $program->status->label() }}</x-ui.badge>
                 @if ($program->needs_monitoring) <x-ui.badge variant="outline">Dipantau fisioterapis</x-ui.badge> @endif
+                @if ($program->review_type === Program::REVIEW_APPROVED)
+                    <x-ui.badge variant="outline"><x-lucide-badge-check class="mr-1 size-3.5" /> Disetujui fisioterapis</x-ui.badge>
+                @elseif ($program->review_type === Program::REVIEW_ADJUSTED)
+                    <x-ui.badge variant="outline"><x-lucide-badge-check class="mr-1 size-3.5" /> Disesuaikan fisioterapis</x-ui.badge>
+                @endif
             </div>
         </div>
+
+        @if ($program->review_note)
+            <div class="rounded-xl border border-border bg-card p-4 text-sm">
+                <p class="text-xs text-muted-foreground">Catatan fisioterapis</p>
+                <p class="mt-1 whitespace-pre-line">{{ $program->review_note }}</p>
+            </div>
+        @endif
 
         @if (! $program->isActive())
             <div role="alert" class="rounded-2xl border-2 border-warning/60 bg-warning/10 p-5 sm:p-6">

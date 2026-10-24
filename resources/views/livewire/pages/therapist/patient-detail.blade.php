@@ -158,6 +158,7 @@ new class extends Component {
         <x-ui.tabs.list class="flex-wrap h-auto">
             <x-ui.tabs.trigger value="ringkasan">Ringkasan</x-ui.tabs.trigger>
             <x-ui.tabs.trigger value="progres">Progres</x-ui.tabs.trigger>
+            <x-ui.tabs.trigger value="program">Program</x-ui.tabs.trigger>
             <x-ui.tabs.trigger value="riwayat">Riwayat</x-ui.tabs.trigger>
             <x-ui.tabs.trigger value="catatan">Catatan ({{ $p->staffNotes->count() }})</x-ui.tabs.trigger>
         </x-ui.tabs.list>
@@ -285,6 +286,11 @@ new class extends Component {
             </x-panel>
         </x-ui.tabs.content>
 
+        {{-- Program (review, adjust, create) --}}
+        <x-ui.tabs.content value="program">
+            <livewire:staff.program-panel :patient-id="$p->id" />
+        </x-ui.tabs.content>
+
         {{-- Riwayat --}}
         <x-ui.tabs.content value="riwayat" class="space-y-4">
             <x-panel title="Screening dan assessment">
@@ -314,21 +320,6 @@ new class extends Component {
                     </div>
                 @empty
                     <p class="text-sm text-muted-foreground">Belum ada screening.</p>
-                @endforelse
-            </x-panel>
-
-            <x-panel title="Program">
-                @forelse ($p->programs as $prog)
-                    <div wire:key="pr-{{ $prog->id }}" class="border-b border-border py-3 last:border-0">
-                        <p class="text-sm font-medium">{{ $prog->title }}</p>
-                        <p class="text-xs text-muted-foreground">
-                            {{ Intervention::pathwayLabel($prog->pathway) }} · level {{ $prog->intensity_level }} · {{ $prog->status->label() }}
-                            · mulai {{ $prog->starts_on?->translatedFormat('d M Y') ?? '-' }}
-                            @if ($prog->end_reason) · {{ $prog->end_reason }} @endif
-                        </p>
-                    </div>
-                @empty
-                    <p class="text-sm text-muted-foreground">Belum ada program.</p>
                 @endforelse
             </x-panel>
         </x-ui.tabs.content>

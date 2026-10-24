@@ -74,5 +74,10 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   answer. Staff access is audited with `Audit::record()` (append-only
   `patient_access_logs`); staff notes are `Patient::staffNotes()` (`patients.notes` is an old, unused column with the
   same name, do not confuse them). Charts: Alpine `chart` component in `resources/js/app.js`.
-  Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `clinic.dashboard` and
-  `clinic.team` (S4) still have no pages. `Attention::NO_ACTIVITY_DAYS` (5) is DRAFT.
+  S3 done: the "Program" tab (`livewire/staff/program-panel`) approves, adjusts, resumes, ends, marks the goal achieved
+  and creates programs through `App\Support\Staff\ProgramActions` (rules in `ProgramRules`, access in `ProgramPolicy`).
+  Items are never deleted: `program_exercises.removed_at`, and `Program::items()` skips removed ones (`allItems()` keeps
+  them). `programs.review_type` drives the patient badge; `programs.ended_by` = ended by staff (patient is asked to
+  reassess). Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `clinic.dashboard` and
+  `clinic.team` (S4) still have no pages. DRAFT: `Attention::NO_ACTIVITY_DAYS` (5), `ProgramRules::HARD_MAX`
+  (sets 5, reps 20, hold 60 s, minutes 45) and `CREATED_EVALUATION_WEEKS` (2).

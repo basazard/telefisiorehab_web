@@ -23,6 +23,15 @@ new class extends Component {
         return $this->patient->assessments()->where('status', 'completed')->latest('completed_at')->first();
     }
 
+    /** The last program a physiotherapist ended, when no assessment followed it yet: the patient should reassess. */
+    #[Computed]
+    public function endedByStaff()
+    {
+        $ended = $this->patient->programs()->whereNotNull('ended_by')->latest('ended_at')->first();
+
+        return $ended && ! ($this->assessment?->completed_at?->gt($ended->ended_at)) ? $ended : null;
+    }
+
     #[Computed]
     public function doneToday(): int
     {
@@ -71,6 +80,12 @@ new class extends Component {
             <p class="mt-1 text-sm">Lakukan reassessment atau ajukan konsultasi ulang.</p>
             <a href="{{ route('patient.program') }}" wire:navigate class="mt-4 {{ $link }}">Lihat pilihan</a>
         </div>
+    @elseif ($this->endedByStaff)
+        <x-panel title="Program diakhiri oleh fisioterapis">
+            <p class="text-sm">{{ $this->endedByStaff->end_reason }}</p>
+            <p class="mt-1 text-sm text-muted-foreground">Lakukan reassessment agar program baru bisa disusun.</p>
+            <a href="{{ route('patient.screening') }}" wire:navigate class="mt-4 {{ $link }}">Mulai reassessment</a>
+        </x-panel>
     @elseif ($assessment?->tier === \App\Enums\RiskTier::High)
         <x-panel title="Konsultasi diperlukan">
             <p class="text-sm">Hasil klasifikasi risiko Anda tinggi. Latihan mandiri tidak diberikan; ajukan telekonsultasi atau rujukan.</p>

@@ -22,8 +22,11 @@ class Program extends Model
     protected $fillable = [
         'clinic_id', 'patient_id', 'created_by', 'title', 'status', 'starts_on', 'ends_on',
         'assessment_id', 'pathway', 'needs_monitoring', 'intensity_level', 'evaluation_interval_weeks',
-        'next_evaluation_on', 'ended_at', 'end_reason',
+        'next_evaluation_on', 'ended_at', 'end_reason', 'ended_by', 'reviewed_by', 'reviewed_at', 'review_type', 'review_note',
     ];
+
+    public const REVIEW_APPROVED = 'approved';
+    public const REVIEW_ADJUSTED = 'adjusted';
 
     protected function casts(): array
     {
@@ -34,6 +37,7 @@ class Program extends Model
             'needs_monitoring' => 'boolean',
             'next_evaluation_on' => 'date',
             'ended_at' => 'datetime',
+            'reviewed_at' => 'datetime',
         ];
     }
 
@@ -47,9 +51,21 @@ class Program extends Model
         return $this->belongsTo(AssessmentResult::class, 'assessment_id');
     }
 
+    /** The exercises the patient does now. Items removed by a physiotherapist are left out (their logs stay). */
     public function items(): HasMany
     {
+        return $this->hasMany(ProgramExercise::class)->whereNull('removed_at')->orderBy('sort_order');
+    }
+
+    /** Every item, also the removed ones (staff history). */
+    public function allItems(): HasMany
+    {
         return $this->hasMany(ProgramExercise::class)->orderBy('sort_order');
+    }
+
+    public function reviewer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
     }
 
     public function logs(): HasManyThrough
@@ -83,8 +99,14 @@ class Program extends Model
         return $this->isActive() && $this->next_evaluation_on !== null && $this->next_evaluation_on->lte(today());
     }
 
-    public function end(string $reason): void
+    /** @param int|null $by the staff member who ended it (null = ended by the system) */
+    public function end(string $reason, ?int $by = null): void
     {
-        $this->update(['status' => ProgramStatus::Ended, 'ended_at' => now(), 'end_reason' => $reason]);
+        $this->update(['status' => ProgramStatus::Ended, 'ended_at' => now(), 'end_reason' => $reason, 'ended_by' => $by]);
+    }
+
+    public function isReviewed(): bool
+    {
+        return $this->reviewed_at !== null;
     }
 }
