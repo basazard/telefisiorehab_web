@@ -24,25 +24,14 @@ class PatientOverview
      */
     public static function visibleTo(User $viewer): Builder
     {
-        $query = self::inClinicOf($viewer);
-
-        if ($viewer->role === Role::Therapist) {
-            $query->where(fn (Builder $q) => $q->where('therapist_id', $viewer->id)->orWhereNull('therapist_id'));
-        }
-
-        return $query;
-    }
-
-    /**
-     * Patients of the viewer's clinic (all of them for a platform admin). Load a patient id from the browser through
-     * this, then ask PatientPolicy: another clinic's patient is a 404, so its existence stays hidden.
-     */
-    public static function inClinicOf(User $viewer): Builder
-    {
         $query = Patient::query();
 
         if ($viewer->role !== Role::PlatformAdmin) {
             $query->where('patients.clinic_id', $viewer->clinic_id);
+        }
+
+        if ($viewer->role === Role::Therapist) {
+            $query->where(fn (Builder $q) => $q->where('therapist_id', $viewer->id)->orWhereNull('therapist_id'));
         }
 
         return $query;

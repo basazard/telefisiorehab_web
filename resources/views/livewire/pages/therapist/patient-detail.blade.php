@@ -8,7 +8,6 @@ use App\Support\Onboarding\Monitoring;
 use App\Support\Onboarding\RedFlags;
 use App\Support\Onboarding\ScreeningRules;
 use App\Support\Staff\Audit;
-use App\Support\Staff\PatientOverview;
 use App\Support\Staff\Progress;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
@@ -34,11 +33,11 @@ new class extends Component {
         Audit::record(auth()->user(), $this->patient, Audit::VIEWED_DETAIL);
     }
 
-    /** Another clinic's patient is a 404 (its existence stays hidden); the policy then decides (403). */
+    /** Loaded without the clinic scope so a refusal is a 403 from the policy, not a 404. */
     #[Computed]
     public function patient(): Patient
     {
-        return PatientOverview::inClinicOf(auth()->user())->with([
+        return Patient::query()->withoutGlobalScope('clinic')->with([
             'user:id,name,email,phone',
             'clinic:id,name',
             'therapist:id,name',
