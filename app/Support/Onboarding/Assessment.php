@@ -36,7 +36,7 @@ final class Assessment
         return $age >= 0 && $age < 120 ? $age : null;
     }
 
-    /** @return 'pediatric'|'adult'|'geriatric'|null */
+    /** @return 'pediatric'|'adult'|'geriatric'|null · @clinical P-GN-02 */
     public static function track(?int $age): ?string
     {
         if ($age === null) {
@@ -50,7 +50,7 @@ final class Assessment
         };
     }
 
-    /** @return array{value: float, category: string, tone: string}|null */
+    /** @return array{value: float, category: string, tone: string}|null · @clinical P-GN-01 */
     public static function bmi(int|float|string|null $heightCm, int|float|string|null $weightKg): ?array
     {
         $h = (float) $heightCm / 100;
@@ -72,6 +72,7 @@ final class Assessment
         return ['value' => round($bmi, 1), 'category' => $category, 'tone' => $tone];
     }
 
+    /** @clinical P-GN-06 */
     public static function nrsLabel(int $v): string
     {
         return match (true) {

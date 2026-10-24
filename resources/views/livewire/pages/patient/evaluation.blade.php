@@ -249,6 +249,7 @@ new class extends Component {
                         <li>Monitoring berikutnya: {{ $e->program->next_evaluation_on?->translatedFormat('d M Y') }}. Bila tetap tidak ada perbaikan dalam {{ \App\Support\Onboarding\Monitoring::REASSESS_AFTER_WEEKS }} minggu, program ditinjau ulang menyeluruh.</li>
                     </ul>
                     @break
+                {{-- @clinical P-TX-06 --}}
                 @case(\App\Support\Onboarding\Monitoring::OUTCOME_REASSESS)
                     <ul class="mt-3 list-disc space-y-1 pl-5 text-sm">
                         <li>Program dijeda untuk evaluasi ulang kondisi (reassessment).</li>
@@ -261,6 +262,7 @@ new class extends Component {
                         Kondisi Anda memburuk cukup banyak. Program dijeda. Periksakan diri ke fasilitas kesehatan; bila berat atau mendadak, hubungi 112 / 119 atau datang ke IGD.
                     </div>
                     @break
+                {{-- @endclinical --}}
             @endswitch
         </x-panel>
 

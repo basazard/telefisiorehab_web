@@ -11,14 +11,14 @@ use App\Enums\PhysioDomain;
  */
 final class ClinicalAssessment
 {
-    public const PAIN_LIMIT = 4;           // NRS >= 4 (moderate pain or worse) counts as a limitation
+    public const PAIN_LIMIT = 4;           // NRS >= 4 (moderate pain or worse) counts as a limitation · @clinical P-DA-02
 
     public const OUTCOME_RISK = 'risk_classification';
     public const OUTCOME_EDUCATION = 'prevention_education';
 
-    public const LOWER_LIMB = ['Hip', 'Thigh', 'Hamstring', 'Knee', 'Calf', 'Shin', 'Ankle', 'Heel'];
-    public const SHOULDER = ['Shoulder', 'Scapula'];
-    public const LOW_BACK = ['Lower Back'];
+    public const LOWER_LIMB = ['Hip', 'Thigh', 'Hamstring', 'Knee', 'Calf', 'Shin', 'Ankle', 'Heel'];   // @clinical P-DA-03
+    public const SHOULDER = ['Shoulder', 'Scapula'];   // @clinical P-DA-04
+    public const LOW_BACK = ['Lower Back'];   // @clinical P-DA-05
 
     /**
      * Picks ONE domain from the main complaints, with the profile as context. The first matching rule wins.
@@ -26,6 +26,7 @@ final class ClinicalAssessment
      * @param string[] $conditions SpecialCondition values
      * @param string[] $complaints ScreeningRules::COMPLAINTS keys
      * @return array{domain: PhysioDomain, reason: string}
+     * @clinical P-DA-01
      */
     public static function pickDomain(?int $age, array $conditions, array $complaints, ?string $occupation): array
     {
@@ -58,6 +59,7 @@ final class ClinicalAssessment
      *
      * @param string[] $regions BodyRegions ids ("Left Knee", "Lower Back", ...)
      * @return string[]
+     * @clinical P-DA-06
      */
     public static function regionInstruments(array $regions): array
     {
@@ -87,6 +89,7 @@ final class ClinicalAssessment
      *
      * @param string[] $regions
      * @return string[]
+     * @clinical P-DA-07
      */
     public static function instruments(PhysioDomain $domain, array $regions): array
     {
@@ -107,6 +110,7 @@ final class ClinicalAssessment
      * @param string[] $instruments
      * @param array<string, array<string, mixed>> $answers instrument key => validated answers
      * @return array{scores: array<string, array>, findings: string[], warnings: string[], has_limitation: bool, outcome: string}
+     * @clinical P-DA-08
      */
     public static function analyse(array $instruments, array $answers, int $maxPain): array
     {
@@ -148,11 +152,11 @@ final class ClinicalAssessment
 
     /** "Edukasi Pencegahan & Latihan Mandiri" content (DRAFT, perlu persetujuan klinis). @return string[] */
     public const EDUCATION = [
-        'Tetap aktif: usahakan aktivitas fisik sedang (mis. jalan cepat) total 150 menit per minggu.',
-        'Saat duduk lama, berdiri dan bergerak ringan setiap 30–60 menit.',
-        'Lakukan pemanasan sebelum dan pendinginan sesudah olahraga.',
-        'Naikkan beban atau durasi latihan secara bertahap, tidak lebih dari ±10% per minggu.',
-        'Jaga postur saat mengangkat barang: tekuk lutut, dekatkan barang ke tubuh.',
-        'Hentikan latihan dan hubungi tenaga kesehatan bila muncul nyeri tajam, sesak berat, nyeri dada, atau pusing.',
+        'Tetap aktif: usahakan aktivitas fisik sedang (mis. jalan cepat) total 150 menit per minggu.',   // @clinical P-DA-09
+        'Saat duduk lama, berdiri dan bergerak ringan setiap 30–60 menit.',   // @clinical P-DA-10
+        'Lakukan pemanasan sebelum dan pendinginan sesudah olahraga.',   // @clinical P-DA-11
+        'Naikkan beban atau durasi latihan secara bertahap, tidak lebih dari ±10% per minggu.',   // @clinical P-DA-12
+        'Jaga postur saat mengangkat barang: tekuk lutut, dekatkan barang ke tubuh.',   // @clinical P-DA-13
+        'Hentikan latihan dan hubungi tenaga kesehatan bila muncul nyeri tajam, sesak berat, nyeri dada, atau pusing.',   // @clinical P-DA-14
     ];
 }

@@ -10,26 +10,26 @@ namespace App\Support\Onboarding;
 final class RedFlags
 {
     public const ITEMS = [
-        'chest_pain' => 'Nyeri dada atau dada terasa tertekan?',
-        'severe_breathlessness' => 'Sesak napas berat?',
-        'fainting' => 'Pingsan atau hilang kesadaran?',
-        'sudden_weakness' => 'Kelemahan mendadak pada lengan atau tungkai?',
-        'speech_difficulty' => 'Gangguan bicara mendadak (pelo / sulit berbicara)?',
-        'incontinence' => 'Hilang kontrol BAK / BAB secara mendadak?',
-        'saddle_numbness' => 'Baal di area selangkangan atau pangkal paha bagian dalam?',
-        'high_fever' => 'Demam tinggi (di atas 38,5 °C)?',
-        'major_trauma' => 'Trauma berat atau kecelakaan baru-baru ini?',
-        'suspected_fracture' => 'Dugaan patah tulang (bentuk berubah atau tidak bisa menumpu berat badan)?',
-        'uncontrolled_bleeding' => 'Perdarahan yang tidak berhenti?',
-        'sudden_severe_headache' => 'Sakit kepala hebat mendadak ("terburuk seumur hidup")?',
-        'unexplained_weight_loss' => 'Penurunan berat badan cepat tanpa sebab yang jelas?',
-        'night_pain' => 'Nyeri malam hari yang membuat sulit tidur dan tidak membaik?',
-        'severe_pain' => 'Nyeri sangat berat yang tidak tertahankan?',
-        'other' => 'Ada tanda bahaya lain yang Anda rasakan?',
+        'chest_pain' => 'Nyeri dada atau dada terasa tertekan?',   // @clinical P-RF-01
+        'severe_breathlessness' => 'Sesak napas berat?',   // @clinical P-RF-02
+        'fainting' => 'Pingsan atau hilang kesadaran?',   // @clinical P-RF-03
+        'sudden_weakness' => 'Kelemahan mendadak pada lengan atau tungkai?',   // @clinical P-RF-04
+        'speech_difficulty' => 'Gangguan bicara mendadak (pelo / sulit berbicara)?',   // @clinical P-RF-05
+        'incontinence' => 'Hilang kontrol BAK / BAB secara mendadak?',   // @clinical P-RF-06
+        'saddle_numbness' => 'Baal di area selangkangan atau pangkal paha bagian dalam?',   // @clinical P-RF-07
+        'high_fever' => 'Demam tinggi (di atas 38,5 °C)?',   // @clinical P-RF-08
+        'major_trauma' => 'Trauma berat atau kecelakaan baru-baru ini?',   // @clinical P-RF-09
+        'suspected_fracture' => 'Dugaan patah tulang (bentuk berubah atau tidak bisa menumpu berat badan)?',   // @clinical P-RF-10
+        'uncontrolled_bleeding' => 'Perdarahan yang tidak berhenti?',   // @clinical P-RF-11
+        'sudden_severe_headache' => 'Sakit kepala hebat mendadak ("terburuk seumur hidup")?',   // @clinical P-RF-12
+        'unexplained_weight_loss' => 'Penurunan berat badan cepat tanpa sebab yang jelas?',   // @clinical P-RF-13
+        'night_pain' => 'Nyeri malam hari yang membuat sulit tidur dan tidak membaik?',   // @clinical P-RF-14
+        'severe_pain' => 'Nyeri sangat berat yang tidak tertahankan?',   // @clinical P-RF-15
+        'other' => 'Ada tanda bahaya lain yang Anda rasakan?',   // @clinical P-RF-16
     ];
 
     /** A pain level at or above this value is treated as a red flag on its own (needs clinical sign-off). */
-    public const PAIN_STOP_THRESHOLD = 9;
+    public const PAIN_STOP_THRESHOLD = 9;   // @clinical P-RF-17
 
     /** Flags raised by the system, not asked as questions. */
     public const AUTO = [
@@ -57,6 +57,7 @@ final class RedFlags
      * @param array<string, string> $answers key => 'yes'|'no'
      * @param int $maxPain highest 0-10 pain level reported; at or above PAIN_STOP_THRESHOLD it stops on its own
      * @return array{flagged: string[], stop: bool}
+     * @clinical P-RF-18
      */
     public static function evaluate(array $answers, int $maxPain = 0): array
     {

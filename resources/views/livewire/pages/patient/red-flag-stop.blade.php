@@ -63,6 +63,7 @@ new #[Layout('layouts.onboarding')] class extends Component {
         </x-panel>
 
         <x-panel title="Apa yang perlu dilakukan?">
+            {{-- @clinical P-TX-01 --}}
             <ol class="list-decimal space-y-2 pl-5 text-sm">
                 <li>Periksakan diri ke fasilitas kesehatan terdekat sesegera mungkin.</li>
                 <li>Jika kondisi terasa sangat berat atau memburuk, segera hubungi layanan darurat (112) atau ambulans (119), atau datang ke IGD.</li>
@@ -74,10 +75,13 @@ new #[Layout('layouts.onboarding')] class extends Component {
                     @endif
                 </li>
             </ol>
+            {{-- @endclinical --}}
         </x-panel>
 
+        {{-- @clinical P-TX-02 --}}
         <p class="text-xs text-muted-foreground">
             Informasi ini bukan diagnosis. Halaman ini tidak dapat ditutup sampai akses Anda dibuka kembali oleh tenaga yang berwenang.
         </p>
+        {{-- @endclinical --}}
     @endif
 </div>

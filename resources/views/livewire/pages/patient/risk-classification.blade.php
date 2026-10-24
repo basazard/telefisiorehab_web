@@ -61,11 +61,13 @@ new #[Layout('layouts.onboarding')] class extends Component {
     @if ($a->needsSupervision())
         <div role="alert" class="flex items-start gap-3 rounded-xl border-2 border-destructive bg-destructive/10 p-4 text-sm">
             <x-lucide-triangle-alert class="mt-0.5 size-5 shrink-0 text-destructive" />
+            {{-- @clinical P-TX-03 --}}
             <div class="space-y-1">
                 <p class="font-semibold text-destructive">Perlu perhatian tenaga kesehatan</p>
                 <p>Hasil Anda masuk kategori risiko tinggi. Konsultasikan dengan fisioterapis atau fasilitas kesehatan sebelum memulai latihan. Program latihan Anda akan disusun dengan supervisi fisioterapis.</p>
                 <p>Jika kondisi terasa berat atau memburuk, hubungi layanan darurat (112), ambulans (119), atau datang ke IGD.</p>
             </div>
+            {{-- @endclinical --}}
         </div>
     @endif
 

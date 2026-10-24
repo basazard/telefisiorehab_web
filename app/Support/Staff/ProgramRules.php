@@ -13,10 +13,10 @@ class ProgramRules
     public const NOTE_MIN = 10;
 
     /** DRAFT: upper bound of a dose a physiotherapist may set (clinic to confirm). */
-    public const HARD_MAX = ['sets' => 5, 'reps' => 20, 'hold_seconds' => 60, 'minutes' => 45];
+    public const HARD_MAX = ['sets' => 5, 'reps' => 20, 'hold_seconds' => 60, 'minutes' => 45];   // @clinical P-ST-04
 
     /** DRAFT: evaluation interval of a program a physiotherapist creates. */
-    public const CREATED_EVALUATION_WEEKS = 2;
+    public const CREATED_EVALUATION_WEEKS = 2;   // @clinical P-ST-05
 
     public const FIELD_LABELS = ['sets' => 'Set', 'reps' => 'Repetisi', 'hold_seconds' => 'Tahan (detik)', 'minutes' => 'Menit'];
 
@@ -108,6 +108,7 @@ class ProgramRules
 
     /**
      * Why staff may not create a program for this patient, or null when they may (S3.3, D3).
+     * @clinical P-ST-06
      */
     public static function createRefusal(bool $redFlagLocked, ?RiskTier $latestTier, bool $hasCurrentProgram): ?string
     {

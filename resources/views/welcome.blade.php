@@ -112,10 +112,12 @@
 
                 <div id="tentang" class="mt-24 rounded-2xl border border-border bg-card p-8 shadow-[var(--shadow-card)]">
                     <h2 class="font-display text-2xl font-bold">Tentang TeleFisioRehab</h2>
+                    {{-- @clinical P-TX-07 --}}
                     <p class="mt-3 max-w-3xl text-muted-foreground">
                         TeleFisioRehab adalah platform rehabilitasi digital berbasis pemantauan adaptif untuk layanan fisioterapi di rumah
                         yang terintegrasi dengan klinik. Informasi di aplikasi ini bukan diagnosis dan tidak menggantikan pemeriksaan tenaga medis.
                     </p>
+                    {{-- @endclinical --}}
                 </div>
             </section>
         </main>

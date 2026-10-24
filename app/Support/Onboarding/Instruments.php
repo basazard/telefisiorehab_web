@@ -13,21 +13,21 @@ final class Instruments
 {
     // ---------------------------------------------------------------- cut-offs (DRAFT, perlu persetujuan klinis)
 
-    public const LEFS_LIMIT = 60;          // LEFS < 60 of 80
-    public const ODI_LIMIT = 20;           // ODI > 20 % (above "minimal disability")
-    public const SPADI_LIMIT = 20;         // SPADI > 20 %
-    public const PSFS_LIMIT = 7;           // mean PSFS < 7 of 10
-    public const BARTHEL_LIMIT = 100;      // Barthel < 100 = any dependency
-    public const STEADI_LIMIT = 4;         // CDC "Stay Independent" >= 4 = fall risk
-    public const TUG_LIMIT = 12;           // TUG >= 12 s (CDC STEADI)
-    public const MMRC_LIMIT = 2;           // mMRC >= 2
-    public const STS_LIMIT = 20;           // 1-minute sit-to-stand < 20 repetitions
-    public const BORG_LIMIT = 5;           // Borg CR10 >= 5 ("berat") after the sit-to-stand
-    public const SPO2_LIMIT = 95;          // SpO2 < 95 %
-    public const SPO2_URGENT = 90;         // SpO2 < 90 %: show "contact a health worker"
-    public const HR_LIMIT = 100;           // resting HR > 100 bpm
-    public const RR_LIMIT = 20;            // resting RR > 20 / min
-    public const EDEMA_CM_LIMIT = 2;       // >= 2 cm difference with the healthy side
+    public const LEFS_LIMIT = 60;          // LEFS < 60 of 80 · @clinical P-IN-01
+    public const ODI_LIMIT = 20;           // ODI > 20 % (above "minimal disability") · @clinical P-IN-02
+    public const SPADI_LIMIT = 20;         // SPADI > 20 % · @clinical P-IN-03
+    public const PSFS_LIMIT = 7;           // mean PSFS < 7 of 10 · @clinical P-IN-04
+    public const BARTHEL_LIMIT = 100;      // Barthel < 100 = any dependency · @clinical P-IN-05
+    public const STEADI_LIMIT = 4;         // CDC "Stay Independent" >= 4 = fall risk · @clinical P-IN-06
+    public const TUG_LIMIT = 12;           // TUG >= 12 s (CDC STEADI) · @clinical P-IN-07
+    public const MMRC_LIMIT = 2;           // mMRC >= 2 · @clinical P-IN-08
+    public const STS_LIMIT = 20;           // 1-minute sit-to-stand < 20 repetitions · @clinical P-IN-09
+    public const BORG_LIMIT = 5;           // Borg CR10 >= 5 ("berat") after the sit-to-stand · @clinical P-IN-10
+    public const SPO2_LIMIT = 95;          // SpO2 < 95 % · @clinical P-IN-11
+    public const SPO2_URGENT = 90;         // SpO2 < 90 %: show "contact a health worker" · @clinical P-IN-12
+    public const HR_LIMIT = 100;           // resting HR > 100 bpm · @clinical P-IN-13
+    public const RR_LIMIT = 20;            // resting RR > 20 / min · @clinical P-IN-14
+    public const EDEMA_CM_LIMIT = 2;       // >= 2 cm difference with the healthy side · @clinical P-IN-15
 
     // ---------------------------------------------------------------- content
 
@@ -62,7 +62,7 @@ final class Instruments
     ];
 
     /** Self-performed tests: only with someone nearby. */
-    public const SUPERVISED = ['tug', 'sts'];
+    public const SUPERVISED = ['tug', 'sts'];   // @clinical P-IN-16
 
     public const LEFS_ITEMS = [
         'Pekerjaan, pekerjaan rumah, atau kegiatan sekolah yang biasa Anda lakukan',
@@ -216,6 +216,7 @@ final class Instruments
     /**
      * @param array<string, mixed> $a answers of this instrument
      * @return array<string, mixed>
+     * @clinical P-IN-18
      */
     public static function rules(string $key, array $a): array
     {
@@ -293,6 +294,7 @@ final class Instruments
      *
      * @param array<string, mixed> $a
      * @return array{value: int|float|null, display: string, limited: bool, finding: ?string, warning: ?string}
+     * @clinical P-IN-17
      */
     public static function score(string $key, array $a): array
     {

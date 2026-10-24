@@ -14,8 +14,8 @@ use DateTimeInterface;
  */
 final class Intervention
 {
-    public const MAX_LEVEL = 3;
-    public const PER_TYPE = 2;            // exercises per type in a generated program
+    public const MAX_LEVEL = 3;   // @clinical P-PG-01
+    public const PER_TYPE = 2;            // exercises per type in a generated program · @clinical P-PG-02
 
     /** Pathway content per risk category (PRD section 3.1). */
     public const PATHWAYS = [
@@ -23,53 +23,53 @@ final class Intervention
             'key' => 'self_management',
             'label' => 'Self Management',
             'approach' => 'Pengelolaan mandiri dengan edukasi dan latihan di rumah.',
-            'recommendations' => [
+            'recommendations' => [   // @clinical P-PG-06
                 'Edukasi kondisi dan prinsip latihan',
                 'Program latihan mandiri (teks, video menyusul)',
                 'Panduan ergonomi dan modifikasi aktivitas',
                 'Leaflet / infografis',
                 'Monitoring mandiri melalui aplikasi',
             ],
-            'weeks' => 4,
+            'weeks' => 4,   // @clinical P-PG-03
         ],
         'moderate' => [
             'key' => 'guided',
             'label' => 'Terbimbing',
             'approach' => 'Latihan terstruktur dengan dukungan dan pemantauan fisioterapis.',
-            'recommendations' => [
+            'recommendations' => [   // @clinical P-PG-07
                 'Konsultasi online dengan fisioterapis',
                 'Program latihan terstruktur dengan pemantauan bertahap',
                 'Edukasi manajemen nyeri, aktivitas, dan gaya hidup',
                 'Video call / telekonsultasi berkala',
                 'Monitoring perkembangan (skor nyeri, fungsi, dan aktivitas)',
             ],
-            'weeks' => 2,
+            'weeks' => 2,   // @clinical P-PG-04
         ],
         'high' => [
             'key' => 'consultation',
             'label' => 'Konsultasi / Rujukan',
             'approach' => 'Konsultasi atau rujukan medis langsung. Tidak diberikan latihan mandiri.',
-            'recommendations' => [
+            'recommendations' => [   // @clinical P-PG-08
                 'Konsultasi segera dengan fisioterapis (telekonsultasi) atau rujuk ke fasilitas kesehatan',
                 'Evaluasi lebih lanjut melalui pemeriksaan klinis / luring',
                 'Manajemen awal: posisi aman dan aktivitas yang harus dihindari',
                 'Koordinasi dengan dokter atau tenaga kesehatan lain jika diperlukan',
             ],
-            'weeks' => 1,
+            'weeks' => 1,   // @clinical P-PG-05
         ],
     ];
 
     /** Education per pathway (DRAFT, perlu persetujuan klinis). */
     public const EDUCATION = [
-        'low' => [
+        'low' => [   // @clinical P-PG-09
             'Prinsip latihan' => ['Latihan rutin lebih penting daripada latihan berat. Usahakan setiap hari.', 'Rasa pegal ringan setelah latihan wajar dan hilang dalam 1–2 hari.', 'Naikkan jumlah atau durasi secara bertahap.'],
             'Ergonomi & modifikasi aktivitas' => ['Atur layar setinggi mata dan kursi sehingga kaki menapak lantai.', 'Selingi duduk lama dengan berdiri dan bergerak setiap 30–60 menit.', 'Saat mengangkat, tekuk lutut dan dekatkan barang ke tubuh.'],
         ],
-        'moderate' => [
+        'moderate' => [   // @clinical P-PG-10
             'Manajemen nyeri' => ['Nyeri saat latihan boleh sampai ringan (≤ 3/10) dan harus mereda dalam 24 jam.', 'Kompres hangat untuk otot kaku, kompres dingin untuk area bengkak atau terasa panas.', 'Atur jeda istirahat di antara aktivitas berat.'],
             'Aktivitas & gaya hidup' => ['Tetap aktif sesuai kemampuan; hindari tirah baring lama.', 'Tidur cukup 7–9 jam dan jaga berat badan ideal.', 'Catat latihan Anda agar fisioterapis dapat memantau perkembangan.'],
         ],
-        'high' => [
+        'high' => [   // @clinical P-PG-11
             'Posisi aman' => ['Pilih posisi yang paling nyaman dan tidak menambah nyeri; ganti posisi secara berkala.', 'Gunakan alat bantu jalan bila Anda biasa memakainya, dan pastikan rumah bebas dari benda yang bisa membuat tersandung.'],
             'Aktivitas yang harus dihindari' => ['Jangan memulai latihan baru atau olahraga berat sebelum diperiksa.', 'Hindari mengangkat beban berat, gerakan memutar badan mendadak, dan aktivitas yang memicu nyeri hebat atau sesak.'],
             'Segera ke fasilitas kesehatan bila' => ['Nyeri dada, sesak berat, pingsan, kelemahan mendadak, atau demam tinggi.', 'Hubungi 112 / 119 atau datang ke IGD bila kondisi memburuk.'],
@@ -81,8 +81,8 @@ final class Intervention
         'key' => 'maintenance',
         'label' => 'Maintenance Program',
         'approach' => 'Program pemeliharaan kondisi dan kebugaran secara mandiri.',
-        'weeks' => 4,
-        'level' => 2,
+        'weeks' => 4,   // @clinical P-PG-12
+        'level' => 2,   // @clinical P-PG-13
     ];
 
     public static function pathway(RiskTier $tier): array
@@ -101,7 +101,7 @@ final class Intervention
         return '-';
     }
 
-    /** The dose table a program uses: guided programs dose as Risiko Sedang, all others as Risiko Rendah. */
+    /** The dose table a program uses: guided programs dose as Risiko Sedang, all others as Risiko Rendah. · @clinical P-PG-19 */
     public static function doseTier(?string $pathway): RiskTier
     {
         return $pathway === 'guided' ? RiskTier::Moderate : RiskTier::Low;
@@ -111,6 +111,7 @@ final class Intervention
      * Exercise types allowed for a category (PRD 3.1). Risiko Tinggi: none.
      *
      * @return ExerciseType[]
+     * @clinical P-PG-14
      */
     public static function exerciseTypes(RiskTier $tier, ?PhysioDomain $domain = null, array $areas = []): array
     {
@@ -129,6 +130,7 @@ final class Intervention
     /**
      * Whether the system may prescribe self-exercise at all. Risiko Tinggi never; pediatric programs are made by a
      * physiotherapist (no self-report data, adult exercises are not suitable for children).
+     * @clinical P-PG-15
      */
     public static function canSelfExercise(RiskTier $tier, PhysioDomain $domain): bool
     {
@@ -140,6 +142,7 @@ final class Intervention
      *
      * @param string[] $regions
      * @return string[]
+     * @clinical P-PG-16
      */
     public static function areas(array $regions): array
     {
@@ -169,6 +172,7 @@ final class Intervention
      * @param array<int, array{slug: string, type: string, body_area: string}> $library
      * @param string[] $areas
      * @return string[] slugs, in program order
+     * @clinical P-PG-17
      */
     public static function select(array $types, array $areas, array $library): array
     {
@@ -192,6 +196,7 @@ final class Intervention
      * Dose per category and intensity level (1..MAX_LEVEL). "Tingkatkan intensitas secara bertahap" = level + 1.
      *
      * @return array{sets: int, reps: int, hold_seconds: ?int, minutes: ?int}
+     * @clinical P-PG-18
      */
     public static function dose(RiskTier $tier, string $unit, string $type, int $level): array
     {

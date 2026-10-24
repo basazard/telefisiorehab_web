@@ -175,11 +175,13 @@ new #[Layout('layouts.onboarding')] class extends Component {
 
     <div class="rounded-xl border border-border bg-muted/40 p-4 text-xs text-muted-foreground">
         <p class="flex items-center gap-2 font-medium text-foreground"><x-lucide-info class="size-4" /> Catatan</p>
+        {{-- @clinical P-TX-05 --}}
         <ul class="mt-2 list-disc space-y-1 pl-5">
             <li>Jenis dan dosis latihan disesuaikan dengan hasil assessment dan domain fisioterapi Anda.</li>
             <li>Jika muncul keluhan baru atau kondisi memburuk, lakukan reassessment lebih awal.</li>
             <li>TeleFisioRehab tidak menggantikan pemeriksaan langsung oleh tenaga kesehatan.</li>
         </ul>
+        {{-- @endclinical --}}
     </div>
     @endif
 </div>

@@ -17,27 +17,27 @@ final class Monitoring
     public const OUTCOME_REFERRAL = 'referral';        // drastic worsening: pause and advise referral
     public const OUTCOME_MAINTENANCE = 'maintenance';  // goal achieved: Maintenance Program
 
-    public const REASSESS_AFTER_WEEKS = 4;             // "tidak terjadi perbaikan setelah 4–6 minggu"
-    public const DRASTIC_PAIN_RISE = 3;                // NRS +3 or more
-    public const GOAL_MAX_PAIN = 2;
-    public const LOW_ADHERENCE = 50;                   // % of days: below this, review adherence before changing the dose
+    public const REASSESS_AFTER_WEEKS = 4;             // "tidak terjadi perbaikan setelah 4–6 minggu" · @clinical P-MO-01
+    public const DRASTIC_PAIN_RISE = 3;                // NRS +3 or more · @clinical P-MO-02
+    public const GOAL_MAX_PAIN = 2;   // @clinical P-MO-03
+    public const LOW_ADHERENCE = 50;                   // % of days: below this, review adherence before changing the dose · @clinical P-MO-04
 
     /**
      * Minimal clinically important difference per comparable item, and the direction that is better (DRAFT).
      * Vitals and wound status are not compared: they feed the risk category and the emergency escalation.
      */
     public const MCID = [
-        'nrs' => [2, 'lower'],
-        'lefs' => [9, 'higher'],
-        'odi' => [10, 'lower'],          // percentage points
-        'spadi' => [13, 'lower'],        // percentage points
-        'psfs' => [2, 'higher'],
-        'barthel' => [10, 'higher'],
-        'steadi' => [2, 'lower'],
-        'tug' => [2, 'lower'],           // seconds
-        'mmrc' => [1, 'lower'],
-        'sts' => [3, 'higher'],          // repetitions
-        'edema' => [1, 'lower'],         // level: none 0, mild 1, moderate 2, severe 3
+        'nrs' => [2, 'lower'],   // @clinical P-MO-05
+        'lefs' => [9, 'higher'],   // @clinical P-MO-06
+        'odi' => [10, 'lower'],          // percentage points · @clinical P-MO-07
+        'spadi' => [13, 'lower'],        // percentage points · @clinical P-MO-08
+        'psfs' => [2, 'higher'],   // @clinical P-MO-09
+        'barthel' => [10, 'higher'],   // @clinical P-MO-10
+        'steadi' => [2, 'lower'],   // @clinical P-MO-11
+        'tug' => [2, 'lower'],           // seconds · @clinical P-MO-12
+        'mmrc' => [1, 'lower'],   // @clinical P-MO-13
+        'sts' => [3, 'higher'],          // repetitions · @clinical P-MO-14
+        'edema' => [1, 'lower'],         // level: none 0, mild 1, moderate 2, severe 3 · @clinical P-MO-15
     ];
 
     public const BARRIERS = [
@@ -51,12 +51,12 @@ final class Monitoring
 
     /** "Identifikasi hambatan": what to try per barrier (DRAFT). */
     public const BARRIER_TIPS = [
-        'pain' => 'Kurangi jumlah atau jangkauan gerak sampai nyeri saat latihan ringan (≤ 3/10), dan konsultasikan bila tetap nyeri.',
-        'motivation' => 'Tetapkan jam latihan yang sama setiap hari dan ajak anggota keluarga berlatih bersama.',
-        'time' => 'Bagi latihan menjadi 2 sesi pendek, misalnya pagi dan sore.',
-        'environment' => 'Gunakan kursi kokoh, dinding, atau handuk sebagai pengganti alat; pilih area yang aman dari tersandung.',
-        'technique' => 'Ajukan telekonsultasi agar fisioterapis meninjau teknik latihan Anda.',
-        'forgot' => 'Pasang alarm harian dan buka halaman Today setiap pagi.',
+        'pain' => 'Kurangi jumlah atau jangkauan gerak sampai nyeri saat latihan ringan (≤ 3/10), dan konsultasikan bila tetap nyeri.',   // @clinical P-MO-21
+        'motivation' => 'Tetapkan jam latihan yang sama setiap hari dan ajak anggota keluarga berlatih bersama.',   // @clinical P-MO-22
+        'time' => 'Bagi latihan menjadi 2 sesi pendek, misalnya pagi dan sore.',   // @clinical P-MO-23
+        'environment' => 'Gunakan kursi kokoh, dinding, atau handuk sebagai pengganti alat; pilih area yang aman dari tersandung.',   // @clinical P-MO-24
+        'technique' => 'Ajukan telekonsultasi agar fisioterapis meninjau teknik latihan Anda.',   // @clinical P-MO-25
+        'forgot' => 'Pasang alarm harian dan buka halaman Today setiap pagi.',   // @clinical P-MO-26
     ];
 
     public const OUTCOMES = [
@@ -72,6 +72,7 @@ final class Monitoring
      *
      * @param string[] $instruments
      * @return array<string, array{label: string, before: string, after: string, change: int|float|null, direction: string, significant: bool}>
+     * @clinical P-MO-16
      */
     public static function compare(array $instruments, array $baseline, array $now, int $basePain, int $pain): array
     {
@@ -98,6 +99,7 @@ final class Monitoring
      * @param array<string, array{direction: string, significant: bool, change: int|float|null}> $comparison from compare()
      * @param int $pain NRS now
      * @return array{significant: bool, worse: bool, drastic: bool, goal_achieved: bool, outcome: string}
+     * @clinical P-MO-18
      */
     public static function decide(
         array $comparison,
@@ -141,6 +143,7 @@ final class Monitoring
         return $score['value'];
     }
 
+    /** @clinical P-MO-17 */
     private static function item(string $key, string $label, int|float|null $before, int|float|null $after, string $beforeText, string $afterText): array
     {
         [$mcid, $better] = self::MCID[$key];

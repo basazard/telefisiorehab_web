@@ -18,7 +18,7 @@ final class ScreeningRules
     ];
 
     /** Complaints that need a body area; the others may skip the body map. */
-    public const LOCALIZED = ['pain', 'weakness', 'mobility', 'stiffness', 'post_injury'];
+    public const LOCALIZED = ['pain', 'weakness', 'mobility', 'stiffness', 'post_injury'];   // @clinical P-GN-05
 
     public const AGGRAVATORS = [
         'sitting' => 'Duduk', 'standing' => 'Berdiri', 'walking' => 'Berjalan',
@@ -54,6 +54,7 @@ final class ScreeningRules
      *
      * @param string[] $complaints
      * @return array<string, bool>
+     * @clinical P-GN-04
      */
     public static function questions(array $complaints): array
     {
@@ -75,6 +76,7 @@ final class ScreeningRules
      * @param string[] $conditions SpecialCondition values from the profile
      * @param string[] $complaints
      * @return string[]
+     * @clinical P-GN-03
      */
     public static function specialGroups(?int $age, array $conditions, array $complaints, ?string $gender): array
     {

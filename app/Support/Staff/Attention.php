@@ -24,8 +24,8 @@ class Attention
     public const WORSENING = 'worsening';
     public const NO_ACTIVITY = 'no_activity';
 
-    public const ADHERENCE_DAYS = 7;          // adherence window, the Monitoring PRD value
-    public const NO_ACTIVITY_DAYS = 5;        // DRAFT: no log for 5 days while a program is active (clinic to confirm, D5)
+    public const ADHERENCE_DAYS = 7;          // adherence window, the Monitoring PRD value · @clinical P-ST-02
+    public const NO_ACTIVITY_DAYS = 5;        // DRAFT: no log for 5 days while a program is active (clinic to confirm, D5) · @clinical P-ST-01
 
     /** In order of urgency. */
     public const LABELS = [
@@ -42,6 +42,7 @@ class Attention
      * @param Program|null $program the current program (active or needs_review)
      * @param array<int, DateTimeInterface|string> $logDates when the patient logged an exercise
      * @return string[] reason keys, most urgent first
+     * @clinical P-ST-03
      */
     public static function reasons(
         ?Program $program,

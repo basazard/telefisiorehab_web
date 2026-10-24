@@ -79,6 +79,7 @@ final class Programs
      *
      * @param array{pain: int, global_change: string, new_complaint: bool, side_effects: ?string, barriers: string[]} $general
      * @param array<string, array<string, mixed>> $answers instrument key => validated answers
+     * @clinical P-MO-19
      */
     public static function monitor(Program $program, array $general, array $answers): ProgramEvaluation
     {
@@ -152,7 +153,7 @@ final class Programs
         });
     }
 
-    /** "Variasi latihan lebih menantang": one exercise of the program's types that is not in it yet. */
+    /** "Variasi latihan lebih menantang": one exercise of the program's types that is not in it yet. · @clinical P-MO-20 */
     private static function addVariation(Program $program): void
     {
         $program->load('items.exercise');

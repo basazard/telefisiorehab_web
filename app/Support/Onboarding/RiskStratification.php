@@ -14,28 +14,29 @@ final class RiskStratification
 {
     // ---------------------------------------------------------------- "Tinggi" cut-offs (DRAFT, perlu persetujuan klinis)
 
-    public const NRS_HIGH = 7;             // NRS 7-10 (PRD)
-    public const LEFS_HIGH = 30;           // LEFS < 30 of 80
-    public const ODI_HIGH = 40;            // ODI > 40 % (severe disability)
-    public const SPADI_HIGH = 50;          // SPADI > 50 %
-    public const PSFS_HIGH = 4;            // mean PSFS < 4
-    public const BARTHEL_HIGH = 60;        // Barthel <= 60 (severe dependency)
-    public const STEADI_HIGH = 7;          // fall-risk checklist >= 7
-    public const TUG_HIGH = 20;            // TUG >= 20 s
-    public const MMRC_HIGH = 3;            // mMRC >= 3
-    public const STS_HIGH = 12;            // fewer than 12 sit-to-stands
-    public const BORG_HIGH = 7;            // Borg >= 7 ("sangat berat")
-    public const HR_HIGH = 120;            // resting HR > 120
-    public const RR_HIGH = 24;             // resting RR > 24
-    public const EDEMA_CM_HIGH = 4;        // >= 4 cm difference with the healthy side
+    public const NRS_HIGH = 7;             // NRS 7-10 (PRD) · @clinical P-RS-01
+    public const LEFS_HIGH = 30;           // LEFS < 30 of 80 · @clinical P-RS-02
+    public const ODI_HIGH = 40;            // ODI > 40 % (severe disability) · @clinical P-RS-03
+    public const SPADI_HIGH = 50;          // SPADI > 50 % · @clinical P-RS-04
+    public const PSFS_HIGH = 4;            // mean PSFS < 4 · @clinical P-RS-05
+    public const BARTHEL_HIGH = 60;        // Barthel <= 60 (severe dependency) · @clinical P-RS-06
+    public const STEADI_HIGH = 7;          // fall-risk checklist >= 7 · @clinical P-RS-07
+    public const TUG_HIGH = 20;            // TUG >= 20 s · @clinical P-RS-08
+    public const MMRC_HIGH = 3;            // mMRC >= 3 · @clinical P-RS-09
+    public const STS_HIGH = 12;            // fewer than 12 sit-to-stands · @clinical P-RS-10
+    public const BORG_HIGH = 7;            // Borg >= 7 ("sangat berat") · @clinical P-RS-11
+    public const HR_HIGH = 120;            // resting HR > 120 · @clinical P-RS-12
+    public const RR_HIGH = 24;             // resting RR > 24 · @clinical P-RS-13
+    public const EDEMA_CM_HIGH = 4;        // >= 4 cm difference with the healthy side · @clinical P-RS-14
 
     /** Findings that are an emergency: the program stops like a red flag (key = RedFlags::AUTO key). */
-    public const EMERGENCIES = ['spo2_critical', 'wound_infection'];
+    public const EMERGENCIES = ['spo2_critical', 'wound_infection'];   // @clinical P-RS-15
 
     /**
      * @param string[] $instruments
      * @param array<string, array<string, mixed>> $answers instrument key => validated answers
      * @return array{tier: RiskTier, items: array<string, array{label: string, display: string, tier: string}>, emergencies: string[]}
+     * @clinical P-RS-16
      */
     public static function stratify(array $instruments, array $answers, int $pain): array
     {
@@ -71,6 +72,7 @@ final class RiskStratification
      * @param array<string, mixed> $a
      * @param array{value: int|float|null, limited: bool} $score
      * @return array{0: RiskTier, 1: ?string} band and emergency key
+     * @clinical P-RS-17
      */
     private static function instrument(string $key, array $a, array $score): array
     {
