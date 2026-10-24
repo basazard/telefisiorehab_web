@@ -39,11 +39,12 @@ class PatientPolicy
     public function claim(User $user, Patient $patient): bool
     {
         return $user->role === Role::Therapist
+            && ! $user->isDeactivated()
             && $this->sameClinic($user, $patient)
             && $patient->therapist_id === null;
     }
 
-    /** Assign or reassign a patient; when given, $therapist must be a therapist of the patient's clinic. */
+    /** Assign or reassign a patient; when given, $therapist must be an active therapist of the patient's clinic. */
     public function assign(User $user, Patient $patient, ?User $therapist = null): bool
     {
         $allowed = $user->role === Role::PlatformAdmin
@@ -54,6 +55,7 @@ class PatientPolicy
         }
 
         return $therapist->role === Role::Therapist
+            && ! $therapist->isDeactivated()
             && $patient->clinic_id !== null
             && (int) $therapist->clinic_id === (int) $patient->clinic_id;
     }

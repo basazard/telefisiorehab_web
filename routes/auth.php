@@ -16,6 +16,11 @@ Route::middleware('guest')->group(function () {
 
     Volt::route('reset-password/{token}', 'pages.auth.reset-password')
         ->name('password.reset');
+
+    // staff invitation from a clinic admin (PRD 09 S4.2)
+    Volt::route('invitation/{token}', 'pages.auth.accept-invitation')
+        ->middleware('throttle:20,1')
+        ->name('invitation.accept');
 });
 
 Route::middleware('auth')->group(function () {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureActive;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\EnsureProfileComplete;
 use App\Http\Middleware\EnsureNotRedFlagLocked;
@@ -20,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'profile.complete' => EnsureProfileComplete::class,
             'redflag.clear' => EnsureNotRedFlagLocked::class,
         ]);
+
+        // deactivated staff are logged out on every request, Livewire updates included
+        $middleware->web(append: EnsureActive::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

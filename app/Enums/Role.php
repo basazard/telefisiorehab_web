@@ -15,7 +15,7 @@ enum Role: string
             self::Patient       => 'patient.dashboard',
             self::Therapist     => 'therapist.dashboard',
             self::PlatformAdmin => 'staff.red-flags',
-            self::ClinicAdmin => 'therapist.dashboard',   // clinic.dashboard comes in PRD 09 slice S4
+            self::ClinicAdmin => 'clinic.dashboard',
         };
     }
 }

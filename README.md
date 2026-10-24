@@ -62,7 +62,9 @@ It can run again without making duplicates. Every demo account uses the password
 | `pasien01.b@demo.test` … `pasien03.b@demo.test` | Patients of Klinik Bugar Bandung |
 | `mandiri01@demo.test`, `mandiri02@demo.test` | Patients without a clinic |
 
-Dates are relative to the day of the first run.
+Dates are relative to the day of the first run. Klinik Sehat Jakarta also has a pending invitation for
+`dimas.a@demo.test`; to try the invitation flow, invite another address from the Team page (with mail set to `log`,
+the page shows the link to copy).
 
 Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_URL`.
 

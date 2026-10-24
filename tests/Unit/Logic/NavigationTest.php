@@ -25,16 +25,8 @@ it('shows therapists their patients and the red-flag list', function () {
     expect(routes(Role::Therapist))->toBe(['therapist.dashboard', 'therapist.patients', 'staff.red-flags', 'staff.consultations']);
 });
 
-it('shows clinic admins the staff dashboard, patients and the red-flag list', function () {
-    expect(routes(Role::ClinicAdmin))->toBe(['therapist.dashboard', 'therapist.patients', 'staff.red-flags', 'staff.consultations']);
-});
-
-it('links only to routes that have a page', function () {
-    foreach (Role::cases() as $role) {
-        foreach (routes($role) as $route) {
-            expect($route)->not->toBeIn(['clinic.dashboard', 'clinic.team', 'therapist.patients.show']);
-        }
-    }
+it('shows clinic admins the clinic pages, patients and the red-flag list', function () {
+    expect(routes(Role::ClinicAdmin))->toBe(['clinic.dashboard', 'therapist.patients', 'staff.red-flags', 'staff.consultations', 'clinic.team']);
 });
 
 it('shows platform admins the red-flag list', function () {

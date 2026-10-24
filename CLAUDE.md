@@ -67,7 +67,7 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   (DRAFT, in `ExerciseLibrary` and `Intervention`), and the MCIDs, reassessment period and goal rule (DRAFT, in `Monitoring`).
 - Licences to check before launch: ODI, SPADI, Borg CR10.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
-- Staff side (`prd/09-therapist-clinic-side.md`): S1 and S2 done. `therapist.dashboard`, `therapist.patients` and
+- Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,
   access in `PatientPolicy`; demo data: `DemoSeeder`). Every denied staff action is a 403, also for a patient of
   another clinic (owner's decision): load a patient id from the browser without the clinic scope and let the policy
@@ -78,6 +78,10 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   and creates programs through `App\Support\Staff\ProgramActions` (rules in `ProgramRules`, access in `ProgramPolicy`).
   Items are never deleted: `program_exercises.removed_at`, and `Program::items()` skips removed ones (`allItems()` keeps
   them). `programs.review_type` drives the patient badge; `programs.ended_by` = ended by staff (patient is asked to
-  reassess). Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `clinic.dashboard` and
-  `clinic.team` (S4) still have no pages. DRAFT: `Attention::NO_ACTIVITY_DAYS` (5), `ProgramRules::HARD_MAX`
-  (sets 5, reps 20, hold 60 s, minutes 45) and `CREATED_EVALUATION_WEEKS` (2).
+  reassess). S4: `clinic.dashboard` (figures in `ClinicStats`) and `clinic.team` (access in `ClinicPolicy`,
+  `UserPolicy`). Assigning goes through `App\Support\Staff\Assignment` (claim, assign, release; audited).
+  Invitations: `Invitations` (only the SHA-256 of the token is stored, single use; with mail `log`/`array` the team
+  page shows the link to copy), accepted at `/invitation/{token}`. `users.deactivated_at`: the `EnsureActive`
+  middleware (web group) and `LoginForm` lock deactivated users out; deactivating moves or releases their patients.
+  DRAFT: `Attention::NO_ACTIVITY_DAYS` (5), `ProgramRules::HARD_MAX` (sets 5, reps 20, hold 60 s, minutes 45),
+  `CREATED_EVALUATION_WEEKS` (2) and `Invitations::EXPIRES_DAYS` (7).

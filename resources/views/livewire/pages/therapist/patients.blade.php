@@ -5,8 +5,8 @@ use App\Enums\Role;
 use App\Models\Patient;
 use App\Models\User;
 use App\Support\Onboarding\Intervention;
+use App\Support\Staff\Assignment;
 use App\Support\Staff\Attention;
-use App\Support\Staff\Audit;
 use App\Support\Staff\PatientOverview;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Computed;
@@ -103,25 +103,12 @@ new class extends Component {
             return collect();
         }
 
-        return User::query()
-            ->where('role', Role::Therapist)
-            ->when(auth()->user()->role !== Role::PlatformAdmin, fn ($q) => $q->where('clinic_id', auth()->user()->clinic_id))
-            ->orderBy('name')
-            ->get(['id', 'name', 'clinic_id']);
+        return Assignment::therapists(auth()->user()->role === Role::PlatformAdmin ? null : auth()->user()->clinic_id);
     }
 
     public function claim(int $patientId): void
     {
-        $patient = $this->findPatient($patientId);
-
-        Gate::authorize('claim', $patient);
-
-        // atomic: only succeeds while nobody else has claimed the patient
-        $claimed = Patient::query()->whereKey($patient->id)->whereNull('therapist_id')->update(['therapist_id' => auth()->id()]);
-
-        if ($claimed) {
-            Audit::record(auth()->user(), $patient, Audit::ASSIGNED);
-        }
+        $claimed = Assignment::claim(auth()->user(), Assignment::find($patientId));
 
         $this->refresh();
         $this->dispatch('toast', message: $claimed ? 'Pasien sekarang ditangani oleh Anda' : 'Pasien sudah diambil fisioterapis lain',
@@ -130,7 +117,7 @@ new class extends Component {
 
     public function assign(int $patientId): void
     {
-        $patient = $this->findPatient($patientId);
+        $patient = Assignment::find($patientId);
         $therapist = User::find((int) ($this->assignTo[$patientId] ?? 0));
 
         if (! $therapist) {
@@ -139,20 +126,11 @@ new class extends Component {
             return;
         }
 
-        Gate::authorize('assign', [$patient, $therapist]);
-
-        $patient->update(['therapist_id' => $therapist->id]);
-        Audit::record(auth()->user(), $patient, Audit::ASSIGNED);
+        Assignment::assign(auth()->user(), $patient, $therapist);
 
         unset($this->assignTo[$patientId]);
         $this->refresh();
         $this->dispatch('toast', message: 'Pasien ditugaskan ke '.$therapist->name, type: 'success');
-    }
-
-    /** The id comes from the browser: load without the clinic scope so the policy answers (403, not 404). */
-    private function findPatient(int $id): Patient
-    {
-        return Patient::query()->withoutGlobalScope('clinic')->findOrFail($id);
     }
 
     private function refresh(): void

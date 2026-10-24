@@ -4,6 +4,10 @@ namespace Database\Seeders;
 
 use App\Enums\Role;
 use App\Models\Clinic;
+use App\Models\StaffInvitation;
+use App\Models\User;
+use App\Support\Staff\Invitations;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 /** Demo clinics and their staff (part of DemoSeeder). */
@@ -34,6 +38,15 @@ class ClinicSeeder extends Seeder
         foreach (self::STAFF as [$email, $name, $role, $clinic]) {
             DemoSeeder::user($email, $name, $role, $clinic ? self::clinic($clinic)->id : null);
         }
+
+        // a pending invitation, so the team page shows one (its link is unknown: invite again to get a usable one)
+        StaffInvitation::query()->firstOrCreate(['email' => 'dimas.a@demo.test'], [
+            'clinic_id' => self::clinic('a')->id,
+            'role' => Role::Therapist,
+            'token_hash' => hash('sha256', Str::random(48)),
+            'expires_at' => now()->addDays(Invitations::EXPIRES_DAYS),
+            'invited_by' => User::where('email', 'admin.a@demo.test')->value('id'),
+        ]);
     }
 
     public static function clinic(string $key): Clinic

@@ -42,10 +42,12 @@ function listRows(): array
 // ---------------------------------------------------------------- dashboard
 
 it('lands therapists and clinic admins on a working dashboard after login', function () {
-    foreach ([$this->ani, $this->adminA] as $user) {
-        $this->actingAs($user)->get(route('dashboard'))->assertRedirect(route('therapist.dashboard'));
-        $this->actingAs($user)->get(route('therapist.dashboard'))->assertOk()->assertSee('Perlu perhatian');
+    foreach ([[$this->ani, 'therapist.dashboard', 'Perlu perhatian'], [$this->adminA, 'clinic.dashboard', 'Beban kerja fisioterapis']] as [$user, $home, $text]) {
+        $this->actingAs($user)->get(route('dashboard'))->assertRedirect(route($home));
+        $this->actingAs($user)->get(route($home))->assertOk()->assertSee($text);
     }
+
+    $this->actingAs($this->adminA)->get(route('therapist.dashboard'))->assertOk();     // still reachable for clinic admins
 });
 
 it('shows a therapist the counts and the patients that need attention', function () {

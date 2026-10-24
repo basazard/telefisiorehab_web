@@ -38,6 +38,14 @@ class LoginForm extends Form
             ]);
         }
 
+        if (Auth::user()->isDeactivated()) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'form.email' => 'Akun Anda dinonaktifkan. Hubungi admin klinik Anda.',
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

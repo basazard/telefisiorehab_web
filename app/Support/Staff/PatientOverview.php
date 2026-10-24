@@ -74,7 +74,8 @@ class PatientOverview
 
         if ($row['limited']) {
             return $row + ['pathway' => null, 'adherence' => null, 'last_activity' => null, 'next_evaluation' => null,
-                'reasons' => [], 'therapist' => null, 'program_status' => null];
+                'reasons' => [], 'therapist' => null, 'therapist_id' => null, 'program_status' => null, 'unreviewed' => false,
+                'joined_at' => null];
         }
 
         $program = $patient->programs->first();
@@ -87,6 +88,10 @@ class PatientOverview
             'last_activity' => $patient->last_log_at ? substr((string) $patient->last_log_at, 0, 10) : null,
             'next_evaluation' => $program?->isActive() ? $program->next_evaluation_on : null,
             'therapist' => $patient->therapist?->name,
+            'therapist_id' => $patient->therapist_id,
+            // D2 "review, not gate": a monitored program nobody has reviewed yet
+            'unreviewed' => $program?->isActive() && $program->needs_monitoring && ! $program->isReviewed(),
+            'joined_at' => $patient->created_at,
             'reasons' => Attention::reasons(
                 $program,
                 $logDates,

@@ -60,6 +60,6 @@ it('has the four roles', function () {
 it('sends each role to its own home route', function () {
     expect(Role::Patient->home())->toBe('patient.dashboard')
         ->and(Role::Therapist->home())->toBe('therapist.dashboard')
-        ->and(Role::ClinicAdmin->home())->toBe('therapist.dashboard')
+        ->and(Role::ClinicAdmin->home())->toBe('clinic.dashboard')
         ->and(Role::PlatformAdmin->home())->toBe('staff.red-flags');
 });

@@ -25,12 +25,12 @@ class Navigation
                 ['label' => 'Red flags', 'route' => 'staff.red-flags', 'icon' => 'shield-alert'],
                 ['label' => 'Konsultasi', 'route' => 'staff.consultations', 'icon' => 'message-square'],
             ],
-            // clinic.dashboard and clinic.team have no page until PRD 09 slice S4
             default => [
-                ['label' => 'Overview',   'route' => 'therapist.dashboard',  'icon' => 'layout-dashboard'],
+                ['label' => 'Clinic',     'route' => 'clinic.dashboard',     'icon' => 'building-2'],
                 ['label' => 'Patients',   'route' => 'therapist.patients',   'icon' => 'users'],
                 ['label' => 'Red flags',  'route' => 'staff.red-flags',  'icon' => 'shield-alert'],
                 ['label' => 'Konsultasi', 'route' => 'staff.consultations', 'icon' => 'message-square'],
+                ['label' => 'Team',       'route' => 'clinic.team',          'icon' => 'user-cog'],
             ],
         };
     }
