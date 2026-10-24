@@ -69,7 +69,9 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 and S2 done. `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,
-  access in `PatientPolicy`; demo data: `DemoSeeder`). Staff access is audited with `Audit::record()` (append-only
+  access in `PatientPolicy`; demo data: `DemoSeeder`). Every denied staff action is a 403, also for a patient of
+  another clinic (owner's decision): load a patient id from the browser without the clinic scope and let the policy
+  answer. Staff access is audited with `Audit::record()` (append-only
   `patient_access_logs`); staff notes are `Patient::staffNotes()` (`patients.notes` is an old, unused column with the
   same name, do not confuse them). Charts: Alpine `chart` component in `resources/js/app.js`.
   Clinic admins land on `therapist.dashboard` and the nav hides Clinic/Team until S4; `clinic.dashboard` and
