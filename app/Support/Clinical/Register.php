@@ -37,7 +37,7 @@ final class Register
 
     public static function path(): string
     {
-        return self::$path ?? base_path('prd/clinical/parameters.json');
+        return self::$path ?? config('clinical.register_path', base_path('prd/clinical/parameters.json'));
     }
 
     /** @return array<string, mixed> the whole file */

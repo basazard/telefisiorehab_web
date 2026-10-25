@@ -98,5 +98,12 @@
         </nav>
 
         <main class="flex-1 p-4 md:p-8">{{ $slot }}</main>
+
+        {{-- the clinical rule set in use (PRD 10 W5), for staff only --}}
+        @if (auth()->user() && auth()->user()->role !== \App\Enums\Role::Patient)
+            <footer class="border-t border-border px-4 py-3 text-[11px] text-muted-foreground md:px-8">
+                Aturan klinis {{ config('clinical.version') }}
+            </footer>
+        @endif
     </div>
 </div>

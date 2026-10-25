@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProgramStatus;
 use App\Models\Concerns\BelongsToClinic;
+use App\Models\Concerns\RecordsClinicalVersion;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class Program extends Model
 {
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
-    use HasFactory, BelongsToClinic;
+    use HasFactory, BelongsToClinic, RecordsClinicalVersion;
 
     /** pathway of the program that follows once the physiotherapy goal is achieved */
     public const MAINTENANCE = 'maintenance';

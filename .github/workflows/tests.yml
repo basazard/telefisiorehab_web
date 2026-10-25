@@ -48,6 +48,17 @@ jobs:
       - name: Run tests
         run: php artisan test --compact --log-junit junit.xml
 
+      # Clinical sign-off (PRD 10 W5): a warning only, until the owner sets the repository variable CLINICAL_STRICT=true.
+      - name: Clinical sign-off
+        env:
+          CLINICAL_STRICT: ${{ vars.CLINICAL_STRICT }}
+        run: |
+          if [ "$CLINICAL_STRICT" = "true" ]; then
+            php artisan clinical:status --strict
+          else
+            php artisan clinical:status --strict || echo "::warning title=Clinical sign-off::Clinical rules are not signed off yet (PRD 10). After the sign-off, set the repository variable CLINICAL_STRICT=true so this step fails the build."
+          fi
+
       # Lists each failing test as an annotation on the run page.
       - name: Report failing tests
         if: failure()
