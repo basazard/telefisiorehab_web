@@ -67,6 +67,9 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   Never change a clinical value or text except as a signed decision (W4). After a change, re-run
   `php artisan clinical:review-sheet` and `clinical:vignettes` (a test fails if the files are out of date).
   `php artisan clinical:status [--strict]` shows what is unreviewed. Licences: `prd/legal/instrument-licences.md`.
+  W5 done: `clinical:gate` (config `clinical.signoff_required`, production by default) runs in `deploy.sh` before
+  maintenance mode; `ALLOW_UNREVIEWED=1` overrides and is logged; CI only warns until the repo variable
+  `CLINICAL_STRICT=true`. New assessments and programs store `clinical_version` (`config('clinical.version')`).
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
   cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
   and the risk bands and emergency rules (DRAFT, in `RiskStratification`), and the exercise library, doses, education
