@@ -862,11 +862,11 @@
             "prd_ref": "prd/07-monitoring-reassessment.md",
             "rationale": "Keputusan pemilik (opsi a): program tetap berjalan.",
             "source": "PRD 10 W6 (lisensi instrumen); sumber klinis tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "bf91dd7c12cfbdb669b6e6e4a7c03fc478ba839937b06847ee45abf314283f43"
         },
         {
             "id": "P-RS-01",
