@@ -45,11 +45,11 @@
             "prd_ref": "prd/03-red-flag-screening.md",
             "rationale": "Satu jawaban \"Ya\" menghentikan program (hard stop).",
             "source": "Dibawa dari aplikasi lama (bukan dari PRD 03); sumber klinis tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "73ba402e74d2001ca1612269a68da1607909ac0ddbc332e898563ba1f16e2424"
         },
         {
             "id": "P-RF-04",
