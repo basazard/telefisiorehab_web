@@ -285,11 +285,11 @@
             "prd_ref": "prd/03-red-flag-screening.md",
             "rationale": "Dinilai di server dari jawaban mentah.",
             "source": "tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "16800f6565d38ce63f2b29546e711ead2df83bd6f2cf4ee33716078d49c3ea48"
         },
         {
             "id": "P-DA-01",
