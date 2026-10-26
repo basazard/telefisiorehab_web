@@ -830,11 +830,11 @@
             "prd_ref": "prd/10-clinical-review-and-licences.md",
             "rationale": "Keputusan pemilik: lisensi ditolak berarti instrumen diganti atau dimatikan. Menilai sit to stand tanpa Borg mengubah apa yang dihitung sebagai keterbatasan.",
             "source": "PRD 10 W6 (lisensi instrumen); sumber klinis tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "aad245980e4908a08dca4b99635cb16185a5c2b10b313b260abc33c59c402481"
         },
         {
             "id": "P-IN-20",
