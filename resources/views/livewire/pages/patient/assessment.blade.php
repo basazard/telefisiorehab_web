@@ -28,6 +28,13 @@ new #[Layout('layouts.onboarding')] class extends Component {
             return;
         }
 
+        // an instrument switched off since the assessment started (licence, PRD 10 W6) is replaced before the patient goes on
+        $available = Instruments::available($assessment->instruments ?? []);
+        if ($available !== ($assessment->instruments ?? [])) {
+            $assessment->update(['instruments' => $available]);
+            unset($this->assessment, $this->instruments);
+        }
+
         $this->answers = $assessment->answers ?? [];
         foreach ($this->instruments as $key) {
             $this->answers[$key] = array_replace(Instruments::blank($key), $this->answers[$key] ?? []);
@@ -154,7 +161,7 @@ new #[Layout('layouts.onboarding')] class extends Component {
     <div>
         <div class="flex justify-between text-xs text-muted-foreground">
             <span>Langkah {{ $step }} dari {{ $total }}</span>
-            <span>{{ $key ? \App\Support\Onboarding\Instruments::TITLES[$key] : 'Penilaian oleh fisioterapis' }}</span>
+            <span>{{ $key ? \App\Support\Onboarding\Instruments::title($key) : 'Penilaian oleh fisioterapis' }}</span>
         </div>
         <div class="mt-2 h-2 overflow-hidden rounded-full bg-muted">
             <div class="h-full rounded-full bg-primary transition-all" style="width: {{ (int) round($step / $total * 100) }}%"></div>

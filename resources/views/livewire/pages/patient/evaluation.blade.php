@@ -49,11 +49,11 @@ new class extends Component {
         return auth()->user()->patient->currentProgram()?->load('assessment');
     }
 
-    /** @return string[] the self-report instruments of the baseline assessment */
+    /** @return string[] the self-report instruments of the baseline assessment, without the ones switched off (licence) */
     #[Computed]
     public function instruments(): array
     {
-        return $this->program?->assessment?->instruments ?? [];
+        return Instruments::active($this->program?->assessment?->instruments ?? []);
     }
 
     #[Computed]
@@ -293,7 +293,7 @@ new class extends Component {
         <div>
             <div class="flex justify-between text-xs text-muted-foreground">
                 <span>Langkah {{ $step }} dari {{ $total }}</span>
-                <span>{{ $key ? \App\Support\Onboarding\Instruments::TITLES[$key] : 'Kondisi umum' }}</span>
+                <span>{{ $key ? \App\Support\Onboarding\Instruments::title($key) : 'Kondisi umum' }}</span>
             </div>
             <div class="mt-2 h-2 overflow-hidden rounded-full bg-muted">
                 <div class="h-full rounded-full bg-primary transition-all" style="width: {{ (int) round($step / $total * 100) }}%"></div>

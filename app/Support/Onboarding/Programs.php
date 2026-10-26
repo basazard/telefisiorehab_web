@@ -88,7 +88,7 @@ final class Programs
         $answers = array_intersect_key($answers, array_flip($instruments));
 
         $comparison = Monitoring::compare($instruments, $assessment->answers ?? [], $answers, (int) $assessment->pain, $general['pain']);
-        $risk = RiskStratification::stratify($instruments, $answers, $general['pain']);
+        $risk = RiskStratification::stratify(Instruments::active($instruments), $answers, $general['pain']);
 
         $lastImprovement = $program->evaluations()->where('improved', true)->latest('id')->first()?->created_at
             ?? $program->starts_on ?? $program->created_at;

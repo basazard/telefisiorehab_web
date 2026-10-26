@@ -7,6 +7,9 @@
 
 $register = env('CLINICAL_REGISTER_PATH', base_path('prd/clinical/parameters.json'));
 
+// A switch that is not set (or left empty) stays on.
+$on = fn (string $key): bool => in_array(env($key), [null, ''], true) ? true : filter_var(env($key), FILTER_VALIDATE_BOOL);
+
 return [
 
     // Register file (tests point it elsewhere).
@@ -22,5 +25,13 @@ return [
     'signoff_required' => in_array(env('CLINICAL_SIGNOFF_REQUIRED'), [null, ''], true)
         ? env('APP_ENV') === 'production'
         : filter_var(env('CLINICAL_SIGNOFF_REQUIRED'), FILTER_VALIDATE_BOOL),
+
+    // Licensed instruments (PRD 10 W6, prd/legal/instrument-licences.md). Switch one off when its licence is refused:
+    // ODI / SPADI off: PSFS is used for that area. Borg off: the sit-to-stand is judged on repetitions only.
+    'instruments' => [
+        'odi' => ['enabled' => $on('CLINICAL_ODI_ENABLED')],
+        'spadi' => ['enabled' => $on('CLINICAL_SPADI_ENABLED')],
+        'borg' => ['enabled' => $on('CLINICAL_BORG_ENABLED')],
+    ],
 
 ];

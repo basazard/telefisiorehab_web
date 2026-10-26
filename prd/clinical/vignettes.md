@@ -1,6 +1,6 @@
 # Contoh Kasus untuk Review Klinis TeleFisioRehab
 
-Versi aturan klinis: **2026.1-draft** · 24 kasus · dihitung oleh kode aplikasi yang sebenarnya (`php artisan clinical:vignettes`).
+Versi aturan klinis: **2026.1-draft** · 28 kasus · dihitung oleh kode aplikasi yang sebenarnya (`php artisan clinical:vignettes`).
 
 Setiap kasus menunjukkan masukan pasien dan hasil yang diberikan aplikasi. Mohon nilai apakah hasilnya sesuai secara klinis.
 Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
@@ -435,7 +435,102 @@ Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
 
 [ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
 
-## Kasus 19. Monitoring: membaik
+## Kasus 19. Lisensi: ODI dimatikan, punggung bawah
+
+**Masukan**
+
+- Switch lisensi: ODI dimatikan
+- Usia 50 tahun, laki-laki, pekerjaan: Pekerja kantor
+- Kondisi khusus: tidak ada
+- Keluhan: Nyeri · area: Punggung bawah · nyeri tertinggi 4/10
+- Red flag: semua Tidak
+- PSFS: 2 aktivitas, rata-rata 5.5/10
+
+**Hasil aplikasi**
+
+- Red flag: tidak ada, lanjut.
+- Kelompok khusus: Assessment sesuai domain
+- Domain: **Muskuloskeletal** (Keluhan nyeri, kekakuan, atau gerak pada otot dan sendi)
+- Instrumen: PSFS 5.5/10
+- Keterbatasan fungsi atau risiko: Ya (Nyeri 4/10 (NRS dari screening awal); PSFS rata-rata 5.5/10: aktivitas penting masih terganggu)
+- Kategori risiko: **Risiko Sedang** (Skala nyeri (NRS) 4/10 → Risiko Sedang; PSFS – Aktivitas yang terganggu 5.5/10 → Risiko Sedang)
+- Jalur: **Terbimbing** · evaluasi setiap 2 minggu
+- Program (level 1): Pelvic tilt 2 × 8 repetisi; Cat–camel 2 × 8 repetisi; Bridging (angkat panggul) 2 × 8 repetisi; Bird dog 2 × 8 repetisi
+- Edukasi utama: Manajemen nyeri: "Nyeri saat latihan boleh sampai ringan (≤ 3/10) dan harus mereda dalam 24 jam."
+
+[ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
+
+## Kasus 20. Lisensi: SPADI dimatikan, bahu
+
+**Masukan**
+
+- Switch lisensi: SPADI dimatikan
+- Usia 55 tahun, perempuan, pekerjaan: Pekerja kantor
+- Kondisi khusus: tidak ada
+- Keluhan: Nyeri · area: Bahu kanan · nyeri tertinggi 3/10
+- Red flag: semua Tidak
+- PSFS: 1 aktivitas, rata-rata 6/10
+
+**Hasil aplikasi**
+
+- Red flag: tidak ada, lanjut.
+- Kelompok khusus: Assessment sesuai domain
+- Domain: **Muskuloskeletal** (Keluhan nyeri, kekakuan, atau gerak pada otot dan sendi)
+- Instrumen: PSFS 6/10
+- Keterbatasan fungsi atau risiko: Ya (PSFS rata-rata 6/10: aktivitas penting masih terganggu)
+- Kategori risiko: **Risiko Sedang** (Skala nyeri (NRS) 3/10 → Risiko Rendah; PSFS – Aktivitas yang terganggu 6/10 → Risiko Sedang)
+- Jalur: **Terbimbing** · evaluasi setiap 2 minggu
+- Program (level 1): Pendulum bahu 2 × 8 repetisi; Jari merambat di dinding 2 × 8 repetisi; Push-up ke dinding 2 × 8 repetisi
+- Edukasi utama: Manajemen nyeri: "Nyeri saat latihan boleh sampai ringan (≤ 3/10) dan harus mereda dalam 24 jam."
+
+[ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
+
+## Kasus 21. Lisensi: Borg CR10 dimatikan, kardiopulmonal
+
+**Masukan**
+
+- Switch lisensi: Borg CR10 dimatikan
+- Usia 62 tahun, laki-laki, pekerjaan: Pekerja kantor
+- Kondisi khusus: Penyakit paru
+- Keluhan: Sesak / kelelahan saat aktivitas · area: tidak spesifik · nyeri tertinggi 0/10
+- Red flag: semua Tidak
+- mMRC: Grade 1
+- 1-minute sit to stand: 18 kali
+- Tanda vital: Dalam batas normal
+
+**Hasil aplikasi**
+
+- Red flag: tidak ada, lanjut.
+- Kelompok khusus: Screening risiko jatuh & fungsi dasar
+- Domain: **Kardiopulmonal** (Keluhan sesak / kelelahan saat aktivitas)
+- Instrumen: mMRC Grade 1; 1-minute sit to stand 18 kali; Tanda vital Dalam batas normal
+- Keterbatasan fungsi atau risiko: Ya (Sit to stand 18 kali: toleransi aktivitas menurun)
+- Kategori risiko: **Risiko Sedang** (Skala nyeri (NRS) 0/10 → Risiko Rendah; Modified MRC Dyspnea Scale Grade 1 → Risiko Rendah; 1-minute sit to stand 18 kali → Risiko Sedang; Tanda vital saat istirahat Dalam batas normal → Risiko Rendah)
+- Jalur: **Terbimbing** · evaluasi setiap 2 minggu
+- Program (level 1): Pernapasan diafragma 2 × 8 repetisi; Pursed-lip breathing 2 × 8 repetisi; Pompa pergelangan kaki 2 × 8 repetisi; Geser tumit (heel slide) 2 × 8 repetisi; Angkat tungkai lurus 2 × 8 repetisi; Duduk–berdiri dari kursi 2 × 8 repetisi
+- Edukasi utama: Manajemen nyeri: "Nyeri saat latihan boleh sampai ringan (≤ 3/10) dan harus mereda dalam 24 jam."
+
+[ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
+
+## Kasus 22. Lisensi: ODI dimatikan saat monitoring (baseline dengan ODI)
+
+**Masukan**
+
+- Switch lisensi: ODI dimatikan
+- Program terbimbing (Risiko Sedang), muskuloskeletal punggung bawah, level 1, kepatuhan 80 %, 0 minggu tanpa perbaikan
+- Awal: nyeri 6/10; ODI: 10 item, skor 50%
+- Sekarang: nyeri 4/10; ODI: dinonaktifkan (lisensi); perubahan menurut pasien: lebih baik
+
+**Hasil aplikasi**
+
+- Perbandingan: Skala nyeri (NRS) 6/10 → 4/10 (bermakna, membaik); ODI – Disabilitas punggung bawah 50% → dinonaktifkan (lisensi) (tidak bermakna)
+- Kategori risiko sekarang: Risiko Sedang
+- Keputusan: **Lanjutkan program (progresif)**
+- Tindak lanjut program: level 1 → 2 dan satu variasi latihan
+
+[ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
+
+## Kasus 23. Monitoring: membaik
 
 **Masukan**
 
@@ -452,7 +547,7 @@ Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
 
 [ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
 
-## Kasus 20. Monitoring: sama saja, kepatuhan baik
+## Kasus 24. Monitoring: sama saja, kepatuhan baik
 
 **Masukan**
 
@@ -469,7 +564,7 @@ Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
 
 [ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
 
-## Kasus 21. Monitoring: sama saja, kepatuhan rendah
+## Kasus 25. Monitoring: sama saja, kepatuhan rendah
 
 **Masukan**
 
@@ -486,7 +581,7 @@ Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
 
 [ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
 
-## Kasus 22. Monitoring: tanpa perbaikan 4 minggu
+## Kasus 26. Monitoring: tanpa perbaikan 4 minggu
 
 **Masukan**
 
@@ -503,7 +598,7 @@ Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
 
 [ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
 
-## Kasus 23. Monitoring: memburuk drastis
+## Kasus 27. Monitoring: memburuk drastis
 
 **Masukan**
 
@@ -520,7 +615,7 @@ Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.
 
 [ ] Sesuai  [ ] Tidak sesuai, karena ________________________________
 
-## Kasus 24. Monitoring: tujuan tercapai
+## Kasus 28. Monitoring: tujuan tercapai
 
 **Masukan**
 

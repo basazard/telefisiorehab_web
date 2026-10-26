@@ -9,7 +9,7 @@
 
 <div class="space-y-6">
             <div>
-                <h2 class="text-lg font-bold">{{ \App\Support\Onboarding\Instruments::TITLES[$key] }}</h2>
+                <h2 class="text-lg font-bold">{{ \App\Support\Onboarding\Instruments::title($key) }}</h2>
                 <p class="text-sm text-muted-foreground">{{ \App\Support\Onboarding\Instruments::INTROS[$key] }}</p>
             </div>
 
@@ -148,7 +148,7 @@
             </div>
         @endif
 
-        {{-- 1-minute sit to stand + Borg --}}
+        {{-- 1-minute sit to stand (+ Borg while licensed) --}}
         @if ($key === 'sts')
             <div class="space-y-5">
                 <label class="flex items-center gap-2 text-sm">
@@ -157,6 +157,8 @@
                 @unless ($a['unable'] ?? false)
                     <x-ui.input label="Jumlah berdiri-duduk dalam 1 menit" type="number" min="0" max="100" inputmode="numeric" class="max-w-40"
                                 wire:model.blur="answers.sts.reps" />
+                    {{-- Borg CR10 only while licensed (PRD 10 W6) --}}
+                    @if (\App\Support\Onboarding\Instruments::enabled('borg'))
                     <div>
                         <x-ui.label>Seberapa sesak Anda setelah tes? (Borg 0–10)</x-ui.label>
                         <div class="mt-2 grid grid-cols-11 gap-1">
@@ -168,6 +170,7 @@
                         <p class="mt-1 flex justify-between text-[11px] text-muted-foreground"><span>Tidak sesak</span><span>Maksimal</span></p>
                         @error('answers.sts.borg') <p class="mt-1.5 text-xs text-destructive">{{ $message }}</p> @enderror
                     </div>
+                    @endif
                 @endunless
             </div>
         @endif

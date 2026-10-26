@@ -114,7 +114,7 @@ new #[Layout('layouts.onboarding')] class extends Component {
                     <ul class="mt-2 space-y-1 text-sm text-muted-foreground">
                         <li>Skala nyeri (NRS) dari screening awal</li>
                         @foreach ($instruments as $key)
-                            <li>{{ \App\Support\Onboarding\Instruments::TITLES[$key] }}</li>
+                            <li>{{ \App\Support\Onboarding\Instruments::title($key) }}</li>
                         @endforeach
                     </ul>
                 @else

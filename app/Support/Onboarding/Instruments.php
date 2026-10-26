@@ -192,6 +192,56 @@ final class Instruments
         'infection' => 'Ada kemerahan, terasa panas, bengkak bertambah, atau keluar cairan/nanah',
     ];
 
+    // ---------------------------------------------------------------- licence switches (PRD 10 W6)
+
+    /**
+     * Whether a licensed instrument may be used: odi, spadi or borg (config/clinical.php). Every other key is always on.
+     *
+     * @clinical P-IN-19
+     */
+    public static function enabled(string $key): bool
+    {
+        // the pure rules also run without the app (unit tests): then every instrument is on, the default
+        if (! app()->bound('config')) {
+            return true;
+        }
+
+        return (bool) config("clinical.instruments.$key.enabled", true);
+    }
+
+    /**
+     * The instruments of a NEW or unfinished assessment: an area questionnaire that is switched off becomes PSFS.
+     *
+     * @param string[] $keys
+     * @return string[]
+     * @clinical P-IN-20
+     */
+    public static function available(array $keys): array
+    {
+        $keys = array_map(fn (string $k) => in_array($k, ['odi', 'spadi'], true) && ! self::enabled($k) ? 'psfs' : $k, $keys);
+
+        return array_values(array_unique($keys));
+    }
+
+    /**
+     * The instruments a monitoring re-runs: the baseline's, without the switched-off ones (no baseline to compare a
+     * replacement with). Nyeri, global change and the other instruments still decide.
+     *
+     * @param string[] $keys
+     * @return string[]
+     * @clinical P-IN-21
+     */
+    public static function active(array $keys): array
+    {
+        return array_values(array_filter($keys, fn (string $k) => ! in_array($k, ['odi', 'spadi'], true) || self::enabled($k)));
+    }
+
+    /** The title shown to people: no "Borg" while the Borg CR10 is switched off. */
+    public static function title(string $key): string
+    {
+        return $key === 'sts' && ! self::enabled('borg') ? '1-minute sit to stand' : self::TITLES[$key];
+    }
+
     /** Empty answers for one instrument, so the form has every key it binds to. */
     public static function blank(string $key): array
     {
@@ -267,7 +317,7 @@ final class Instruments
                 $unable = (bool) ($a['unable'] ?? false);
                 $rules["$p.unable"] = ['boolean'];
                 $rules["$p.reps"] = [Rule::excludeIf($unable), 'required', 'integer', 'between:0,100'];
-                $rules["$p.borg"] = [Rule::excludeIf($unable), 'required', 'integer', 'between:0,10'];
+                $rules["$p.borg"] = [Rule::excludeIf($unable || ! self::enabled('borg')), 'required', 'integer', 'between:0,10'];
                 break;
             case 'vitals':
                 $rules["$p.spo2"] = ['nullable', 'integer', 'between:50,100'];
@@ -360,6 +410,9 @@ final class Instruments
                     return $result(null, 'Tidak dapat dilakukan', true, '1-minute sit to stand tidak dapat dilakukan: toleransi aktivitas rendah');
                 }
                 $reps = (int) $a['reps'];
+                if (! self::enabled('borg')) {                // Borg CR10 switched off (licence): repetitions only
+                    return $result($reps, "$reps kali", $reps < self::STS_LIMIT, "Sit to stand $reps kali: toleransi aktivitas menurun");
+                }
                 $borg = (int) $a['borg'];
                 $limited = $reps < self::STS_LIMIT || $borg >= self::BORG_LIMIT;
 

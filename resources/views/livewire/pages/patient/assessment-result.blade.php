@@ -49,7 +49,7 @@ new #[Layout('layouts.onboarding')] class extends Component {
             </li>
             @foreach ($a->scores ?? [] as $key => $score)
                 <li class="flex items-center justify-between gap-3 py-3 text-sm">
-                    <span>{{ \App\Support\Onboarding\Instruments::TITLES[$key] }}</span>
+                    <span>{{ \App\Support\Onboarding\Instruments::title($key) }}</span>
                     <span class="flex items-center gap-2 text-right font-medium">{{ $score['display'] }}
                         @if ($score['limited']) <x-ui.badge variant="destructive">Perlu perhatian</x-ui.badge> @endif
                     </span>

@@ -54,7 +54,7 @@ final class RiskStratification
             $score = Instruments::score($key, $a);
             [$tier, $emergency] = self::instrument($key, $a, $score);
 
-            $items[$key] = ['label' => Instruments::TITLES[$key], 'display' => $score['display'], 'tier' => $tier->value];
+            $items[$key] = ['label' => Instruments::title($key), 'display' => $score['display'], 'tier' => $tier->value];
             if ($emergency) {
                 $emergencies[] = $emergency;
             }
@@ -89,7 +89,8 @@ final class RiskStratification
             'steadi' => [self::band($v >= self::STEADI_HIGH, $moderate), null],
             'tug' => [self::band(($a['unable'] ?? false) || $v >= self::TUG_HIGH, $moderate), null],
             'mmrc' => [self::band($v >= self::MMRC_HIGH, $moderate), null],
-            'sts' => [self::band(($a['unable'] ?? false) || (int) $a['reps'] < self::STS_HIGH || (int) $a['borg'] >= self::BORG_HIGH, $moderate), null],
+            'sts' => [self::band(($a['unable'] ?? false) || (int) $a['reps'] < self::STS_HIGH
+                || (Instruments::enabled('borg') && (int) $a['borg'] >= self::BORG_HIGH), $moderate), null],
             'vitals' => (function () use ($a, $filled, $moderate) {
                 $critical = $filled('spo2') && (int) $a['spo2'] < Instruments::SPO2_URGENT;
                 $high = $critical

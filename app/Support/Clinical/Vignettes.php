@@ -68,6 +68,16 @@ final class Vignettes
             answers: ['odi' => self::odi(1.2)],
             note: 'Kehamilan belum punya screening atau domain sendiri: pasien diproses sebagai muskuloskeletal biasa.');
 
+        // ---------------------------------------------------------------- licence switches (PRD 10 W6)
+        $cases[] = self::switchedOff(['odi'], fn () => self::intake('Lisensi: ODI dimatikan, punggung bawah', age: 50, gender: 'male', complaints: ['pain'], regions: ['Lower Back'], pain: 4,
+            answers: ['psfs' => self::psfs([5, 6])]));
+        $cases[] = self::switchedOff(['spadi'], fn () => self::intake('Lisensi: SPADI dimatikan, bahu', age: 55, gender: 'female', complaints: ['pain'], regions: ['Right Shoulder'], pain: 3,
+            answers: ['psfs' => self::psfs([6])]));
+        $cases[] = self::switchedOff(['borg'], fn () => self::intake('Lisensi: Borg CR10 dimatikan, kardiopulmonal', age: 62, gender: 'male', conditions: ['lung_disease'], complaints: ['breathless'], regions: [], pain: 0,
+            answers: ['mmrc' => ['grade' => 1], 'sts' => ['unable' => false, 'reps' => 18, 'borg' => null], 'vitals' => ['spo2' => 96, 'hr' => 84, 'rr' => 18]]));
+        $cases[] = self::switchedOff(['odi'], fn () => self::monitoring('Lisensi: ODI dimatikan saat monitoring (baseline dengan ODI)', ['odi' => self::odi(2.5)], [],
+            basePain: 6, pain: 4, globalChange: 'better', level: 1, area: 'punggung bawah'));
+
         // ---------------------------------------------------------------- monitoring (PRD 07): knee, baseline LEFS 45/80, NRS 5
         $baseline = ['lefs' => self::lefs(2, 45)];
         $cases[] = self::monitoring('Monitoring: membaik', $baseline, ['lefs' => self::lefs(3, 60)], basePain: 5, pain: 3, globalChange: 'better', level: 1);
@@ -161,17 +171,17 @@ final class Vignettes
     // ---------------------------------------------------------------- monitoring
 
     private static function monitoring(string $title, array $baseline, array $now, int $basePain, int $pain, string $globalChange, int $level,
-        int $adherence = 80, int $weeks = 0): array
+        int $adherence = 80, int $weeks = 0, string $area = 'lutut'): array
     {
         $instruments = array_keys($baseline);
         $inputs = [
-            'Program terbimbing (Risiko Sedang), muskuloskeletal lutut, level '.$level.', kepatuhan '.$adherence.' %, '.$weeks.' minggu tanpa perbaikan',
+            'Program terbimbing (Risiko Sedang), muskuloskeletal '.$area.', level '.$level.', kepatuhan '.$adherence.' %, '.$weeks.' minggu tanpa perbaikan',
             "Awal: nyeri $basePain/10; ".implode('; ', array_map(fn ($k) => self::describeAnswers($k, $baseline[$k]), $instruments)),
-            "Sekarang: nyeri $pain/10; ".implode('; ', array_map(fn ($k) => self::describeAnswers($k, $now[$k]), $instruments)).'; perubahan menurut pasien: '.Str::lower(ProgramEvaluation::GLOBAL_CHANGE[$globalChange]),
+            "Sekarang: nyeri $pain/10; ".implode('; ', array_map(fn ($k) => isset($now[$k]) ? self::describeAnswers($k, $now[$k]) : self::name($k).': dinonaktifkan (lisensi)', $instruments)).'; perubahan menurut pasien: '.Str::lower(ProgramEvaluation::GLOBAL_CHANGE[$globalChange]),
         ];
 
         $comparison = Monitoring::compare($instruments, $baseline, $now, $basePain, $pain);
-        $risk = RiskStratification::stratify($instruments, $now, $pain);
+        $risk = RiskStratification::stratify(Instruments::active($instruments), $now, $pain);
         $decision = Monitoring::decide($comparison, $pain, $globalChange, false, false, $risk['tier'], $risk['emergencies'] !== [], $weeks);
 
         $outputs = [
@@ -192,6 +202,26 @@ final class Vignettes
     }
 
     // ---------------------------------------------------------------- helpers
+
+    /** Runs a case with licensed instruments switched off, then restores the configuration. @param string[] $keys */
+    private static function switchedOff(array $keys, callable $case): array
+    {
+        $before = config('clinical.instruments');
+        foreach ($keys as $key) {
+            config(["clinical.instruments.$key.enabled" => false]);
+        }
+
+        try {
+            $result = $case();
+        } finally {
+            config(['clinical.instruments' => $before]);
+        }
+
+        $names = ['odi' => 'ODI', 'spadi' => 'SPADI', 'borg' => 'Borg CR10'];
+        array_unshift($result['inputs'], 'Switch lisensi: '.implode(', ', array_map(fn ($k) => $names[$k], $keys)).' dimatikan');
+
+        return $result;
+    }
 
     /** The program the system would generate, with its doses. @return string[] */
     private static function program(RiskTier $tier, $domain, array $regions, string $pathwayKey, int $level): array

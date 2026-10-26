@@ -2,7 +2,10 @@
 
 > PRD 10 W6 langkah 1. Dokumen ini **bukan nasihat hukum**. Semua "titik awal" di bawah berasal dari PRD 10 dan harus diverifikasi langsung ke pemegang hak.
 > Sel yang belum diketahui ditulis "tidak diketahui". Pemilik memperbarui kolom status, kontak, tanggal, biaya, atribusi dan masa berlaku setelah menghubungi pemegang hak.
-> Switch untuk mematikan instrumen (`config/clinical.php`) belum dibuat; itu langkah berikutnya W6.
+> **Switch (W6 langkah 3):** ODI, SPADI dan Borg CR10 bisa dimatikan di `.env` server: `CLINICAL_ODI_ENABLED=false`, `CLINICAL_SPADI_ENABLED=false`,
+> `CLINICAL_BORG_ENABLED=false` (lalu `php artisan config:cache`). ODI/SPADI mati: area itu memakai PSFS. Borg mati: 1-minute sit to stand dinilai dari
+> jumlah repetisi saja dan kata "Borg" hilang dari layar (pertanyaan pengganti hanya dengan teks dan cut-off yang disetujui reviewer).
+> Monitoring program yang baseline-nya memakai instrumen yang dimatikan melewati instrumen itu. Status di bawah tetap ditentukan pemilik.
 
 ## Penggunaan oleh aplikasi (berlaku untuk semua instrumen pasien di bawah)
 

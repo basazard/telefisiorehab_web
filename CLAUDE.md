@@ -70,6 +70,8 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   W5 done: `clinical:gate` (config `clinical.signoff_required`, production by default) runs in `deploy.sh` before
   maintenance mode; `ALLOW_UNREVIEWED=1` overrides and is logged; CI only warns until the repo variable
   `CLINICAL_STRICT=true`. New assessments and programs store `clinical_version` (`config('clinical.version')`).
+  W6 switches: `config('clinical.instruments.{odi,spadi,borg}.enabled')` (env `CLINICAL_*_ENABLED`, default on);
+  `Instruments::enabled/available/active/title()`. Show instrument names through `Instruments::title()`, never `TITLES[]`.
 - Red-flag questions and thresholds need clinical sign-off before launch. So do the domain mapping, the instrument
   cut-offs and the education text of the Clinical Assessment (all DRAFT, in `ClinicalAssessment` and `Instruments`),
   and the risk bands and emergency rules (DRAFT, in `RiskStratification`), and the exercise library, doses, education

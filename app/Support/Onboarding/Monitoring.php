@@ -79,6 +79,13 @@ final class Monitoring
         $items = ['nrs' => self::item('nrs', 'Skala nyeri (NRS)', $basePain, $pain, "$basePain/10", "$pain/10")];
 
         foreach ($instruments as $key) {
+            if (isset($baseline[$key]) && Instruments::active([$key]) === []) {      // switched off (licence): shown, not compared
+                $items[$key] = ['label' => Instruments::title($key), 'before' => Instruments::score($key, $baseline[$key])['display'],
+                    'after' => 'dinonaktifkan (lisensi)', 'change' => null, 'direction' => 'same', 'significant' => false];
+
+                continue;
+            }
+
             if (! isset(self::MCID[$key], $baseline[$key], $now[$key])) {
                 continue;
             }
@@ -86,7 +93,7 @@ final class Monitoring
             $before = Instruments::score($key, $baseline[$key]);
             $after = Instruments::score($key, $now[$key]);
 
-            $items[$key] = self::item($key, Instruments::TITLES[$key], self::value($key, $baseline[$key], $before),
+            $items[$key] = self::item($key, Instruments::title($key), self::value($key, $baseline[$key], $before),
                 self::value($key, $now[$key], $after), $before['display'], $after['display']);
         }
 

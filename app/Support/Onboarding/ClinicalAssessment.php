@@ -81,7 +81,8 @@ final class ClinicalAssessment
             'spadi' => $matches(self::SHOULDER),
         ]));
 
-        return $keys ?: ['psfs'];
+        // a licensed questionnaire that is switched off becomes PSFS (PRD 10 W6)
+        return Instruments::available($keys ?: ['psfs']);
     }
 
     /**
