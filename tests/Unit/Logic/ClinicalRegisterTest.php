@@ -70,8 +70,28 @@ it('resolves every location', function () {
     }
 });
 
-it('starts with every parameter as draft', function () {
-    expect(collect(Register::entries())->pluck('status')->unique()->all())->toBe(['draft']);
+it('records who approved a parameter, when, and the code it approved', function () {
+    $decisions = [];
+    $file = fopen(base_path('prd/clinical/decisions.csv'), 'r');
+    $header = fgetcsv($file);
+    while ($row = fgetcsv($file)) {
+        $decisions[$row[0]] = array_combine($header, $row);
+    }
+    fclose($file);
+
+    foreach (Register::entries() as $e) {
+        if ($e['status'] === 'draft') {
+            expect($e['approved_hash'])->toBeNull("{$e['id']} is draft but has an approval hash");
+
+            continue;
+        }
+
+        // only a signed decision approves a parameter (PRD 10 W4)
+        expect($decisions[$e['id']]['decision'] ?? null)->toBe('Setuju', "{$e['id']} is approved without a Setuju decision")
+            ->and($e['reviewer'])->toBe($decisions[$e['id']]['reviewer'])
+            ->and($e['reviewed_on'])->toBe($decisions[$e['id']]['date'])
+            ->and($e['approved_hash'])->toBe(Register::hash($e['location']), "{$e['id']}: the code changed after approval");
+    }
 });
 
 // ---------------------------------------------------------------- clinical:status
