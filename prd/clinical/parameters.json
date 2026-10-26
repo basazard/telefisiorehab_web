@@ -395,11 +395,11 @@
             "prd_ref": "prd/04-clinical-assessment.md",
             "rationale": "PSFS bila tidak ada instrumen khusus area yang cocok.",
             "source": "tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "7f043b2010935ad826e8f145f4a75ddb1e85ebe1acf1198cde13934603d4b248"
         },
         {
             "id": "P-DA-07",
