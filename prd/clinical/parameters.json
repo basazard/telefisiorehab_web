@@ -846,11 +846,11 @@
             "prd_ref": "prd/10-clinical-review-and-licences.md",
             "rationale": "PRD 04 sudah menyebut PSFS sebagai alternatif (dikutip di PRD 10).",
             "source": "PRD 10 W6 (lisensi instrumen); sumber klinis tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "60af7711b8130e22cabaa6643e6c427a77a8e002b3c44ac72e56a3ac7879990d"
         },
         {
             "id": "P-IN-21",
