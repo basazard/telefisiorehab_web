@@ -1641,11 +1641,11 @@
             "prd_ref": "prd/06-exercise-recommendation.md",
             "rationale": "tidak diketahui, perlu diisi",
             "source": "Pustaka bawaan ditulis untuk aplikasi (DRAFT); sumber klinis tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "98e67534770def2b1cd4a437a8f3eedd0e5d8e1f7dabb74eb7f065f77fb5ba40"
         },
         {
             "id": "P-PG-27",
