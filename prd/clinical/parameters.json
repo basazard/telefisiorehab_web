@@ -2590,11 +2590,11 @@
             "prd_ref": "prd/01-user-profile.md",
             "rationale": "tidak diketahui, perlu diisi",
             "source": "Batas 18,5 / 25 / 30; klasifikasi yang dipakai (WHO atau Kemenkes) tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "ed664b5816443633217bb1d904eee31cbd424ee5aa9f071b1d3ae7a9ef2e397a"
         },
         {
             "id": "P-GN-02",
