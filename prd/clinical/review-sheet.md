@@ -1,6 +1,6 @@
 # Lembar Review Parameter Klinis TeleFisioRehab
 
-Versi aturan klinis: **2026.1-draft** · jumlah parameter: **163** · dibuat otomatis dari `prd/clinical/parameters.json` (`php artisan clinical:review-sheet`).
+Versi aturan klinis: **2026.1** · jumlah parameter: **163** · dibuat otomatis dari `prd/clinical/parameters.json` (`php artisan clinical:review-sheet`).
 
 ## 1. Pengantar untuk reviewer
 

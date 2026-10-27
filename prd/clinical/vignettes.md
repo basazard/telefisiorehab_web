@@ -1,6 +1,6 @@
 # Contoh Kasus untuk Review Klinis TeleFisioRehab
 
-Versi aturan klinis: **2026.1-draft** · 28 kasus · dihitung oleh kode aplikasi yang sebenarnya (`php artisan clinical:vignettes`).
+Versi aturan klinis: **2026.1** · 28 kasus · dihitung oleh kode aplikasi yang sebenarnya (`php artisan clinical:vignettes`).
 
 Setiap kasus menunjukkan masukan pasien dan hasil yang diberikan aplikasi. Mohon nilai apakah hasilnya sesuai secara klinis.
 Instrumen hanya disebut nama dan skornya; isi pertanyaannya tidak dicantumkan.

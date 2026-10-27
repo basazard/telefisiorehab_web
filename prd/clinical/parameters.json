@@ -1,7 +1,7 @@
 {
     "schema": 1,
     "description": "Register parameter klinis TeleFisioRehab (PRD 10 W1). Sumber kebenaran untuk nilai dan aturan klinis; diperbarui hanya lewat keputusan reviewer (W4).",
-    "clinical_version": "2026.1-draft",
+    "clinical_version": "2026.1",
     "parameters": [
         {
             "id": "P-RF-01",
