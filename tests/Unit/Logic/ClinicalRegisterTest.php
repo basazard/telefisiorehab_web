@@ -116,6 +116,8 @@ function approvedEntry(array $o = []): array
 }
 
 it('fails --strict while parameters are draft', function () {
+    registerFile([approvedEntry(), approvedEntry(['id' => 'P-RF-18', 'status' => 'draft', 'approved_hash' => null])]);
+
     expect(Artisan::call('clinical:status', ['--strict' => true]))->toBe(1)
         ->and(Artisan::output())->toContain('not reviewed yet');
 

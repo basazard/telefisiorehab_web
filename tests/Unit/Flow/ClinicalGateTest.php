@@ -61,6 +61,12 @@ it('only reports when the sign-off is not required', function () {
 
 it('blocks the release while clinical rules are draft', function () {
     config(['clinical.signoff_required' => true]);
+    $register = Register::load();
+    $register['parameters'][0]['status'] = 'draft';                   // one rule back to draft
+    $register['parameters'][0]['approved_hash'] = null;
+    $path = tempnam(sys_get_temp_dir(), 'reg');
+    file_put_contents($path, json_encode($register));
+    Register::usePath($path);
 
     expect(Artisan::call('clinical:gate'))->toBe(1)->and(Artisan::output())->toContain('RELEASE BLOCKED');
 });
