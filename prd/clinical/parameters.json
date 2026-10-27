@@ -2873,11 +2873,11 @@
             "prd_ref": "prd/09-therapist-clinic-side.md",
             "rationale": "DRAFT dari PRD 09 S3.2.",
             "source": "tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
         },
         {
             "id": "P-ST-06",
