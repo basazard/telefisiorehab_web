@@ -2724,11 +2724,11 @@
             "prd_ref": "prd/05-scoring-risk-stratification.md",
             "rationale": "tidak diketahui, perlu diisi",
             "source": "tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "97ab1881446a9e69d801f1e9a4ab17d2b1df4e663d5f6eaba0e929c0cb41b03b"
         },
         {
             "id": "P-TX-04",
