@@ -2379,11 +2379,11 @@
             "prd_ref": "prd/07-monitoring-reassessment.md",
             "rationale": "Nilai = [perubahan minimal yang bermakna, arah yang lebih baik].",
             "source": "tidak diketahui, perlu diisi",
-            "status": "draft",
-            "reviewer": null,
-            "reviewed_on": null,
-            "comment": null,
-            "approved_hash": null
+            "status": "approved",
+            "reviewer": "Bagus Besar Bagaskara, Dokter Umum, STR 35 21 1 0 0 3 21 118160",
+            "reviewed_on": "2026-10-26",
+            "comment": "Disetujui hanya oleh satu reviewer (Dokter Umum). Review fisioterapis yang diwajibkan PRD 10 §2 dan §8 belum dilakukan; pemilik memutuskan menerapkan keputusan ini (opsi C, 2026-10-26).",
+            "approved_hash": "1364196c638d4d10db2d6f37d57d5475881f567650dc2a9c67f30ebdd3d32cc5"
         },
         {
             "id": "P-MO-15",
