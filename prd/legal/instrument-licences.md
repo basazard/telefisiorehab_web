@@ -19,9 +19,9 @@ serta kepada staf klinik (detail pasien, perbandingan progres). Teks pertanyaan 
 
 | Instrumen | Dipakai untuk | Status | Pemegang hak (perlu verifikasi) |
 | --- | --- | --- | --- |
-| ODI | Punggung bawah (pasien mengisi) | not started | Mapi Research Trust (titik awal) |
-| SPADI | Bahu (pasien mengisi) | not started | tidak diketahui |
-| Borg CR10 | Sesak setelah 1-minute sit to stand (pasien mengisi) | not started | Borg (borgperception.se, titik awal) |
+| ODI | Punggung bawah (pasien mengisi) | granted | Mapi Research Trust (titik awal) |
+| SPADI | Bahu (pasien mengisi) | granted | tidak diketahui |
+| Borg CR10 | Sesak setelah 1-minute sit to stand (pasien mengisi) | granted | Borg (borgperception.se, titik awal) |
 | LEFS | Tungkai bawah (pasien mengisi) | not started | tidak diketahui |
 | PSFS | Area lain dan olahraga (pasien mengisi) | not started | tidak diketahui |
 | Barthel Index | Neuromuskular dan geriatri (pasien atau pendamping mengisi) | not started | tidak diketahui |
@@ -46,12 +46,12 @@ Status yang dipakai: `not started`, `requested`, `granted`, `refused`, `replaced
 | Yang dilakukan aplikasi | menampilkan item, menghitung skor %, menyimpan jawaban, menampilkan hasil ke pasien dan staf |
 | Pemegang hak | titik awal: Mapi Research Trust (Lyon, Prancis) mendistribusikan lisensi versi 2.1a; perlu verifikasi |
 | Ketentuan penggunaan komersial | titik awal: halaman Mapi menyebut pengguna klinis dan akademik bisa mendapat lisensi tanpa biaya, pengguna komersial diminta membayar biaya lisensi; terjemahan harus dari set yang berlisensi. Perlu verifikasi |
-| Status | not started |
+| Status | **granted** (dicatat 2026-10-27 atas pernyataan pemilik; bukti tertulis dari pemegang hak belum dilampirkan) |
 | Kontak | titik awal: PROinformation@mapi-trust.org (tercantum pada kuesioner berlisensi); perlu verifikasi |
-| Tanggal diminta / dijawab | tidak diketahui |
-| Biaya | tidak diketahui |
-| Teks atribusi yang diwajibkan | tidak diketahui |
-| Masa berlaku | tidak diketahui |
+| Tanggal diminta / dijawab | belum dicatat |
+| Biaya | belum dicatat |
+| Teks atribusi yang diwajibkan | belum dicatat (perlu diisi; bila pemegang hak mewajibkan, teks ini harus ditampilkan di aplikasi, PRD 10 W6 langkah 5) |
+| Masa berlaku | belum dicatat |
 | Catatan | Teks terjemahan di aplikasi kemungkinan bukan dari set berlisensi; bila demikian perlu diganti dengan terjemahan resmi |
 
 ## SPADI (Shoulder Pain and Disability Index)
@@ -65,12 +65,12 @@ Status yang dipakai: `not started`, `requested`, `granted`, `refused`, `replaced
 | Yang dilakukan aplikasi | menampilkan item, menghitung skor %, menyimpan jawaban, menampilkan hasil ke pasien dan staf |
 | Pemegang hak | tidak diketahui; titik awal: cari halaman izin dari penulis asli |
 | Ketentuan penggunaan komersial | tidak diketahui; tanyakan apakah aplikasi komersial tercakup |
-| Status | not started |
+| Status | **granted** (dicatat 2026-10-27 atas pernyataan pemilik; bukti tertulis dari pemegang hak belum dilampirkan) |
 | Kontak | tidak diketahui |
-| Tanggal diminta / dijawab | tidak diketahui |
-| Biaya | tidak diketahui |
-| Teks atribusi yang diwajibkan | tidak diketahui |
-| Masa berlaku | tidak diketahui |
+| Tanggal diminta / dijawab | belum dicatat |
+| Biaya | belum dicatat |
+| Teks atribusi yang diwajibkan | belum dicatat (perlu diisi; bila pemegang hak mewajibkan, teks ini harus ditampilkan di aplikasi, PRD 10 W6 langkah 5) |
+| Masa berlaku | belum dicatat |
 | Catatan | |
 
 ## Borg CR10
@@ -84,12 +84,12 @@ Status yang dipakai: `not started`, `requested`, `granted`, `refused`, `replaced
 | Yang dilakukan aplikasi | menampilkan skala dan label, menyimpan jawaban, memakai nilai untuk keterbatasan dan kategori risiko, menampilkan hasil |
 | Pemegang hak | titik awal: situs penulis skala, borgperception.se; perlu verifikasi |
 | Ketentuan penggunaan komersial | tidak diketahui. Titik awal: penulis pernah keberatan secara terbuka terhadap perubahan teks skala tanpa izin, jadi versi parafrase berisiko |
-| Status | not started |
+| Status | **granted** (dicatat 2026-10-27 atas pernyataan pemilik; bukti tertulis dari pemegang hak belum dilampirkan) |
 | Kontak | tidak diketahui |
-| Tanggal diminta / dijawab | tidak diketahui |
-| Biaya | tidak diketahui |
-| Teks atribusi yang diwajibkan | tidak diketahui |
-| Masa berlaku | tidak diketahui |
+| Tanggal diminta / dijawab | belum dicatat |
+| Biaya | belum dicatat |
+| Teks atribusi yang diwajibkan | belum dicatat (perlu diisi; bila pemegang hak mewajibkan, teks ini harus ditampilkan di aplikasi, PRD 10 W6 langkah 5) |
+| Masa berlaku | belum dicatat |
 | Catatan | Label kata di aplikasi kemungkinan parafrase. Pengganti tanpa nama "Borg" hanya boleh dengan teks dan cut-off yang disetujui reviewer (PRD 10 W6) |
 
 ## LEFS (Lower Extremity Functional Scale)

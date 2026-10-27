@@ -2,7 +2,7 @@
 
 > **Status:** to build, in 4 slices · **Branches:** `feat/staff-s1` to `feat/staff-s4`, one pull request per slice
 >
-> **Status klinis:** nilai dan aturan klinis modul ini **disetujui 2026-10-26** (versi aturan `2026.1`, keputusan di `prd/clinical/decisions.csv`) oleh satu reviewer (Dokter Umum). **Review fisioterapis belum dilakukan** (PRD 10 §2 dan §8; keputusan pemilik, opsi C). Kata "DRAFT" di bawah menggambarkan status sebelum review.
+> **Status klinis:** nilai dan aturan klinis modul ini **disetujui 2026-10-26** (versi aturan `2026.1`, keputusan di `prd/clinical/decisions.csv`) oleh satu reviewer (Dokter Umum). PRD 10 §2 meminta fisioterapis; **pemilik memutuskan review Dokter Umum ini juga mewakili fisioterapi** (2026-10-27). Kata "DRAFT" di bawah menggambarkan status sebelum review.
 > **Repository:** `basazard/telefisiorehab_web` · **Stack:** PHP 8.3.4 (no PHP 8.4+ syntax), Laravel 13.17, Livewire 3.6 + Volt, Pest 4, Chart.js 4 (already installed), Windows + PowerShell
 > **Read first:** `CLAUDE.md`, `prd/03` (red flags), `05` (risk), `06` (program), `07` (monitoring). Do not change their clinical rules.
 

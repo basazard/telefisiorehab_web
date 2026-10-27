@@ -63,7 +63,7 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   covers the saddle area, the PRD 3 disclaimer lines are not shown. Pregnancy has no screening or domain of its own.
 - Clinical review (`prd/10-clinical-review-and-licences.md`): W1 to W6 done (tags `clinical-w1-done`, `clinical-signed`).
   All 163 parameters are `approved` (rule set `2026.1`, decisions in `prd/clinical/decisions.csv`), signed by ONE reviewer
-  (Dokter Umum); the physiotherapist review PRD 10 requires is still missing (owner chose to apply anyway, option C). Every clinical value, rule and safety text is in `prd/clinical/parameters.json` with an
+  (Dokter Umum); PRD 10 asks for a physiotherapist, the owner decided this GP review also covers physiotherapy (2026-10-27). Every clinical value, rule and safety text is in `prd/clinical/parameters.json` with an
   `@clinical P-XXX` tag in the code; adding, moving or changing one means updating the register (tests check both ways).
   Never change a clinical value or text except as a signed decision (W4). After a change, re-run
   `php artisan clinical:review-sheet` and `clinical:vignettes` (a test fails if the files are out of date).
@@ -73,9 +73,10 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   `CLINICAL_STRICT=true`. New assessments and programs store `clinical_version` (`config('clinical.version')`).
   W6 switches: `config('clinical.instruments.{odi,spadi,borg}.enabled')` (env `CLINICAL_*_ENABLED`, default on);
   `Instruments::enabled/available/active/title()`. Show instrument names through `Instruments::title()`, never `TITLES[]`.
-- Still open from PRD 10 §8: a physiotherapist review, the signed sheet stored outside the repo and named in the
-  register, and a licence status (granted / replaced / written owner decision) for ODI, SPADI and Borg CR10 in
-  `prd/legal/instrument-licences.md`. Any change to an approved value makes `clinical:status --strict` fail until re-approved.
+- Licences: ODI, SPADI and Borg CR10 recorded as `granted` on the owner's statement (2026-10-27); grant date, fee,
+  attribution text and expiry are not recorded yet in `prd/legal/instrument-licences.md`. Still open from PRD 10 §8: the
+  signed review sheet stored outside the repo and named in the register. Any change to an approved value makes
+  `clinical:status --strict` fail until re-approved.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,

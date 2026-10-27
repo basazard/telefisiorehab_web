@@ -4,7 +4,7 @@
 
 > **Status:** Terimplementasi (dengan fitur ditunda) · **PRD asli:** `Flow Sriyani/md/6_prd_modul_exercise_recommendation_telefisiorehab.md`
 >
-> **Status klinis:** nilai dan aturan klinis modul ini **disetujui 2026-10-26** (versi aturan `2026.1`, keputusan di `prd/clinical/decisions.csv`) oleh satu reviewer (Dokter Umum). **Review fisioterapis belum dilakukan** (PRD 10 §2 dan §8; keputusan pemilik, opsi C). Kata "DRAFT" di bawah menggambarkan status sebelum review.
+> **Status klinis:** nilai dan aturan klinis modul ini **disetujui 2026-10-26** (versi aturan `2026.1`, keputusan di `prd/clinical/decisions.csv`) oleh satu reviewer (Dokter Umum). PRD 10 §2 meminta fisioterapis; **pemilik memutuskan review Dokter Umum ini juga mewakili fisioterapi** (2026-10-27). Kata "DRAFT" di bawah menggambarkan status sebelum review.
 
 ---
 
