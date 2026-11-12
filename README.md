@@ -70,19 +70,23 @@ Other useful settings in `.env`: `APP_TIMEZONE` (default `Asia/Jakarta`), `APP_U
 
 ## Email setup
 
-The app sends email for password reset ("Lupa kata sandi"). `.env.example` only has empty SMTP placeholders.
+The app sends email for account verification (required before using the app), password reset and staff invitations.
+Emails are in Indonesian and never contain a patient name or clinical details. Mail is sent synchronously: there is no
+queue worker on Hostinger (`QUEUE_CONNECTION=sync`). If sending fails, the action still completes and one line
+`mail.failed` (user id and error class only) is written to the log.
 
-1. Pick a provider: a transactional email service (for example Mailgun, Postmark, Brevo or Amazon SES) or the SMTP server
-   of your mail host. Get the SMTP host, port, username and password, and a sender address the provider allows.
-2. Fill `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` and `MAIL_FROM_ADDRESS` in your local `.env` only.
-   Never commit `.env` or put credentials in `.env.example`. For port 465 (SSL) set `MAIL_SCHEME=smtps`; for 587 leave
-   `MAIL_SCHEME=null` (STARTTLS is used automatically). This Laravel version ignores `MAIL_ENCRYPTION`.
-3. Run `php artisan config:clear`.
-4. Test it: register an account with an inbox you can read, log out, open `/forgot-password`, enter that email and check
-   that the reset email arrives (also look in the spam folder).
+- **Locally:** keep `MAIL_MAILER=log`; emails are written to `storage/logs/laravel.log`.
+- **On a server (staging, pilot):** use the Hostinger mailbox, in that server's `.env` only (never commit credentials):
+  `MAIL_MAILER=smtp`, `MAIL_HOST=smtp.hostinger.com`, `MAIL_PORT=465`, `MAIL_USERNAME` = the full mailbox address,
+  `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS` = the same address. Leave `MAIL_SCHEME` empty: Laravel uses SSL on 465 and STARTTLS
+  on 587. This Laravel version ignores `MAIL_ENCRYPTION`.
+- **Staging only:** set `MAIL_ALWAYS_TO` to your own address; every email then goes only there (the original recipients
+  are in the `X-Original-To` header). Never set it on the pilot site.
+- After changing `.env` on a server run `php artisan config:cache`, then `php artisan mail:test you@example.com`. It sends a
+  test message, prints the settings it used (never the password) and records the time of the last success in
+  `storage/app/last-mail-test`.
 
-While developing without a provider, set `MAIL_MAILER=log`: emails are written to `storage/logs/laravel.log` instead of
-being sent. Tests always use `MAIL_MAILER=array` (see `phpunit.xml`), so they never send real email.
+Tests always use `MAIL_MAILER=array` (see `phpunit.xml`), so they never send real email.
 
 ## Tests
 

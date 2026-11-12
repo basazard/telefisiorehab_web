@@ -7,11 +7,11 @@ use App\Models\Clinic;
 use App\Models\StaffInvitation;
 use App\Models\User;
 use App\Notifications\StaffInvitationNotification;
+use App\Support\SafeMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Throwable;
 
 /**
  * Inviting a therapist to a clinic (PRD 09 S4.2). The link carries a random token; only its SHA-256 hash is
@@ -102,15 +102,8 @@ class Invitations
             return false;
         }
 
-        try {
-            Notification::route('mail', $invitation->email)->notifyNow(new StaffInvitationNotification($clinic->name, $url, $invitation->expires_at));
-
-            return true;
-        } catch (Throwable $e) {
-            report($e);
-
-            return false;
-        }
+        return SafeMail::send(fn () => Notification::route('mail', $invitation->email)
+            ->notifyNow(new StaffInvitationNotification($clinic->name, $url, $invitation->expires_at)), $invitation->invited_by);
     }
 
     private static function hash(string $token): string

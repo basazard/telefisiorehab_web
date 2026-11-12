@@ -115,4 +115,11 @@ return [
         'name' => env('MAIL_FROM_NAME', env('APP_NAME', 'Laravel')),
     ],
 
+    /*
+    | Staging only (PRD 11): when set, every outgoing email goes to this one address instead of its recipients
+    | (AppServiceProvider). Never set it on the pilot site; `pilot:check` fails when it is set in production.
+    */
+
+    'always_to' => env('MAIL_ALWAYS_TO') ?: null,
+
 ];

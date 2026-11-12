@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Enums\Role;
+use App\Support\SafeMail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -40,6 +41,18 @@ class User extends Authenticatable implements MustVerifyEmail
             'role' => Role::class,
             'deactivated_at' => 'datetime',
         ];
+    }
+
+    /** Registration and "resend": a mail failure is logged and never breaks the action (PRD 11 E1). */
+    public function sendEmailVerificationNotification(): void
+    {
+        SafeMail::send(fn () => parent::sendEmailVerificationNotification(), $this->id);
+    }
+
+    /** Forgot password: a mail failure is logged and never breaks the page (PRD 11 E1). */
+    public function sendPasswordResetNotification(#[\SensitiveParameter] $token): void
+    {
+        SafeMail::send(fn () => parent::sendPasswordResetNotification($token), $this->id);
     }
 
     public function patient(): HasOne
