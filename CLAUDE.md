@@ -88,6 +88,11 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   is a route (no static file). An https APP_URL forces https URLs and a secure session cookie. Indonesian, self-contained
   error pages in `resources/views/errors` (no DB/session/Vite). Database errors are logged as `database.error` with the
   SQL placeholders only. Demo seeders call `DemoSeeder::guard()` (local, staging, testing only).
+  E3 done: `clinics.join_code` (`Clinic::findByJoinCode/regenerateJoinCode/registerUrl`, team page shows and renews it).
+  `App\Support\Registration::mode()`: clinic_code (default, code required), open (optional), closed (invitations only;
+  register links hidden). Registration is throttled per IP. First accounts: `pilot:create-admin`, `pilot:create-clinic`
+  (idempotent, `--resend`; `App\Support\FirstAccounts`, `SetPasswordNotification`); never print a password or the link.
+  Setting a password through an emailed link marks the email verified.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,

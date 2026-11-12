@@ -13,6 +13,7 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    config(['pilot.registration_mode' => 'open']);      // no clinic code (PRD 11 E3 tests cover the code)
     $component = Volt::test('pages.auth.register')
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')

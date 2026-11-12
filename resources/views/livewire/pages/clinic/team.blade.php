@@ -52,6 +52,16 @@ new class extends Component {
             ->latest()->with('inviter:id,name')->get();
     }
 
+    public function regenerateCode(): void
+    {
+        Gate::authorize('regenerateCode', $this->clinic);
+
+        $this->clinic->regenerateJoinCode();
+
+        unset($this->clinic);
+        $this->dispatch('toast', message: 'Kode klinik baru dibuat. Kode lama tidak berlaku lagi.', type: 'success');
+    }
+
     public function invite(): void
     {
         Gate::authorize('invite', $this->clinic);
@@ -119,6 +129,20 @@ new class extends Component {
 
 <div class="space-y-6">
     <x-page-header title="Tim klinik" :subtitle="'Fisioterapis dan admin '.$this->clinic->name.'.'" />
+
+    <x-panel title="Kode klinik untuk pasien" sub="Pasien memasukkan kode ini saat mendaftar, atau membuka tautan di bawah. Pasien yang mendaftar dengan kode ini masuk ke klinik Anda.">
+        <div class="flex flex-wrap items-center gap-3" x-data="{ copied: false }">
+            <code class="rounded-lg bg-muted px-3 py-2 font-mono text-lg font-bold tracking-widest">{{ $this->clinic->join_code }}</code>
+            <x-ui.button size="sm" variant="outline" x-on:click="navigator.clipboard.writeText(@js($this->clinic->registerUrl())); copied = true">
+                <span x-text="copied ? 'Tautan tersalin' : 'Salin tautan pendaftaran'">Salin tautan pendaftaran</span>
+            </x-ui.button>
+            <x-ui.button size="sm" variant="outline" wire:click="regenerateCode"
+                         wire:confirm="Buat kode baru? Kode lama langsung tidak berlaku, termasuk tautan yang sudah dibagikan.">
+                Buat kode baru
+            </x-ui.button>
+        </div>
+        <p class="mt-2 break-all text-xs text-muted-foreground">{{ $this->clinic->registerUrl() }}</p>
+    </x-panel>
 
     <x-panel title="Undang fisioterapis" :sub="'Tautan undangan berlaku '.Invitations::EXPIRES_DAYS.' hari dan hanya bisa dipakai sekali.'">
         <form wire:submit="invite" class="flex flex-wrap items-end gap-2">

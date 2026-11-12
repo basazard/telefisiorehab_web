@@ -130,6 +130,7 @@ it('never puts a patient name or clinical details in an email', function () {
 // ---------------------------------------------------------------- a mail failure never breaks an action
 
 it('still registers the account when the mail server fails, and logs without personal data', function () {
+    config(['pilot.registration_mode' => 'open']);      // no clinic code (PRD 11 E3 tests cover the code)
     failMail();
     Log::spy();
 

@@ -86,6 +86,7 @@ it('still rejects a wrong password', function () {
 });
 
 it('still registers a new account as a patient', function () {
+    config(['pilot.registration_mode' => 'open']);      // no clinic code (PRD 11 E3 tests cover the code)
     Volt::test('pages.auth.register')
         ->set('name', 'Budi Santoso')
         ->set('email', 'budi@example.com')
@@ -102,6 +103,7 @@ it('still registers a new account as a patient', function () {
 });
 
 it('sends a verification email when a new account registers', function () {
+    config(['pilot.registration_mode' => 'open']);      // no clinic code (PRD 11 E3 tests cover the code)
     Notification::fake();
 
     Volt::test('pages.auth.register')

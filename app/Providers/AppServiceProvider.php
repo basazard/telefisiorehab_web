@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Middleware\SecurityHeaders;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Mail\Events\MessageSending;
@@ -30,6 +31,20 @@ class AppServiceProvider extends ServiceProvider
         $this->secureOnHttps();
         $this->redirectMailOnStaging();
         $this->indonesianAuthMail();
+        $this->verifyOnPasswordReset();
+    }
+
+    /**
+     * Setting a password through an emailed link proves the inbox, so the email counts as verified (PRD 11 E3): an admin
+     * made by pilot:create-* reaches the dashboard without a second email.
+     */
+    private function verifyOnPasswordReset(): void
+    {
+        Event::listen(PasswordReset::class, function (PasswordReset $event) {
+            if (! $event->user->hasVerifiedEmail()) {
+                $event->user->markEmailAsVerified();
+            }
+        });
     }
 
     /**

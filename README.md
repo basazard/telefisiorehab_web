@@ -88,6 +88,20 @@ queue worker on Hostinger (`QUEUE_CONNECTION=sync`). If sending fails, the actio
 
 Tests always use `MAIL_MAILER=array` (see `phpunit.xml`), so they never send real email.
 
+## First accounts on a server
+
+Never seed a pilot or production database. Create the accounts with commands; each sends a set-password email (no
+password is ever printed), and running one again changes nothing (`--resend` sends a fresh link):
+
+```bash
+php artisan pilot:create-admin --name="Full Name" --email=you@example.com
+php artisan pilot:create-clinic "Klinik Sehat Jakarta" --admin-name="Full Name" --admin-email=admin@example.com
+```
+
+`pilot:create-clinic` prints the clinic code and the patient register link (`/register?clinic=CODE`). With
+`REGISTRATION_MODE=clinic_code` (the default) patients need that code to register; `closed` allows invitations only.
+The clinic admin sees the code on the Team page and can make a new one there.
+
 ## Tests
 
 ```powershell

@@ -15,6 +15,12 @@ class ClinicPolicy
         return $user->role === Role::ClinicAdmin && (int) $user->clinic_id === (int) $clinic->id;
     }
 
+    /** Make a new clinic code for patients; the old one stops working (PRD 11 E3). */
+    public function regenerateCode(User $user, Clinic $clinic): bool
+    {
+        return $this->manage($user, $clinic);
+    }
+
     /** Invite a new therapist to the clinic. */
     public function invite(User $user, Clinic $clinic): bool
     {

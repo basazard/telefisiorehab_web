@@ -27,6 +27,7 @@ return [
         'password_reset' => [5, 60],          // forgot-password requests per IP
         'verification_resend' => [3, 600],    // "kirim ulang email verifikasi" per user
         'consultation' => [5, 3600],          // consultation / referral requests per patient
+        'registration' => [10, 3600],         // new accounts per IP (stops guessing clinic codes)
     ],
 
 ];

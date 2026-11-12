@@ -65,7 +65,7 @@ new #[Layout('layouts.guest')] class extends Component
         </x-primary-button>
     </form>
 
-    @if (Route::has('register'))
+    @if (Route::has('register') && \App\Support\Registration::allowed())
         <p class="mt-6 text-center text-sm text-muted-foreground">
             Belum punya akun?
             <a href="{{ route('register') }}" wire:navigate class="font-medium text-primary hover:underline">Daftar</a>

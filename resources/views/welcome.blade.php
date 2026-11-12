@@ -33,7 +33,7 @@
                     @if (Route::has('login'))
                         <a href="{{ route('login') }}" class="rounded-lg px-4 py-2 text-sm font-medium text-foreground hover:bg-secondary">Masuk</a>
                     @endif
-                    @if (Route::has('register'))
+                    @if (Route::has('register') && \App\Support\Registration::allowed())
                         <a href="{{ route('register') }}" class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90">Daftar</a>
                     @endif
                 @endauth
@@ -64,7 +64,7 @@
                             <x-lucide-heart-pulse class="size-4" /> Lanjutkan program <x-lucide-arrow-right class="size-4" />
                         </a>
                     @else
-                        @if (Route::has('register'))
+                        @if (Route::has('register') && \App\Support\Registration::allowed())
                             <a href="{{ route('register') }}" class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-medium text-primary-foreground shadow-[var(--shadow-soft)] hover:opacity-95">
                                 <x-lucide-heart-pulse class="size-4" /> Mulai sebagai pasien <x-lucide-arrow-right class="size-4" />
                             </a>
