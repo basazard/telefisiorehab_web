@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Mime\Address;
 
@@ -25,8 +27,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->secureOnHttps();
         $this->redirectMailOnStaging();
         $this->indonesianAuthMail();
+    }
+
+    /**
+     * On a server with an https APP_URL (staging, pilot): every generated URL is https and the session cookie is
+     * secure-only, whatever the .env says about SESSION_SECURE_COOKIE (PRD 11 E2).
+     */
+    private function secureOnHttps(): void
+    {
+        if (SecurityHeaders::https()) {
+            URL::forceScheme('https');
+            config(['session.secure' => true]);
+        }
     }
 
     /**

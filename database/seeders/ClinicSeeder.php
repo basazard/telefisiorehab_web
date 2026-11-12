@@ -31,6 +31,8 @@ class ClinicSeeder extends Seeder
 
     public function run(): void
     {
+        DemoSeeder::guard();
+
         foreach (self::CLINICS as [$name, $slug]) {
             Clinic::query()->updateOrCreate(['slug' => $slug], ['name' => $name, 'status' => 'active']);
         }

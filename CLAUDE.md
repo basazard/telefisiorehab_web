@@ -83,6 +83,11 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   `mail.failed` (error level, user id + exception class only). `MAIL_ALWAYS_TO` redirects every message (staging).
   `php artisan mail:test {address}` writes `storage/app/last-mail-test`. Nothing may be queued (no worker,
   `QUEUE_CONNECTION=sync`). No email may contain a patient name or clinical details.
+  E2 done: `config/pilot.php` (PILOT_MODE, REGISTRATION_MODE, ALERT_EMAIL, HEALTH_TOKEN, SUPPORT_*, DRAFT throttles used via
+  `App\Support\Throttle::hit()`). `SecurityHeaders` middleware is global (noindex when pilot mode or staging); `/robots.txt`
+  is a route (no static file). An https APP_URL forces https URLs and a secure session cookie. Indonesian, self-contained
+  error pages in `resources/views/errors` (no DB/session/Vite). Database errors are logged as `database.error` with the
+  SQL placeholders only. Demo seeders call `DemoSeeder::guard()` (local, staging, testing only).
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,

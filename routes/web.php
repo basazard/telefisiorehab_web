@@ -1,10 +1,18 @@
 <?php
 
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::view('/', 'welcome');
+
+// robots.txt depends on the environment: the pilot and staging are never indexed (PRD 11 E2)
+Route::get('robots.txt', fn () => response(
+    "User-agent: *\nDisallow:".(SecurityHeaders::noindex() ? ' /' : '')."\n",
+    200,
+    ['Content-Type' => 'text/plain; charset=UTF-8'],
+))->name('robots');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

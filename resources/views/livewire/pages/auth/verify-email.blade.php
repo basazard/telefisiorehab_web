@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Throttle;
 use App\Livewire\Actions\Logout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,12 @@ new #[Layout('layouts.guest')] class extends Component
     {
         if (Auth::user()->hasVerifiedEmail()) {
             $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+
+            return;
+        }
+
+        if ($limited = Throttle::hit('verification_resend', Auth::id())) {      // PRD 11 E2
+            $this->addError('resend', $limited);
 
             return;
         }
@@ -47,6 +54,10 @@ new #[Layout('layouts.guest')] class extends Component
 
     @if (session('status') == 'verification-link-sent')
         <x-auth-session-status class="mb-4" status="Tautan verifikasi baru telah dikirim ke email yang Anda gunakan saat mendaftar." />
+    @endif
+
+    @if ($errors->has('resend'))
+        <p class="mb-4 text-sm font-medium text-destructive">{{ $errors->first('resend') }}</p>
     @endif
 
     <div class="flex items-center justify-between gap-4">

@@ -36,6 +36,8 @@ class ProgramSeeder extends Seeder
 
     public function run(): void
     {
+        DemoSeeder::guard();
+
         foreach (PatientSeeder::CAST as [$email, , , , , , $scenario]) {
             if (! isset(self::PLANS[$scenario])) {
                 continue;

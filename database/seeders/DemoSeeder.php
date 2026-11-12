@@ -18,11 +18,20 @@ class DemoSeeder extends Seeder
 
     public function run(): void
     {
-        if (app()->isProduction()) {
-            throw new RuntimeException('DemoSeeder tidak boleh dijalankan di production.');
-        }
+        self::guard();
 
         $this->call([ExerciseSeeder::class, ClinicSeeder::class, PatientSeeder::class, ProgramSeeder::class]);
+    }
+
+    /** Environments where demo data is allowed (PRD 11 E2); testing runs the seeder in the test suite. */
+    public const ENVIRONMENTS = ['local', 'staging', 'testing'];
+
+    /** Every demo seeder calls this first: demo data never reaches the pilot database, also via db:seed --class. */
+    public static function guard(): void
+    {
+        if (! app()->environment(self::ENVIRONMENTS)) {
+            throw new RuntimeException('Data demo hanya boleh di local atau staging, bukan di APP_ENV='.app()->environment().'.');
+        }
     }
 
     /** Creates or updates a verified demo account. The password is only set when the account is new. */

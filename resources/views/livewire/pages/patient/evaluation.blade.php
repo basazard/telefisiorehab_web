@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Throttle;
 use App\Models\Program;
 use App\Models\ProgramEvaluation;
 use App\Support\Onboarding\Instruments;
@@ -142,6 +143,12 @@ new class extends Component {
     public function requestConsultation(string $type): void
     {
         abort_unless(isset(\App\Models\ConsultationRequest::TYPES[$type]) && $this->evaluation, 422);
+
+        if ($limited = Throttle::hit('consultation', auth()->user()->patient->id)) {      // PRD 11 E2
+            $this->dispatch('toast', message: $limited, type: 'error');
+
+            return;
+        }
 
         $created = auth()->user()->patient->requestConsultation($type, $this->evaluation->program->assessment_id,
             'Dari monitoring: '.Monitoring::OUTCOMES[$this->evaluation->outcome]);

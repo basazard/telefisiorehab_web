@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Throttle;
 use App\Models\AssessmentResult;
 use App\Models\ConsultationRequest;
 use App\Support\Onboarding\Intervention;
@@ -54,6 +55,12 @@ new #[Layout('layouts.onboarding')] class extends Component {
             'reason' => ['nullable', 'string', 'max:500'],
         ]);
         validator(['type' => $type], ['type' => ['required', Rule::in(array_keys(ConsultationRequest::TYPES))]])->validate();
+
+        if ($limited = Throttle::hit('consultation', auth()->user()->patient->id)) {      // PRD 11 E2
+            $this->dispatch('toast', message: $limited, type: 'error');
+
+            return;
+        }
 
         if (! auth()->user()->patient->requestConsultation($type, $this->assessment?->id, $this->reason)) {
             $this->dispatch('toast', message: 'Permintaan Anda masih diproses.');

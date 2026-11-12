@@ -64,6 +64,8 @@ class PatientSeeder extends Seeder
 
     public function run(): void
     {
+        DemoSeeder::guard();
+
         foreach (self::CAST as [$email, $name, $clinic, $therapist, $profile, $gender, $scenario]) {
             $clinicId = $clinic ? ClinicSeeder::clinic($clinic)->id : null;
             $user = DemoSeeder::user($email, $name, Role::Patient, $clinicId);

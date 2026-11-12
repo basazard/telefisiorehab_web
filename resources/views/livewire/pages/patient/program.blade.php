@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Throttle;
 use App\Models\Program;
 use Livewire\Attributes\Computed;
 use Livewire\Volt\Component;
@@ -71,6 +72,12 @@ new class extends Component {
     {
         $program = $this->program;
         abort_unless($program, 404);
+
+        if ($limited = Throttle::hit('consultation', auth()->user()->patient->id)) {      // PRD 11 E2
+            $this->dispatch('toast', message: $limited, type: 'error');
+
+            return;
+        }
 
         auth()->user()->patient->requestConsultation('teleconsultation', $program->assessment_id,
             'Konsultasi ulang: monitoring menunjukkan belum ada perbaikan.');
