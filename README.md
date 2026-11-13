@@ -88,6 +88,12 @@ queue worker on Hostinger (`QUEUE_CONNECTION=sync`). If sending fails, the actio
 
 Tests always use `MAIL_MAILER=array` (see `phpunit.xml`), so they never send real email.
 
+## Releases and deploys
+
+Releases are built on your PC and deployed over SSH with the scripts in [scripts/](scripts/README.md):
+`scripts/build-release.ps1`, then `bash scripts/deploy.sh staging release.tar.gz` (and later `production`), then
+`bash scripts/smoke.sh <site> --noindex`. `scripts/README.md` (Indonesian) explains every check and how to set up staging.
+
 ## First accounts on a server
 
 Never seed a pilot or production database. Create the accounts with commands; each sends a set-password email (no

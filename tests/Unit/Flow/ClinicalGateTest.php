@@ -81,19 +81,19 @@ it('lets the release through once every rule is approved and unchanged', functio
 // ---------------------------------------------------------------- deploy.sh
 
 it('runs the gate in deploy.sh before the live site is touched, with a logged override', function () {
-    $script = file_get_contents(base_path('deploy.sh'));
+    $script = file_get_contents(base_path('scripts/deploy.sh'));
 
     $gate = strpos($script, 'php artisan clinical:gate');
     expect($gate)->not->toBeFalse()
         ->and($gate)->toBeLessThan(strpos($script, 'php artisan down'))
-        ->and($gate)->toBeLessThan(strpos($script, 'git merge --ff-only'))
+        ->and($gate)->toBeLessThan(strpos($script, 'git merge --ff-only "$RELEASE_COMMIT"'))
         ->and($script)->toContain('ALLOW_UNREVIEWED')
         ->toContain('storage/logs/deploy-overrides.log')
         ->toContain('fail "clinical rules are not signed off');
 });
 
 it('has a deploy.sh that bash can parse', function () {
-    $result = Illuminate\Support\Facades\Process::run(['bash', '-n', base_path('deploy.sh')]);
+    $result = Illuminate\Support\Facades\Process::run(['bash', '-n', base_path('scripts/deploy.sh')]);
 
     expect($result->successful())->toBeTrue($result->errorOutput());
 })->skip(fn () => Illuminate\Support\Facades\Process::run(['bash', '--version'])->failed(), 'bash is not available');

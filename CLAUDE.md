@@ -99,6 +99,11 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   and `consent_version` live in `config/legal.php`: change the version when a text changes. Factory users consent by
   default; use `User::factory()->withoutConsent()` to test the gate. The profile page shows "Permintaan data saya" and no
   longer the self-delete form (the component file is kept).
+  E7 done: `scripts/build-release.ps1` (writes `RELEASE_COMMIT` into release.tar.gz), `scripts/deploy.sh <production|staging>`
+  (checks APP_ENV, that the archive commit equals origin/main, the clinical gate and, in production pilot mode,
+  `pilot:check`, all before maintenance mode; merges exactly that commit; writes `storage/app/revision.txt`),
+  `scripts/smoke.sh <url> [--noindex]`, `scripts/README.md` (Indonesian, staging setup). The root `deploy.sh` is a stub that
+  points to `scripts/deploy.sh`.
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,
