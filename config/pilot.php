@@ -16,6 +16,11 @@ return [
     'alert_email' => env('ALERT_EMAIL') ?: null,
     'health_token' => env('HEALTH_TOKEN') ?: null,
 
+    // Backups (E5): the folder scripts/backup-db.sh writes to. Set it as an absolute path on servers: PHP running behind
+    // the web server may not know HOME. Default: ~/backups/telefisiorehab/<APP_ENV>.
+    'backup_dir' => env('BACKUP_DIR') ?: (($home = getenv('HOME') ?: ($_SERVER['HOME'] ?? null))
+        ? $home.'/backups/telefisiorehab/'.env('APP_ENV', 'production') : null),
+
     // Shown on the help page (E9).
     'support_email' => env('SUPPORT_EMAIL') ?: null,
     'support_whatsapp' => env('SUPPORT_WHATSAPP') ?: null,

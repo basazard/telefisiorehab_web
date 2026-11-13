@@ -229,7 +229,7 @@ it('refuses something that is not an email address', function () {
 
 it('keeps mail synchronous: nothing in the app is queued', function () {
     foreach (Finder::create()->files()->in(app_path())->name('*.php') as $file) {
-        expect($file->getContents())->not->toContain('ShouldQueue', $file->getRelativePathname().' queues work, but there is no queue worker');
+        expect(str_contains($file->getContents(), 'ShouldQueue'))->toBeFalse($file->getRelativePathname().' queues work, but there is no queue worker');
     }
 
     expect(interface_exists(ShouldQueue::class))->toBeTrue();

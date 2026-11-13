@@ -104,6 +104,11 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   `pilot:check`, all before maintenance mode; merges exactly that commit; writes `storage/app/revision.txt`),
   `scripts/smoke.sh <url> [--noindex]`, `scripts/README.md` (Indonesian, staging setup). The root `deploy.sh` is a stub that
   points to `scripts/deploy.sh`.
+  E5 done: `scripts/backup-db.sh` (cron; temp `--defaults-extra-file`, never a password on a command line; gzip + gpg
+  AES256; `--set-gtid-purged=OFF` when supported; `<BACKUP_DIR>/db-YYYYmmdd-HHMM.sql.gz[.gpg]` in UTC + `.counts`; keeps
+  14 daily and 8 weekly, DRAFT) and `scripts/restore-drill.sh` (scratch DB only, refuses the live DB or user, compares
+  counts, drops the restored tables, writes `last-restore-drill`). Shared code in `scripts/lib/backup-common.sh`. The app
+  only reads results: `App\Support\Backups` (config `pilot.backup_dir`).
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,

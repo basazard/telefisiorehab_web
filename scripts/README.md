@@ -5,6 +5,8 @@
 | `build-release.ps1` | PC Anda (PowerShell) | Membuat `release.tar.gz` (vendor, aset, dan commit yang dibangun) dari `main` terbaru di GitHub |
 | `deploy.sh` | Server (SSH), di folder aplikasi | Memeriksa rilis, lalu memasangnya di staging atau production |
 | `smoke.sh` | PC (Git Bash) atau server | Memeriksa situs yang sudah terpasang: halaman publik dan header keamanan |
+| `backup-db.sh` | Server, lewat cron harian | Backup database terenkripsi, menyimpan 14 harian dan 8 mingguan (DRAFT) |
+| `restore-drill.sh` | Server (SSH), sebelum go-live lalu bulanan | Memulihkan backup terbaru ke database percobaan dan memeriksa isinya |
 
 ## Alur setiap rilis
 
@@ -71,3 +73,42 @@ Setelah deploy, commit yang berjalan tertulis di `storage/app/revision.txt`.
    `php artisan db:seed --class=DemoSeeder` (data demo hanya boleh di staging dan local).
 6. **Periksa:** `bash scripts/smoke.sh https://staging.telefisiorehab.com --noindex` harus hijau, dan email dari staging
    (daftar akun, lupa kata sandi) hanya sampai ke alamat `MAIL_ALWAYS_TO`.
+
+## Backup dan uji pemulihan (E5)
+
+Backup berjalan dari cron, tidak pernah dari aplikasi. Kata sandi database tidak pernah muncul di baris perintah.
+
+1. **Passphrase enkripsi** (sekali per server), di luar folder aplikasi:
+
+   ```
+   mkdir -p ~/.secrets && chmod 700 ~/.secrets
+   openssl rand -base64 48 > ~/.secrets/backup-passphrase && chmod 600 ~/.secrets/backup-passphrase
+   cat ~/.secrets/backup-passphrase
+   ```
+
+   Simpan isi passphrase itu di password manager Anda. **Tanpa passphrase, backup tidak bisa dibuka.**
+2. **`.env` setiap lingkungan** (path absolut):
+
+   ```
+   BACKUP_DIR=/home/<user>/backups/telefisiorehab/<production atau staging>
+   BACKUP_PASSPHRASE_FILE=/home/<user>/.secrets/backup-passphrase
+   BACKUP_DRILL_DB_DATABASE=<database percobaan yang KOSONG>
+   BACKUP_DRILL_DB_USERNAME=<user database percobaan>
+   BACKUP_DRILL_DB_PASSWORD=<kata sandinya>
+   ```
+
+   Buat database percobaan dan user-nya di hPanel. Jangan pernah memakai database atau user yang sedang dipakai
+   aplikasi: skrip uji pemulihan menolaknya.
+3. **Cron di hPanel**, satu per lingkungan. Jam server memakai UTC, jadi 19:00 UTC = 02:00 WIB:
+
+   ```
+   0 19 * * *   cd /home/<user>/<folder aplikasi> && bash scripts/backup-db.sh
+   ```
+
+   Hasilnya: `db-YYYYmmdd-HHMM.sql.gz.gpg` (waktu UTC) dan `.counts` di `BACKUP_DIR`, satu baris per backup di
+   `backup.log`. Bila gagal, `backup.log` mencatat langkah yang gagal.
+4. **Uji pemulihan:** `cd <folder aplikasi> && bash scripts/restore-drill.sh` sebelum go-live, lalu setiap bulan. Hasil
+   harus `OK` untuk setiap tabel. Database percobaan dikosongkan lagi setelahnya.
+5. **Salinan di luar server:** setiap minggu unduh file `.gpg` terbaru (hPanel File Manager atau SFTP) ke tempat yang
+   aman di luar server. Tanpa passphrase file itu tidak bisa dibaca.
+6. **Backup bawaan Hostinger:** catat apa yang dicakup paket Anda. Kita tidak mengandalkannya.
