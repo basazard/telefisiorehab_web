@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\EnsureActive;
+use App\Http\Middleware\EnsureConsent;
 use App\Http\Middleware\EnsureRole;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Database\QueryException;
@@ -23,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => EnsureRole::class,
             'profile.complete' => EnsureProfileComplete::class,
             'redflag.clear' => EnsureNotRedFlagLocked::class,
+            'consent' => EnsureConsent::class,
         ]);
 
         // deactivated staff are logged out on every request, Livewire updates included

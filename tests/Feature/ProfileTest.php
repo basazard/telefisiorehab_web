@@ -14,7 +14,7 @@ test('profile page is displayed', function () {
         ->assertOk()
         ->assertSeeVolt('profile.update-profile-information-form')
         ->assertSeeVolt('profile.update-password-form')
-        ->assertSeeVolt('profile.delete-user-form');
+        ->assertDontSeeVolt('profile.delete-user-form');              // PRD 11 E4: not shown during the pilot
 });
 
 test('profile information can be updated', function () {

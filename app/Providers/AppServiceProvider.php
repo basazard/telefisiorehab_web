@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\EnsureConsent;
 use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Notifications\ResetPassword;
@@ -11,6 +12,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Livewire\Livewire;
 use Symfony\Component\Mime\Address;
 
 class AppServiceProvider extends ServiceProvider
@@ -32,6 +34,9 @@ class AppServiceProvider extends ServiceProvider
         $this->redirectMailOnStaging();
         $this->indonesianAuthMail();
         $this->verifyOnPasswordReset();
+
+        // Livewire updates re-run the consent check of the page they came from (PRD 11 E4)
+        Livewire::addPersistentMiddleware([EnsureConsent::class]);
     }
 
     /**

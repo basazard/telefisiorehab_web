@@ -129,6 +129,11 @@ new #[Layout('layouts.guest')] class extends Component
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1.5" />
         </div>
 
+        <p class="text-xs text-muted-foreground">
+            Dengan mendaftar, Anda menyetujui <a href="{{ route('legal.terms') }}" target="_blank" class="text-primary hover:underline">Syarat Penggunaan</a>
+            dan <a href="{{ route('legal.privacy') }}" target="_blank" class="text-primary hover:underline">Kebijakan Privasi</a>.
+        </p>
+
         <x-primary-button class="w-full" wire:loading.attr="disabled" wire:target="register">
             <span wire:loading.remove wire:target="register">Daftar</span>
             <span wire:loading wire:target="register">Memproses…</span>

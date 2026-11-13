@@ -93,6 +93,12 @@ design tokens live in its `src/styles.css`, already ported to `resources/css/app
   register links hidden). Registration is throttled per IP. First accounts: `pilot:create-admin`, `pilot:create-clinic`
   (idempotent, `--resend`; `App\Support\FirstAccounts`, `SetPasswordNotification`); never print a password or the link.
   Setting a password through an emailed link marks the email verified.
+  E4 done: `/privasi`, `/syarat` from `resources/legal/*-id.md` (temporary until the marker `TEKS SEMENTARA: belum ditinjau
+  pengacara` is removed; `Legal::hasPlaceholder()`). Consent gate: `consent` middleware (also Livewire persistent) on every
+  logged-in app route; `/persetujuan` stores an append-only `consents` row (version + ticked statement keys). Statements
+  and `consent_version` live in `config/legal.php`: change the version when a text changes. Factory users consent by
+  default; use `User::factory()->withoutConsent()` to test the gate. The profile page shows "Permintaan data saya" and no
+  longer the self-delete form (the component file is kept).
 - Exercise videos: `exercises.video_url` is empty; the program page shows a video link once it is filled.
 - Staff side (`prd/09-therapist-clinic-side.md`): S1 to S4 done (S4.4 clinic join code for patients deferred). `therapist.dashboard`, `therapist.patients` and
   `therapist.patients.show` exist (rules in `App\Support\Staff\Attention` and `Progress`, rows in `PatientOverview`,

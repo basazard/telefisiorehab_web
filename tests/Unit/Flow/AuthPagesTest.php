@@ -146,7 +146,7 @@ it('logs out with the new logout button', function () {
 
 // ---------------------------------------------------------------- profile pages
 
-it('renders the profile page with the three forms', function () {
+it('renders the profile page with its forms and the data request section, without self-service deletion', function () {
     $user = makeUser();
     makePatient($user);
 
@@ -155,7 +155,8 @@ it('renders the profile page with the three forms', function () {
         ->assertSee('Profil akun')
         ->assertSeeVolt('profile.update-profile-information-form')
         ->assertSeeVolt('profile.update-password-form')
-        ->assertSeeVolt('profile.delete-user-form');
+        ->assertDontSeeVolt('profile.delete-user-form')                  // PRD 11 E4: deletion is a request in the pilot
+        ->assertSee('Permintaan data saya');
 });
 
 it('links patients to their health profile but not staff', function () {

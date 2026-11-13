@@ -124,6 +124,8 @@
 
         <footer class="border-t border-border px-6 py-8 text-center text-xs text-muted-foreground md:px-12">
             &copy; {{ date('Y') }} TeleFisioRehab
+            · <a href="{{ route('legal.privacy') }}" class="hover:underline">Kebijakan Privasi</a>
+            · <a href="{{ route('legal.terms') }}" class="hover:underline">Syarat Penggunaan</a>
         </footer>
     </body>
 </html>

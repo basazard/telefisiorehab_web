@@ -1,11 +1,24 @@
 <?php
 
 use App\Http\Middleware\SecurityHeaders;
+use App\Support\Legal;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
 Route::view('/', 'welcome');
+
+// privacy and terms, readable without an account (PRD 11 E4)
+foreach (['privasi' => 'legal.privacy', 'syarat' => 'legal.terms'] as $page => $name) {
+    Route::get($page, fn () => view('legal.show', [
+        'title' => Legal::PAGES[$page][0],
+        'html' => Legal::html($page),
+        'placeholder' => Legal::isPlaceholder($page),
+    ]))->name($name);
+}
+
+// consent to the current terms, privacy and data processing, before any other app page (PRD 11 E4)
+Volt::route('persetujuan', 'pages.consent')->middleware(['auth', 'verified'])->name('consent');
 
 // robots.txt depends on the environment: the pilot and staging are never indexed (PRD 11 E2)
 Route::get('robots.txt', fn () => response(
@@ -15,10 +28,10 @@ Route::get('robots.txt', fn () => response(
 ))->name('robots');
 
 Route::view('profile', 'profile')
-    ->middleware(['auth'])
+    ->middleware(['auth', 'consent'])
     ->name('profile');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'consent'])->group(function () {
 
     // Breeze redirects to route('dashboard') after login, so keep the name and redirect by role
     Route::get('/dashboard', fn() => redirect()->route(Auth::user()->role->home()))

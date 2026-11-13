@@ -136,6 +136,8 @@ it('lets the new admin set a password and reach the clinic dashboard, verified',
         ->call('resetPassword')->assertHasNoErrors();
 
     expect($admin->fresh()->hasVerifiedEmail())->toBeTrue();
-    $this->actingAs($admin->fresh())->get(route('dashboard'))->assertRedirect(route('clinic.dashboard'));
+    $this->actingAs($admin->fresh())->get(route('dashboard'))->assertRedirect(route('consent'));      // consents first (E4)
+    Volt::test('pages.consent')->set('agreed.terms', true)->set('agreed.confidentiality', true)->call('accept')->assertHasNoErrors();
+    $this->get(route('dashboard'))->assertRedirect(route('clinic.dashboard'));
     $this->get(route('clinic.dashboard'))->assertOk()->assertSee('Klinik Sehat Jakarta');
 });
